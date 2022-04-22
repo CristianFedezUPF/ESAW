@@ -1,7 +1,7 @@
 package helloWorldServlet;
 
 import java.io.IOException;
-import utils.DB;
+import utils.*;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -26,7 +26,6 @@ public class HelloWorld extends HttpServlet {
      */
     public HelloWorld() {
         super();
-        // TODO Auto-generated constructor stub
     }
     
     public void init() {
@@ -52,44 +51,63 @@ public class HelloWorld extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		PrintWriter out = response.getWriter();
+		final PrintWriter writer = response.getWriter();
 		String query = "SELECT * FROM user";
 		ResultSet results;
 		init();
+		
 		try {
-			String prefix = "<!DOCTYPE html>\n" +
-		    		"<head>\n"+
-		    		"<title> Hello World! </title>\n"+
-		    		"</head>\n"+
-		    		"<body>\n";
-			
+			StringBuilder output = new StringBuilder(
+					String.join("\n",
+							HTML.HTML_OPEN.tag(),
+							HTML.HEAD_OPEN.tag(),
+							HTML.TITLE_OPEN.tag(),
+							"Hello world!",
+							HTML.TITLE_CLOSE.tag(),
+							HTML.HEAD_CLOSE.tag(),
+							HTML.BODY_OPEN.tag(),
+							HTML.TABLE_OPEN.tag()
+					)
+			);
+
 			results = db.executeSQL(query);
 			ResultSetMetaData metadata = results.getMetaData();
 			int numberOfColumns = metadata.getColumnCount();
+			
+			output.append(HTML.TABLEROW_OPEN.tag());
+			for(int i = 1; i <= numberOfColumns; ++i) {
+				output.append(HTML.TABLEHEADER_OPEN.tag());
+				output.append(metadata.getColumnLabel(i));
+				output.append(HTML.TABLEHEADER_CLOSE.tag());
+			}
+			output.append(HTML.TABLEROW_CLOSE.tag());
 				
 			while(results.next()) {
-				int i = 1;		
+				int i = 1;	
+				output.append(HTML.TABLEROW_OPEN.tag());
 				while(i <= numberOfColumns){
-					
+					output.append(HTML.TABLEDATA_OPEN.tag());
+					output.append(results.getString(i++));
+					output.append(HTML.TABLEDATA_CLOSE.tag());
 				}
+				output.append(HTML.TABLEROW_CLOSE.tag());
 			}
+			
+			output.append(
+					String.join("\n",
+							HTML.TABLE_CLOSE.tag(),
+							HTML.BODY_CLOSE.tag(),
+							HTML.HTML_CLOSE.tag()
+					)
+			);
+			
+			writer.println(output.toString());
+			
 			results.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
-		
-
-		
-	     /*out.println
-	             ("<!DOCTYPE html>\n" +
-	             "<head>\n"+
-	             "<title> Hello World!2 </title>\n"+
-	             "</head>\n"+
-	             "<body>\n" +
-	             "<h1> Hello World!2 </h1>\n" +
-	             "</body>");*/
 	    destroy(); 
 	}
 
@@ -97,7 +115,6 @@ public class HelloWorld extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
