@@ -57,6 +57,7 @@ public class HelloWorld extends HttpServlet {
 		init();
 		
 		try {
+			// initial tags
 			StringBuilder output = new StringBuilder(
 					String.join("\n",
 							HTML.HTML_OPEN.tag(),
@@ -69,11 +70,13 @@ public class HelloWorld extends HttpServlet {
 							HTML.TABLE_OPEN.tag()
 					)
 			);
-
+			
+			// execute query and get metadata
 			results = db.executeSQL(query);
 			ResultSetMetaData metadata = results.getMetaData();
 			int numberOfColumns = metadata.getColumnCount();
 			
+			// set column names
 			output.append(HTML.TABLEROW_OPEN.tag());
 			for(int i = 1; i <= numberOfColumns; ++i) {
 				output.append(HTML.TABLEHEADER_OPEN.tag());
@@ -81,7 +84,8 @@ public class HelloWorld extends HttpServlet {
 				output.append(HTML.TABLEHEADER_CLOSE.tag());
 			}
 			output.append(HTML.TABLEROW_CLOSE.tag());
-				
+			
+			// set data
 			while(results.next()) {
 				int i = 1;	
 				output.append(HTML.TABLEROW_OPEN.tag());
@@ -93,6 +97,7 @@ public class HelloWorld extends HttpServlet {
 				output.append(HTML.TABLEROW_CLOSE.tag());
 			}
 			
+			// closing tags
 			output.append(
 					String.join("\n",
 							HTML.TABLE_CLOSE.tag(),
@@ -101,6 +106,7 @@ public class HelloWorld extends HttpServlet {
 					)
 			);
 			
+			// display response
 			writer.println(output.toString());
 			
 			results.close();
