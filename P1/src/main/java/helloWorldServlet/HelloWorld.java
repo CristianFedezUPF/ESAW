@@ -87,11 +87,10 @@ public class HelloWorld extends HttpServlet {
 			
 			// set data
 			while(results.next()) {
-				int i = 1;	
 				output.append(HTML.TABLEROW_OPEN.tag());
-				while(i <= numberOfColumns){
+				for(int i = 1; i <= numberOfColumns; ++i){
 					output.append(HTML.TABLEDATA_OPEN.tag());
-					output.append(results.getString(i++));
+					output.append(results.getString(i));
 					output.append(HTML.TABLEDATA_CLOSE.tag());
 				}
 				output.append(HTML.TABLEROW_CLOSE.tag());
