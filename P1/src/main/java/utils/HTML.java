@@ -1,5 +1,7 @@
 package utils;
 
+
+// enum with HTML tags for easier reuse and legibility
 public enum HTML {
 	HTML_OPEN("<!DOCTYPE html>"),
 	HTML_CLOSE("</html>"),
