@@ -23,6 +23,13 @@ public class User implements java.io.Serializable {
 	private String pwd1 = "";
 	private String pwd2 = "";
 	
+	private Long id;
+	private String name;
+	private String username;
+	private String email;
+	private String password;
+	private String gender; // for now, u
+	
 	private boolean[] error  = {false,false,false,false};
 	
 	public User() {
