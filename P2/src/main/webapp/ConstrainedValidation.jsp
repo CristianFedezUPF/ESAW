@@ -32,9 +32,12 @@ body {
 input:valid {
 	border: 1px solid #47bf26;
 }
+
 input:invalid {
 	border: 1px solid red;
 }
+
+
 /* This is the style of our error messages */
 .error {
   width  : 100%;
@@ -56,15 +59,18 @@ input:invalid {
 	border: 1px red;
 	background: #2d323b;
 	border-radius: 8px;
-    width: fit-content;
+    width: max(250px, 35%);
     height: fit-content;
     /* offset-x | offset-y | blur-radius | spread-radius | color */
 	box-shadow: 0px 4px 2px 1px rgba(0, 0, 0, 0.2);
+	overflow: scroll;
+	
 }
 
 #form-wrapper > form {
-	margin-left: 80px;
-	margin-right: 100px;
+	overflow: scroll;
+	display: flex;
+	flex-direction: column;
 }
 
 #form-wrapper > h1{
@@ -75,7 +81,7 @@ input:invalid {
 }
 
 form > * {
-	margin-bottom: 10px;
+	margin-left: 40px;
 }
 
 form:first-child{
@@ -94,12 +100,13 @@ form > label{
 form > input{
 	border: 1px gray;
 	border-radius: 6px;
-	width: 90%;
+	width: 70%;
 	height: 26px;
 	background: #373b40;
 	padding-left: 10px;
 	font-size: 13px;
 	color: white;
+	margin-bottom: 6px
 }
 
 form > input:focus{
@@ -118,6 +125,7 @@ form > select{
 	background-color: #373b40;
 	border-radius: 6px;
 	color: white;
+	margin-bottom: 6px
 }
 
 form > select:checked{
@@ -125,8 +133,9 @@ form > select:checked{
 }
 
 button{
+	margin-left: 0px;
 	margin-top: 6px;
-	margin-left: 72px;
+	align-self: center;
 	padding: 8px;
 	font-size: 15px;
 	border: 1px blue;
@@ -148,24 +157,24 @@ button{
 <div id="form-wrapper">
 	<h1>Welcome!</h1>
 	<form novalidate action="RegisterController">
-	  	<label for="name">Name:</label><br>
-	  	<input type="text" id="name" name="name" placeholder="Name" value="${model.name}" required><br>
-	  	<label for="username">Username:</label><br>
-	  	<input type="text" id="username" name="username" placeholder="@" value="${model.username}" required><br>
-	  	<label for="email">Email:</label><br>
-	  	<input type="email" id="email" name="email" placeholder="Email" value="${model.email}" required><br>
-	  	<label for="password">Password: </label><br>
-	  	<input type="password" id="password" name="password" placeholder="Password" value="${model.password}" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$"><br>
-	  	<label for="password-check"> Confirm Password: </label><br>
-	  	<input type="password" id="password-check" name="password-check" placeholder="Confirm Password"  required><br>
-	  	<label for="gender">Gender:</label><br>
+	  	<label for="name">Name:</label>
+	  	<input type="text" id="name" name="name" placeholder="Name" value="${model.name}" required>
+	  	<label for="username">Username:</label>
+	  	<input type="text" id="username" name="username" placeholder="@" value="${model.username}" required>
+	  	<label for="email">Email:</label>
+	  	<input type="email" id="email" name="email" placeholder="Email" value="${model.email}" required>
+	  	<label for="password">Password: </label>
+	  	<input type="password" id="password" name="password" placeholder="Password" value="${model.password}" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$">
+	  	<label for="password-check"> Confirm Password: </label>
+	  	<input type="password" id="password-check" name="password-check" placeholder="Confirm Password"  required>
+	  	<label for="gender">Gender:</label>
 	  	<select name="gender" id="gender">
 	    	<option value="NS">Prefer not to say</option>
 	    	<option value="F">Female</option>
 	    	<option value="M">Male</option>
 	    	<option value="NB">Non-binary</option>
-	  	</select><br>
-	  	<label for="university">University:</label><br>
+	  	</select>
+	  	<label for="university">University:</label>
 	  	<select name="university" id="university"> <!-- for now just from Catalunya! -->
 	    	<option value="UB">Universitat de Barcelona</option>
 	    	<option value="UPF">Universitat Pompeu Fabra</option>
@@ -178,10 +187,10 @@ button{
 	    	<option value="Uvic">Universitat de Vic</option>
 	    	<option value="UIC">Universitat Internacional de Catalunya</option>
 	    	<option value="UAO-CEU">Universitat Abat Oliba</option>
-	  	</select><br>
-	  	<label for="degree">Degree:</label><br>
-	  	<input type="text" id="degree" name="degree" placeholder="Degree" value="${model.degree}"><br>
-	  	<label for="country">Country:</label><br>
+	  	</select>
+	  	<label for="degree">Degree:</label>
+	  	<input type="text" id="degree" name="degree" placeholder="Degree" value="${model.degree}">
+	  	<label for="country">Country:</label>
 	  	<select name="country" id="country">
 	        <option value="0" label="Select a country ... " selected="selected">Select a country ... </option>
 	        <optgroup id="country-optgroup-Africa" label="Africa">
@@ -446,14 +455,14 @@ button{
 	            <option value="VU" label="Vanuatu">Vanuatu</option>
 	            <option value="WF" label="Wallis and Futuna">Wallis and Futuna</option>
 	        </optgroup>
-	    </select><br>
-	    <label for="birthday">Birthday:</label><br>
-	  	<input type="date" id="birthday" name="birthday" placeholder="Birthday" value="${model.birthday}"><br>
-	  	<label for="position">Position:</label><br>
+	    </select>
+	    <label for="birthday">Birthday:</label>
+	  	<input type="date" id="birthday" name="birthday" placeholder="Birthday" value="${model.birthday}">
+	  	<label for="position">Position:</label>
 	  	<select name="position" id="position">
 	    	<option value="S">Student</option>
 	    	<option value="T">Female</option>
-	  	</select><br>
+	  	</select>
 	  	<!--  IMAGE -->
 	  	
 	  	
