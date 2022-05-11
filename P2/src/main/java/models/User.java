@@ -2,6 +2,7 @@ package models;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.time.LocalDate;
 
 public class User implements java.io.Serializable {
 	
@@ -28,7 +29,14 @@ public class User implements java.io.Serializable {
 	private String username;
 	private String email;
 	private String password;
-	private String gender; // for now, u
+	private String gender; 	// for now, change to ENUM later
+	private String university;
+	private String degree;
+	private String country;
+	private LocalDate birthday;
+	private String type;	// student/teacher
+	private String imagePath;
+	
 	
 	private boolean[] error  = {false,false,false,false};
 	
@@ -83,6 +91,106 @@ public class User implements java.io.Serializable {
 		/* TODO check restriction with pattern and check if pwd1=pwd2*/
 		this.pwd2 = pwd2;
 		System.out.println(pwd2);
+	}
+	
+	public String getName() {
+		return this.name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+		System.out.println(name);
+	}
+	
+	public String getUsername() {
+		return this.username;
+	}
+	
+	public void setUsername(String username) {
+		this.username = username;
+		System.out.println(username);
+	}
+	
+	public String getEmail() {
+		return this.email;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+		System.out.println(email);
+	}
+	
+	public String getPassword() {
+		return this.password;
+	}
+	
+	public void setPassword(String password) {
+		// hash
+		this.password = password;
+		System.out.println(password);
+	}
+	
+	public String getGender() {
+		return this.gender;
+	}
+	
+	public void setGender(String gender) {
+		this.gender = gender;
+		System.out.println(gender);
+	}
+	
+	public String getUniversity() {
+		return this.university;
+	}
+	
+	public void setUniversity(String university) {
+		this.university = university;
+		System.out.println(university);
+	}
+	
+	public String getDegree() {
+		return this.degree;
+	}
+	
+	public void setDegree(String degree) {
+		this.degree = degree;
+		System.out.println(degree);
+	}
+
+	public String getCountry() {
+		return this.country;
+	}
+	
+	public void setCountry(String country) {
+		this.country = country;
+		System.out.println(country);
+	}
+	
+	public LocalDate getBirthday() {
+		return this.birthday;
+	}
+	
+	public void setBirthday(LocalDate birthday) {
+		this.birthday = birthday;
+		System.out.println(birthday);
+	}
+	
+	public String getType() {
+		return this.type;
+	}
+	
+	public void setType(String type) {
+		this.type = type;
+		System.out.println(type);
+	}
+	
+	public String getImagePath() {
+		return this.imagePath;
+	}
+	
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+		System.out.println(imagePath);
 	}
 	
 	public boolean[] getError() {
