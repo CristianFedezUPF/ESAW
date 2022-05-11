@@ -34,7 +34,7 @@ public class User implements java.io.Serializable {
 	private String degree;
 	private String country;
 	private LocalDate birthday;
-	private String type;	// student/teacher
+	private String position;	// student/teacher
 	private String imagePath;
 	
 	
@@ -175,13 +175,13 @@ public class User implements java.io.Serializable {
 		System.out.println(birthday);
 	}
 	
-	public String getType() {
-		return this.type;
+	public String getPosition() {
+		return this.position;
 	}
 	
-	public void setType(String type) {
-		this.type = type;
-		System.out.println(type);
+	public void setPosition(String position) {
+		this.position = position;
+		System.out.println(position);
 	}
 	
 	public String getImagePath() {

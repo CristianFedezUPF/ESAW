@@ -13,7 +13,7 @@ CREATE TABLE user (
     degree VARCHAR(255),
     country VARCHAR(64),
     birthday DATE,
-    type ENUM('S', 'T'),
+    position ENUM('S', 'T'),
     image_path VARCHAR(255)
 );
 
