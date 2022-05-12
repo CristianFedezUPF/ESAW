@@ -186,8 +186,8 @@ button:hover {
 	  	<input type="email" id="email" name="email" placeholder="Email" value="${model.email}" required>
 	  	<label for="password">Password (Minimum 6 characters): </label>
 	  	<input type="password" id="password" name="password" placeholder="Password" value="${model.password}" required>
-	  	<label for="password-check"> Confirm Password: </label>
-	  	<input type="password" id="password-check" name="password-check" placeholder="Confirm Password"  required>
+	  	<label for="passwordCheck"> Confirm Password: </label><br>
+  		<input type="password" id="passwordCheck" name="passwordCheck" placeholder="Confirm Password" value="${model.passwordCheck}" required>  	
 	  	<label for="gender">Gender:</label>
 	  	<select name="gender" id="gender">
 	    	<option value="NS">Prefer not to say</option>

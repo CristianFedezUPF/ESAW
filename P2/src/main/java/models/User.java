@@ -29,6 +29,7 @@ public class User implements java.io.Serializable {
 	private String username;
 	private String email;
 	private String password;
+	private String passwordCheck;
 	private String gender; 	// for now, change to ENUM later
 	private String university;
 	private String degree;
@@ -124,9 +125,19 @@ public class User implements java.io.Serializable {
 		return this.password;
 	}
 	
+	public String getPasswordCheck() {
+		return this.passwordCheck;
+	}
+	
 	public void setPassword(String password) {
 		// hash
 		this.password = password;
+		System.out.println(password);
+	}
+	
+	public void setPasswordCheck(String password) {
+		// hash
+		this.passwordCheck = password;
 		System.out.println(password);
 	}
 	
