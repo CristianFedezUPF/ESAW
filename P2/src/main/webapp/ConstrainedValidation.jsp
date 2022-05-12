@@ -37,6 +37,14 @@ input:invalid {
 	border: 1px solid red;
 }
 
+#degree:valid {
+	border: 1px dashed #47bf26;
+}
+
+#birthday:valid {
+	border: 1px dashed #47bf26;
+}
+
 
 /* This is the style of our error messages */
 .error {
@@ -93,6 +101,7 @@ form:last-child{
 }
 
 form > label{
+	margin-bottom: 2px;
 	font-size: 16px;
 	color: white;
 }
