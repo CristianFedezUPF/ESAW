@@ -67,11 +67,14 @@ input:invalid {
 }
 
 #form-wrapper{
+	display: flex;
+	flex-direction: column;
 	border: 1px red;
 	background: #2d323b;
 	border-radius: 8px;
     width: max(250px, 35%);
-    height: fit-content;
+    height: 90%;
+    max-height: fit-content;
     /* offset-x | offset-y | blur-radius | spread-radius | color */
 	box-shadow: 0px 4px 2px 1px rgba(0, 0, 0, 0.2);
 	overflow: scroll;
@@ -180,7 +183,7 @@ button:hover {
 	<form novalidate action="RegisterController">
 	  	<label for="name">Name:</label>
 	  	<input type="text" id="name" name="name" placeholder="Name" value="${model.name}" required>
-	  	<label for="username">Username (4-15 chars):</label>
+	  	<label for="username">Username (4 to 15 characters):</label>
 	  	<input type="text" id="username" name="username" placeholder="@" value="${model.username}" required>
 	  	<label for="email">Email:</label>
 	  	<input type="email" id="email" name="email" placeholder="Email" value="${model.email}" required>
@@ -482,7 +485,7 @@ button:hover {
 	  	<label for="position">Position:</label>
 	  	<select name="position" id="position">
 	    	<option value="S">Student</option>
-	    	<option value="T">Female</option>
+	    	<option value="T">Teacher</option>
 	  	</select>
 	  	<!--  IMAGE -->
 	  	
