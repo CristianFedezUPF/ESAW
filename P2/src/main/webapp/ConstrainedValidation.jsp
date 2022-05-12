@@ -186,7 +186,7 @@ button:hover {
 	  	<input type="email" id="email" name="email" placeholder="Email" value="${model.email}" required>
 	  	<label for="password">Password (Minimum 6 characters): </label>
 	  	<input type="password" id="password" name="password" placeholder="Password" value="${model.password}" required>
-	  	<label for="passwordCheck"> Confirm Password: </label><br>
+	  	<label for="passwordCheck"> Confirm Password: </label>
   		<input type="password" id="passwordCheck" name="passwordCheck" placeholder="Confirm Password" value="${model.passwordCheck}" required>  	
 	  	<label for="gender">Gender:</label>
 	  	<select name="gender" id="gender">
@@ -507,7 +507,7 @@ form.addEventListener('submit', function (event) {
 
 function checkInputs(){
 	const inputs = form.getElementsByTagName("input");
-	for(const input in inputs){
+	for(const input of inputs){
 		if(!validateInput(input)){
 			return false;
 		}
@@ -516,15 +516,20 @@ function checkInputs(){
 }
 
 function validateInput(input){
-	const value = input.value.trim();
+	let value;
+	try{
+		value = input.value.trim();
+	} catch(e){
+		console.log(e);
+	}
 	switch(input.id){
 		case "name":
-			if(input.validity.valueMissing){
+			if(value === ""){
 				showError("Please enter a name"); return false;
 			}
 			break;
 		case "username":
-			if(input.validity.valueMissing){
+			if(value === ""){
 				showError("Please enter a username"); return false;
 			}
 			if(value.length < 4){
@@ -539,7 +544,7 @@ function validateInput(input){
 			}
 			break;
 		case "email":
-			if(input.validity.valueMissing){
+			if(value === ""){
 				showError("Please enter an email"); return false;
 			}
 			if(!validateEmail(value)){
@@ -547,7 +552,7 @@ function validateInput(input){
 			}
 			break;
 		case "password":
-			if(input.validity.valueMissing){
+			if(value === ""){
 				showError("Please enter a password"); return false;
 			}
 			if(value.length < 6){
@@ -563,6 +568,9 @@ function validateInput(input){
 			}
 			break;
 		case "degree":
+			if(value === ""){
+				break;
+			}
 			if(!validateDegree(value)){
 				showError("Degree must contain only text characters"); return false;
 			}
@@ -594,15 +602,15 @@ function validateUsername(username){
 }
 
 function validateEmail(email){
-	return /^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$/.test(email);
+	return /[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
 }
 
 function validatePassword(password){
-	return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/.test(password);
+	return /^[a-zA-Z0-9]+$/.test(password);
 }
 
 function validateDegree(degree){
-	return /^[a-zA-Z]+$/.test(degree);
+	return /^[a-zA-Z ]+$/.test(degree);
 }
 	
 function validateDate(date){
