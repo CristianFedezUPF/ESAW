@@ -9,6 +9,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 <meta charset="UTF-8">
 <title> Form </title>
+<template>
+	<p class="error-message">error</p>
+</template>
 <style>
 * {
 	margin: 0;
@@ -151,6 +154,15 @@ button{
 	border-radius: 6px;
 	color: white;
 	background: #5aa854;
+	border: 1px solid #376933;
+}
+
+button:hover {
+	cursor: pointer;
+}
+
+.error-message{
+	color: #f7665c;
 }
 
 </style>
@@ -168,12 +180,12 @@ button{
 	<form novalidate action="RegisterController">
 	  	<label for="name">Name:</label>
 	  	<input type="text" id="name" name="name" placeholder="Name" value="${model.name}" required>
-	  	<label for="username">Username:</label>
+	  	<label for="username">Username (4-15 chars):</label>
 	  	<input type="text" id="username" name="username" placeholder="@" value="${model.username}" required>
 	  	<label for="email">Email:</label>
 	  	<input type="email" id="email" name="email" placeholder="Email" value="${model.email}" required>
-	  	<label for="password">Password: </label>
-	  	<input type="password" id="password" name="password" placeholder="Password" value="${model.password}" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$">
+	  	<label for="password">Password (Minimum 6 characters): </label>
+	  	<input type="password" id="password" name="password" placeholder="Password" value="${model.password}" required>
 	  	<label for="password-check"> Confirm Password: </label>
 	  	<input type="password" id="password-check" name="password-check" placeholder="Confirm Password"  required>
 	  	<label for="gender">Gender:</label>
@@ -486,41 +498,117 @@ const form  = document.getElementsByTagName('form')[0];
 const email = document.getElementById('mail');
 const emailError = document.querySelector('#mail + span.error');
 
-email.addEventListener('input', function (event) {
-	// Each time the user types something, we check if the
-	// form fields are valid.
-	if (email.validity.valid) {
-	 // In case there is an error message visible, if the field
-	 // is valid, we remove the error message.
-	 emailError.innerHTML = ""; // Reset the content of the message
-	} else {
-	 // If there is still an error, show the correct error
-	 showError();
-	}
-});
 
 form.addEventListener('submit', function (event) {
-	// if the email field is valid, we let the form submit
-	
-	if(!email.validity.valid) {
-	 // If it isn't, we display an appropriate error message
-	 showError();
-	 // Then we prevent the form from being sent by canceling the event
-	 event.preventDefault();
+	if(!checkInputs()){
+		event.preventDefault();
 	}
 });
 
-function showError() {
-	if(email.validity.valueMissing) {
-	 // If the field is empty
-	 // display the following error message.
-	 emailError.textContent = 'You need to enter an e-mail address.';
-	} else if(email.validity.typeMismatch) {
-	 // If the field doesn't contain an email address
-	 // display the following error messadge.
-	 emailError.textContent = 'Entered value needs to be an e-mail address.';
+function checkInputs(){
+	const inputs = form.getElementsByTagName("input");
+	for(const input in inputs){
+		if(!validateInput(input)){
+			return false;
+		}
+	}
+	return true;
+}
+
+function validateInput(input){
+	const value = input.value.trim();
+	switch(input.id){
+		case "name":
+			if(input.validity.valueMissing){
+				showError("Please enter a name"); return false;
+			}
+			break;
+		case "username":
+			if(input.validity.valueMissing){
+				showError("Please enter a username"); return false;
+			}
+			if(value.length < 4){
+				showError("Username length should be longer than 4 characters"); return false;
+			}
+			if(value.length > 15){
+				showError("Username length should be shorter than 15 characters"); return false;
+			}
+			// TODO if user exists
+			if(!validateUsername(value)){
+				showError("Username not valid"); return false;
+			}
+			break;
+		case "email":
+			if(input.validity.valueMissing){
+				showError("Please enter an email"); return false;
+			}
+			if(!validateEmail(value)){
+				showError("Email format is not valid"); return false;
+			}
+			break;
+		case "password":
+			if(input.validity.valueMissing){
+				showError("Please enter a password"); return false;
+			}
+			if(value.length < 6){
+				showError("Password length should be longer than 6 characters"); return false;
+			}
+			if(!validatePassword(value)){
+				showError("Password must contain only alphanumeric characters"); return false;
+			}
+			break;
+		case "password-check":
+			if(!validatePassword(value)){
+				showError("Password must contain only alphanumeric characters"); return false;
+			}
+			break;
+		case "degree":
+			if(!validateDegree(value)){
+				showError("Degree must contain only text characters"); return false;
+			}
+			break;
+		case "birthday":
+			if(!validateDate(value)){
+				showError("Date is not valid"); return false;
+			}
+			break;
+	}
+	return true;
+}
+
+function showError(errorMessage) {
+	const template = document.getElementsByTagName("template")[0];
+	let error = template.content.querySelector("p");
+	if(error !== null){
+		error.innerText = errorMessage;
+		form.getElementsByTagName("button")[0].before(error);
+	}
+	else{
+		error = document.getElementsByClassName("error-message")[0];
+		error.innerText = errorMessage;
 	}
 }
+
+function validateUsername(username){
+	return /^[a-zA-Z0-9]+$/.test(username);
+}
+
+function validateEmail(email){
+	return /^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$/.test(email);
+}
+
+function validatePassword(password){
+	return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/.test(password);
+}
+
+function validateDegree(degree){
+	return /^[a-zA-Z]+$/.test(degree);
+}
+	
+function validateDate(date){
+	return /^[0-9-]+$/.test(date);
+}
+	
 
 </script>
 </body>
