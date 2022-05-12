@@ -1,8 +1,10 @@
 package models;
 
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 public class User implements java.io.Serializable {
 	
@@ -18,11 +20,6 @@ public class User implements java.io.Serializable {
 	 */
 	
 	private static final long serialVersionUID = 1L;
-	
-	private String user = "";
-	private String mail = "";
-	private String pwd1 = "";
-	private String pwd2 = "";
 	
 	private Long id;
 	private String name;
@@ -45,54 +42,14 @@ public class User implements java.io.Serializable {
 		
 	}
 	
-	public String getUser() {
-		return this.user;
-	}
 	
-	public void setUser(String user) {
-		/* We can simulate that a user with the same name exists in our DB and mark error[0] as true  */
+	//public void setUser(String user) {
+		/* We can simulate that a user with the same name exists in our DB and mark error[0] as true  *//*
 		//error[0] = true;
 		this.user = user;
 		System.out.println(user);
-	}
+	}*/
 	
-	public String getMail() {
-		return this.mail;
-	}
-	
-	public void setMail(String mail) {
-		String regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
-		Pattern pattern = Pattern.compile(regex);
-		Matcher matcher = pattern.matcher(mail);
-		if (matcher.matches()) {
-			this.mail = mail;
-			System.out.println(mail);
-		} else {
-			error[1]=true;
-			System.out.println(mail);
-		}
-		
-	}
-	
-	public String getPwd1() {
-		return this.pwd1;
-	}
-	
-	public void setPwd1(String pwd1) {
-		/* TODO check restriction with pattern */
-		this.pwd1 = pwd1;
-		System.out.println(pwd1);
-	}
-	
-	public String getPwd2() {
-		return this.pwd2;
-	}
-	
-	public void setPwd2(String pwd2) {
-		/* TODO check restriction with pattern and check if pwd1=pwd2*/
-		this.pwd2 = pwd2;
-		System.out.println(pwd2);
-	}
 	
 	public String getName() {
 		return this.name;
@@ -117,8 +74,16 @@ public class User implements java.io.Serializable {
 	}
 	
 	public void setEmail(String email) {
-		this.email = email;
-		System.out.println(email);
+		String regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(email);
+		if (matcher.matches()) {
+			this.email = email;
+			System.out.println(email);
+		} else {
+			error[1] = true;
+			System.out.println(email);
+		}
 	}
 	
 	public String getPassword() {
@@ -181,8 +146,10 @@ public class User implements java.io.Serializable {
 		return this.birthday;
 	}
 	
-	public void setBirthday(LocalDate birthday) {
-		this.birthday = birthday;
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday.toInstant()
+			      .atZone(ZoneId.systemDefault())
+			      .toLocalDate();;
 		System.out.println(birthday);
 	}
 	

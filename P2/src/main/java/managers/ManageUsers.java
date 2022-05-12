@@ -44,10 +44,12 @@ public class ManageUsers {
 	
 	/*Check if all the fields are filled correctly */
 	public boolean isComplete(User user) {
-	    return(hasValue(user.getUser()) &&
-	    	   hasValue(user.getMail()) &&
-	    	   hasValue(user.getPwd1()) &&
-	           hasValue(user.getPwd2()) );
+	    return(hasValue(user.getName()) &&
+	    	   hasValue(user.getUsername()) &&
+	    	   hasValue(user.getEmail()) &&
+	           hasValue(user.getPassword()) &&
+	           hasValue(user.getPasswordCheck()) &&
+	           hasValue(user.getUniversity()));
 	}
 	
 	private boolean hasValue(String val) {
