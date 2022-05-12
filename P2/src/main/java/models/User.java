@@ -21,7 +21,6 @@ public class User implements java.io.Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private Long id;
 	private String name;
 	private String username;
 	private String email;
@@ -150,6 +149,7 @@ public class User implements java.io.Serializable {
 		this.birthday = birthday.toInstant()
 			      .atZone(ZoneId.systemDefault())
 			      .toLocalDate();;
+			      
 		System.out.println(birthday);
 	}
 	

@@ -1,4 +1,4 @@
-#DROP DATABASE lab2;
+DROP DATABASE lab2;
 CREATE DATABASE lab2;
 USE lab2;
 
@@ -18,4 +18,4 @@ CREATE TABLE user (
 );
 
 USE lab2;
-SELECT * FROM users;
+SELECT * FROM user;

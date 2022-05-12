@@ -2,9 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.time.LocalDate;
 import java.util.Date;
-import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -50,12 +48,12 @@ public class RegisterController extends HttpServlet {
 		String view = "ConstrainedValidation.jsp";
 		
 		try {
-			DateTimeConverter dtConverter = new DateConverter();
-			dtConverter.setPattern("yyyy-MM-dd");
-			ConvertUtils.register(dtConverter, Date.class);
-			BeanUtils.populate(model,request.getParameterMap());
+			BeanUtils.populate(model, request.getParameterMap());
 			if (manager.isComplete(model)) {
-				manager.addUser(model.getUser(), model.getMail(), model.getPwd1());
+				manager.addUser(
+						model.getName(), model.getUsername(), model.getEmail(),
+						model.getPassword(), model.getGender(),  model.getUniversity(), model.getDegree(), model.getCountry(),
+						model.getBirthday(), model.getPosition(), model.getImagePath());
 				manager.finalize();
 				view = "Registered.jsp";
 			}
