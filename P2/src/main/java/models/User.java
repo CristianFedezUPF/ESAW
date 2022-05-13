@@ -1,5 +1,11 @@
 package models;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,8 +38,13 @@ public class User implements java.io.Serializable {
 	private String position;	// student/teacher
 	private String imagePath;
 	
+	private String salt;
 	
-	private boolean[] error  = {false,false,false,false};
+	//[0] = Name missing [1] = Username missing [2] = Username length invalid [3] = Username not valid
+	//[4] = Username in use. [5] = Email not valid. [6] = Password too short. [7] = Password must be alphanumeric.
+	//[8] = Degree must contain only text characters. 
+	
+	private boolean[] error  = {false,false,false,false,false,false,false,false,false};
 	
 	public User() {
 		
@@ -53,8 +64,13 @@ public class User implements java.io.Serializable {
 	}
 	
 	public void setName(String name) {
-		this.name = name;
-		System.out.println(name);
+		if(name.length() < 1) {
+			error[0] = true;
+		}
+		else {
+			this.name = name;
+			System.out.println(name);
+		}
 	}
 	
 	public String getUsername() {
@@ -62,8 +78,23 @@ public class User implements java.io.Serializable {
 	}
 	
 	public void setUsername(String username) {
-		this.username = username;
-		System.out.println(username);
+		int length = username.length();
+		if(length < 1) {
+			error[1] = true;
+		}
+		else if(length < 4 || length > 15) {
+			error[2] = true;
+		}
+		String regex = "^[a-zA-Z0-9]+$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(username);
+		if(matcher.matches()) {
+			this.username = username;
+			System.out.println(username);
+		}
+		else {
+			error[3] = true;
+		}
 	}
 	
 	public String getEmail() {
@@ -71,14 +102,14 @@ public class User implements java.io.Serializable {
 	}
 	
 	public void setEmail(String email) {
-		String regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+		String regex = "[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(email);
 		if (matcher.matches()) {
 			this.email = email;
 			System.out.println(email);
 		} else {
-			error[1] = true;
+			error[5] = true;
 			System.out.println(email);
 		}
 	}
@@ -91,10 +122,38 @@ public class User implements java.io.Serializable {
 		return this.passwordCheck;
 	}
 	
-	public void setPassword(String password) {
-		// hash
-		this.password = password;
-		System.out.println(password);
+	public void setPassword(String password) throws NoSuchAlgorithmException, IOException {
+		if(password.length() < 6) {
+			error[6] = true;
+		}
+		String regex = "^[a-zA-Z0-9]+$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(password);
+		if (matcher.matches()) {
+			SecureRandom random = new SecureRandom();
+			byte[] salt = new byte[16]; 
+			random.nextBytes(salt); // create random 16-byte salt
+			byte[] secret = "ESAW".getBytes();
+
+			
+			
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			outputStream.write(secret);
+			outputStream.write(salt); 
+			byte[] final_salt = outputStream.toByteArray(); // final salt is secret + salt
+			
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			md.update(final_salt);
+			
+			this.salt = new String(salt, StandardCharsets.ISO_8859_1); // store salt as String
+			String hashedPassword = new String(md.digest(password.getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.ISO_8859_1); //hash and store as String
+			
+			this.password = hashedPassword;
+			System.out.println(hashedPassword);
+		} else {
+			error[7] = true;
+			System.out.println(password);
+		}
 	}
 	
 	public void setPasswordCheck(String password) {
@@ -126,8 +185,19 @@ public class User implements java.io.Serializable {
 	}
 	
 	public void setDegree(String degree) {
-		this.degree = degree;
-		System.out.println(degree);
+		if(degree.length() == 0) {
+			return;
+		}
+		String regex = "^[a-zA-Z ]+$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(degree);
+		if (matcher.matches()) {
+			this.degree = degree;
+			System.out.println(degree);
+		} else {
+			error[8] = true;
+			System.out.println(degree);
+		}
 	}
 
 	public String getCountry() {
@@ -169,6 +239,14 @@ public class User implements java.io.Serializable {
 	
 	public boolean[] getError() {
 		return error;
+	}
+	
+	public void setError(int index) {
+		this.error[index] = true;
+	}
+	
+	public String getSalt() {
+		return this.salt;
 	}
 		
 }

@@ -174,7 +174,55 @@ button:hover {
 
 <ul>
 <c:if test = "${model.error[0]}">
-	<li> Entered user name has been already registered </li>
+	<li> Name missing. </li>
+</c:if>
+</ul>
+
+<ul>
+<c:if test = "${model.error[1]}">
+	<li> Username missing. </li>
+</c:if>
+</ul>
+
+<ul>
+<c:if test = "${model.error[2]}">
+	<li> Username length invalid. </li>
+</c:if>
+</ul>
+
+<ul>
+<c:if test = "${model.error[3]}">
+	<li> Username not valid. </li>
+</c:if>
+</ul>
+
+<ul>
+<c:if test = "${model.error[4]}">
+	<li> Username already in use. </li>
+</c:if>
+</ul>
+
+<ul>
+<c:if test = "${model.error[5]}">
+	<li> Email not valid. </li>
+</c:if>
+</ul>
+
+<ul>
+<c:if test = "${model.error[6]}">
+	<li> Password too short. </li>
+</c:if>
+</ul>
+
+<ul>
+<c:if test = "${model.error[7]}">
+	<li> Password must be alphanumeric. </li>
+</c:if>
+</ul>
+
+<ul>
+<c:if test = "${model.error[8]}">
+	<li> Degree must contain only text characters. </li>
 </c:if>
 </ul>
 
@@ -190,7 +238,7 @@ button:hover {
 	  	<label for="password">Password (Minimum 6 characters): </label>
 	  	<input type="password" id="password" name="password" placeholder="Password" value="${model.password}" required>
 	  	<label for="passwordCheck"> Confirm Password: </label>
-  		<input type="password" id="passwordCheck" name="passwordCheck" placeholder="Confirm Password" value="${model.passwordCheck}" required>  	
+  		<input type="password" id="passwordCheck" name="passwordCheck" placeholder="Confirm Password" required>  	
 	  	<label for="gender">Gender:</label>
 	  	<select name="gender" id="gender">
 	    	<option value="NS">Prefer not to say</option>
@@ -515,6 +563,10 @@ function checkInputs(){
 			return false;
 		}
 	}
+	if(!passwordsMatch()){
+		showError("Passwords don't match.");
+		return false;
+	}
 	return true;
 }
 
@@ -535,33 +587,30 @@ function validateInput(input){
 			if(value === ""){
 				showError("Please enter a username"); return false;
 			}
-			if(value.length < 4){
+			else if(value.length < 4){
 				showError("Username length should be longer than 4 characters"); return false;
 			}
-			if(value.length > 15){
+			else if(value.length > 15){
 				showError("Username length should be shorter than 15 characters"); return false;
 			}
 			// TODO if user exists
-			if(!validateUsername(value)){
-				showError("Username not valid"); return false;
+			else if(!validateUsername(value)){
+				showError("Username is not valid"); return false;
 			}
 			break;
 		case "email":
-			if(value === ""){
-				showError("Please enter an email"); return false;
-			}
 			if(!validateEmail(value)){
-				showError("Email format is not valid"); return false;
+				showError("Email is not valid"); return false;
 			}
 			break;
 		case "password":
 			if(value === ""){
 				showError("Please enter a password"); return false;
 			}
-			if(value.length < 6){
+			else if(value.length < 6){
 				showError("Password length should be longer than 6 characters"); return false;
 			}
-			if(!validatePassword(value)){
+			else if(!validatePassword(value)){
 				showError("Password must contain only alphanumeric characters"); return false;
 			}
 			break;
@@ -572,14 +621,17 @@ function validateInput(input){
 			break;
 		case "degree":
 			if(value === ""){
-				break;
+				input.value = null;
 			}
-			if(!validateDegree(value)){
+			else if(!validateDegree(value)){
 				showError("Degree must contain only text characters"); return false;
 			}
 			break;
 		case "birthday":
-			if(!validateDate(value)){
+			if(value === ""){
+				input.value = null;
+			}
+			else if(!validateDate(value)){
 				showError("Date is not valid"); return false;
 			}
 			break;
@@ -617,7 +669,13 @@ function validateDegree(degree){
 }
 	
 function validateDate(date){
-	return /^[0-9-]+$/.test(date);
+	return date === "" || /^[0-9-]+$/.test(date);
+}
+
+function passwordsMatch(){
+	let pwd1 = document.getElementById("password").value;
+	let pwd2 = document.getElementById("passwordCheck").value;
+	return pw1 === pw2;
 }
 	
 

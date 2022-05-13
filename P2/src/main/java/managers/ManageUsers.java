@@ -2,6 +2,7 @@ package managers;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
@@ -30,10 +31,10 @@ public class ManageUsers {
 		
 	// Add new user
 	public void addUser(String name, String username, String email, String password, String gender, String university,
-			String degree, String country, Date birthday, String position, String imagePath) {
+			String degree, String country, Date birthday, String position, String imagePath, String salt) {
 		String query = "INSERT INTO user (name, username, email,"
-				+ " password, gender, university, degree, country, birthday, position, image_path) "
-				+ "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+				+ " password, gender, university, degree, country, birthday, position, image_path, salt) "
+				+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 		PreparedStatement statement = null;
 		try {
 			statement = db.prepareStatement(query);
@@ -48,19 +49,38 @@ public class ManageUsers {
 			statement.setDate(9, birthday);
 			statement.setString(10,position);
 			statement.setString(11,imagePath);
+			statement.setString(12,salt);
 			statement.executeUpdate();
 			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	public boolean isUserRegistered(User user) throws SQLException {
+		String username = user.getUsername();
+		String query = "SELECT * FROM user WHERE username LIKE ?";
+		PreparedStatement statement = null;
+		statement = db.prepareStatement(query);
+		statement.setString(1, username);
+		ResultSet rs = statement.executeQuery();
+		if(!rs.next()) {  // if not next, it's not registered
+			return false;
+		}
+		else {
+			user.setError(4);
+			return true;
+		}
+		
+		
+	}
+	
 	/*Check if all the fields are filled correctly */
 	public boolean isComplete(User user) {
 	    return(hasValue(user.getName()) &&
 	    	   hasValue(user.getUsername()) &&
 	    	   hasValue(user.getEmail()) &&
 	           hasValue(user.getPassword()) &&
-	           hasValue(user.getPasswordCheck()) &&
 	           hasValue(user.getUniversity()));
 	}
 	
