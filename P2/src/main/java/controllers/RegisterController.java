@@ -2,9 +2,8 @@ package controllers;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.HashMap;
+import java.sql.Date;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.converters.DateConverter;
-import org.apache.commons.beanutils.converters.DateTimeConverter;
 
 import managers.ManageUsers;
 import models.User;
@@ -43,24 +41,25 @@ public class RegisterController extends HttpServlet {
 		User model = new User();
 		ManageUsers manager = new ManageUsers();
 
-		//String view = "ConstrainedValidationHTML5.jsp";
-		//String view = "ConstrainedValidationSimple.jsp";
-		//String view = "ConstrainedValidationComplex.jsp";
-		//String view = "ConstrainedValidationParsley.jsp";
 		String view = "ConstrainedValidation.jsp";
 		
 		try {
-			DateTimeConverter dtConverter = new DateConverter();
-			dtConverter.setPattern("yyyy-MM-dd");
-			ConvertUtils.register(dtConverter, Date.class);
-			BeanUtils.populate(model,request.getParameterMap());
-			if (manager.isComplete(model)) {
-				manager.addUser(model.getUser(), model.getMail(), model.getPwd1());
+			Date defaultValue = null;
+			DateConverter converter = new DateConverter(defaultValue);
+			converter.setPattern("yyyy-mm-dd");
+			ConvertUtils.register(converter, Date.class); // to convert the date from JS to a Date object.
+			
+			BeanUtils.populate(model, request.getParameterMap());
+			if (manager.isComplete(model) && !manager.isUserRegistered(model)) {
+				manager.addUser(
+						model.getName(), model.getUsername(), model.getEmail(),
+						model.getPassword(), model.getGender(),  model.getUniversity(), model.getDegree(), model.getCountry(),
+						model.getBirthday(), model.getPosition(), model.getImagePath(), model.getSalt());
 				manager.finalize();
 				view = "Registered.jsp";
 			}
 				
-		} catch (IllegalAccessException | InvocationTargetException e) {
+		} catch (IllegalAccessException | InvocationTargetException | SQLException e) {
 			e.printStackTrace();
 		}
 

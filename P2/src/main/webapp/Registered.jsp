@@ -8,6 +8,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-User ${model.user} has been registered correctly.
+User ${model.username} has been registered correctly.
 </body>
 </html>

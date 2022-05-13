@@ -67,11 +67,14 @@ input:invalid {
 }
 
 #form-wrapper{
+	display: flex;
+	flex-direction: column;
 	border: 1px red;
 	background: #2d323b;
 	border-radius: 8px;
     width: max(250px, 35%);
-    height: fit-content;
+    height: 90%;
+    max-height: max-content;
     /* offset-x | offset-y | blur-radius | spread-radius | color */
 	box-shadow: 0px 4px 2px 1px rgba(0, 0, 0, 0.2);
 	overflow: scroll;
@@ -169,25 +172,19 @@ button:hover {
 </head>
 <body>
 
-<ul>
-<c:if test = "${model.error[0]}">
-	<li> Entered user name has been already registered </li>
-</c:if>
-</ul>
-
 <div id="form-wrapper">
 	<h1>Welcome!</h1>
 	<form novalidate action="RegisterController">
 	  	<label for="name">Name:</label>
-	  	<input type="text" id="name" name="name" placeholder="Name" value="${model.name}" required>
-	  	<label for="username">Username (4-15 chars):</label>
+	  	<input type="text" id="name" name="name" placeholder="e.g: Jane Smith" value="${model.name}" required>
+	  	<label for="username">Username (4 to 15 characters):</label>
 	  	<input type="text" id="username" name="username" placeholder="@" value="${model.username}" required>
 	  	<label for="email">Email:</label>
-	  	<input type="email" id="email" name="email" placeholder="Email" value="${model.email}" required>
+	  	<input type="email" id="email" name="email" placeholder="e.g: jane.smith@gmail.com" value="${model.email}" required>
 	  	<label for="password">Password (Minimum 6 characters): </label>
-	  	<input type="password" id="password" name="password" placeholder="Password" value="${model.password}" required>
-	  	<label for="passwordCheck"> Confirm Password: </label><br>
-  		<input type="password" id="passwordCheck" name="passwordCheck" placeholder="Confirm Password" value="${model.passwordCheck}" required>  	
+	  	<input type="password" id="password" name="password" placeholder="password" required>
+	  	<label for="passwordCheck"> Confirm Password: </label>
+  		<input type="password" id="passwordCheck" name="passwordCheck" placeholder="password" required>  	
 	  	<label for="gender">Gender:</label>
 	  	<select name="gender" id="gender">
 	    	<option value="NS">Prefer not to say</option>
@@ -210,7 +207,7 @@ button:hover {
 	    	<option value="UAO-CEU">Universitat Abat Oliba</option>
 	  	</select>
 	  	<label for="degree">Degree:</label>
-	  	<input type="text" id="degree" name="degree" placeholder="Degree" value="${model.degree}">
+	  	<input type="text" id="degree" name="degree" placeholder="e.g: Computer Science" value="${model.degree}">
 	  	<label for="country">Country:</label>
 	  	<select name="country" id="country">
 	        <option value="0" label="Select a country ... " selected="selected">Select a country ... </option>
@@ -478,14 +475,12 @@ button:hover {
 	        </optgroup>
 	    </select>
 	    <label for="birthday">Birthday:</label>
-	  	<input type="date" id="birthday" name="birthday" placeholder="Birthday" value="${model.birthday}">
+	  	<input type="date" id="birthday" name="birthday" max="2008-01-01" value="${model.birthday}">
 	  	<label for="position">Position:</label>
 	  	<select name="position" id="position">
 	    	<option value="S">Student</option>
-	    	<option value="T">Female</option>
-	  	</select>
-	  	<!--  IMAGE -->
-	  	
+	    	<option value="T">Teacher</option>
+	  	</select>	  	
 	  	
 	  	<button>Submit</button>
 	</form>
@@ -496,8 +491,6 @@ button:hover {
 //input box, as well as the span element into which we will place the error message.
 const form  = document.getElementsByTagName('form')[0];
 const email = document.getElementById('mail');
-const emailError = document.querySelector('#mail + span.error');
-
 
 form.addEventListener('submit', function (event) {
 	if(!checkInputs()){
@@ -507,53 +500,60 @@ form.addEventListener('submit', function (event) {
 
 function checkInputs(){
 	const inputs = form.getElementsByTagName("input");
-	for(const input in inputs){
-		if(!validateInput(input)){
+	for(const input of inputs){
+		if(!isInputValid(input)){
 			return false;
 		}
+	}
+	if(!passwordsMatch()){
+		showError("Passwords don't match.");
+		return false;
 	}
 	return true;
 }
 
-function validateInput(input){
-	const value = input.value.trim();
+function isInputValid(input){
+	let value;
+	try{
+		value = input.value.trim();
+		input.value = value;
+	} catch(e){
+		console.log(e);
+	}
 	switch(input.id){
 		case "name":
-			if(input.validity.valueMissing){
+			if(value === ""){
 				showError("Please enter a name"); return false;
 			}
 			break;
 		case "username":
-			if(input.validity.valueMissing){
+			if(value === ""){
 				showError("Please enter a username"); return false;
 			}
-			if(value.length < 4){
+			else if(value.length < 4){
 				showError("Username length should be longer than 4 characters"); return false;
 			}
-			if(value.length > 15){
+			else if(value.length > 15){
 				showError("Username length should be shorter than 15 characters"); return false;
 			}
 			// TODO if user exists
-			if(!validateUsername(value)){
-				showError("Username not valid"); return false;
+			else if(!validateUsername(value)){
+				showError("Username is not valid"); return false;
 			}
 			break;
 		case "email":
-			if(input.validity.valueMissing){
-				showError("Please enter an email"); return false;
-			}
 			if(!validateEmail(value)){
-				showError("Email format is not valid"); return false;
+				showError("Email is not valid"); return false;
 			}
 			break;
 		case "password":
-			if(input.validity.valueMissing){
+			if(value === ""){
 				showError("Please enter a password"); return false;
 			}
-			if(value.length < 6){
+			else if(value.length < 6){
 				showError("Password length should be longer than 6 characters"); return false;
 			}
-			if(!validatePassword(value)){
+			else if(!validatePassword(value)){
 				showError("Password must contain only alphanumeric characters"); return false;
 			}
 			break;
@@ -563,12 +563,18 @@ function validateInput(input){
 			}
 			break;
 		case "degree":
-			if(!validateDegree(value)){
+			if(value === ""){
+				input.value = null;
+			}
+			else if(!validateDegree(value)){
 				showError("Degree must contain only text characters"); return false;
 			}
 			break;
 		case "birthday":
-			if(!validateDate(value)){
+			if(value === ""){
+				input.value = null;
+			}
+			else if(!validateDate(value)){
 				showError("Date is not valid"); return false;
 			}
 			break;
@@ -594,22 +600,68 @@ function validateUsername(username){
 }
 
 function validateEmail(email){
-	return /^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$/.test(email);
+	return /[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
 }
 
 function validatePassword(password){
-	return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/.test(password);
+	return /^[a-zA-Z0-9]+$/.test(password);
 }
 
 function validateDegree(degree){
-	return /^[a-zA-Z]+$/.test(degree);
+	return /^[a-zA-Z ]+$/.test(degree);
 }
 	
 function validateDate(date){
-	return /^[0-9-]+$/.test(date);
+	return date === "" || /^[0-9-]+$/.test(date);
+}
+
+function passwordsMatch(){
+	let pwd1 = document.getElementById("password").value;
+	let pwd2 = document.getElementById("passwordCheck").value;
+	return pwd1 === pwd2;
 }
 	
 
 </script>
+<c:if test = "${model.error[0]}">
+	<script> showError("Please enter a name.") </script>
+</c:if>
+
+<c:if test = "${model.error[1]}">
+	<script> showError("Please enter a username.") </script>
+</c:if>
+
+<c:if test = "${model.error[2]}">
+	<script> showError("Username length invalid.") </script>
+</c:if>
+
+<c:if test = "${model.error[3]}">
+	<script> showError("Username is not valid.") </script>
+</c:if>
+
+<c:if test = "${model.error[4]}">
+	<script> showError("Username is already in use.") </script>
+</c:if>
+
+<c:if test = "${model.error[5]}">
+	<script> showError("Email is not valid.") </script>
+</c:if>
+
+<c:if test = "${model.error[6]}">
+	<script> showError("Password length should be longer than 6 characters") </script>
+</c:if>
+
+<c:if test = "${model.error[7]}">
+	<script>showError("Password must contain only alphanumeric characters") </script>
+</c:if>
+
+<c:if test = "${model.error[8]}">
+	<script>showError("Degree must contain only text characters")</script>
+</c:if>
+
+<c:if test = "${model.error[9]}">
+	<script>showError("Email is already in use.")</script>
+</c:if>
+
 </body>
 </html>
