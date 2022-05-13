@@ -1,10 +1,8 @@
 package models;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.time.LocalDate;
-import java.time.ZoneId;
 
 public class User implements java.io.Serializable {
 	
@@ -30,7 +28,7 @@ public class User implements java.io.Serializable {
 	private String university;
 	private String degree;
 	private String country;
-	private LocalDate birthday;
+	private Date birthday;
 	private String position;	// student/teacher
 	private String imagePath;
 	
@@ -141,14 +139,12 @@ public class User implements java.io.Serializable {
 		System.out.println(country);
 	}
 	
-	public LocalDate getBirthday() {
+	public Date getBirthday() {
 		return this.birthday;
 	}
 	
 	public void setBirthday(Date birthday) {
-		this.birthday = birthday.toInstant()
-			      .atZone(ZoneId.systemDefault())
-			      .toLocalDate();;
+		this.birthday = birthday;
 			      
 		System.out.println(birthday);
 	}

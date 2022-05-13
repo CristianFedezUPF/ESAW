@@ -1,5 +1,6 @@
 package managers;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -29,7 +30,7 @@ public class ManageUsers {
 		
 	// Add new user
 	public void addUser(String name, String username, String email, String password, String gender, String university,
-			String degree, String country, LocalDate birthday, String position, String imagePath) {
+			String degree, String country, Date birthday, String position, String imagePath) {
 		String query = "INSERT INTO user (name, username, email,"
 				+ " password, gender, university, degree, country, birthday, position, image_path) "
 				+ "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
@@ -44,7 +45,7 @@ public class ManageUsers {
 			statement.setString(6,university);
 			statement.setString(7,degree);
 			statement.setString(8,country);
-			statement.setObject(9, birthday, java.sql.Types.DATE);
+			statement.setDate(9, birthday);
 			statement.setString(10,position);
 			statement.setString(11,imagePath);
 			statement.executeUpdate();
