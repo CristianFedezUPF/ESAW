@@ -12,17 +12,6 @@ import java.util.regex.Pattern;
 
 public class User implements java.io.Serializable {
 	
-	/*
-	 CREATE TABLE `users` (
-  		`usr` varchar(255) NOT NULL,
-  		`mail` varchar(255) NOT NULL,
-  		`pwd` varchar(255) NOT NULL,
-  		PRIMARY KEY (`usr`),
-  		UNIQUE KEY `mail` (`mail`)
-	 ); 
-	 * 
-	 */
-	
 	private static final long serialVersionUID = 1L;
 	
 	private String name;
@@ -30,7 +19,7 @@ public class User implements java.io.Serializable {
 	private String email;
 	private String password;
 	private String passwordCheck;
-	private String gender; 	// for now, change to ENUM later
+	private String gender;
 	private String university;
 	private String degree;
 	private String country;
@@ -42,28 +31,20 @@ public class User implements java.io.Serializable {
 	
 	//[0] = Name missing [1] = Username missing [2] = Username length invalid [3] = Username not valid
 	//[4] = Username in use. [5] = Email not valid. [6] = Password too short. [7] = Password must be alphanumeric.
-	//[8] = Degree must contain only text characters. 
+	//[8] = Degree must contain only text characters. [9] = Email in use
 	
-	private boolean[] error  = {false,false,false,false,false,false,false,false,false};
+	private boolean[] error  = {false,false,false,false,false,false,false,false,false,false};
 	
 	public User() {
 		
 	}
-	
-	
-	//public void setUser(String user) {
-		/* We can simulate that a user with the same name exists in our DB and mark error[0] as true  *//*
-		//error[0] = true;
-		this.user = user;
-		System.out.println(user);
-	}*/
-	
 	
 	public String getName() {
 		return this.name;
 	}
 	
 	public void setName(String name) {
+		name = name.trim();
 		if(name.length() < 1) {
 			error[0] = true;
 		}
@@ -78,6 +59,7 @@ public class User implements java.io.Serializable {
 	}
 	
 	public void setUsername(String username) {
+		username = username.trim();
 		int length = username.length();
 		if(length < 1) {
 			error[1] = true;
@@ -102,6 +84,7 @@ public class User implements java.io.Serializable {
 	}
 	
 	public void setEmail(String email) {
+		email = email.trim();
 		String regex = "[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(email);
@@ -118,46 +101,46 @@ public class User implements java.io.Serializable {
 		return this.password;
 	}
 	
-	public String getPasswordCheck() {
-		return this.passwordCheck;
-	}
-	
 	public void setPassword(String password) throws NoSuchAlgorithmException, IOException {
+		password = password.trim();
 		if(password.length() < 6) {
 			error[6] = true;
 		}
 		String regex = "^[a-zA-Z0-9]+$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(password);
-		if (matcher.matches()) {
-			SecureRandom random = new SecureRandom();
-			byte[] salt = new byte[16]; 
-			random.nextBytes(salt); // create random 16-byte salt
-			byte[] secret = "ESAW".getBytes();
-
-			
-			
-			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			outputStream.write(secret);
-			outputStream.write(salt); 
-			byte[] final_salt = outputStream.toByteArray(); // final salt is secret + salt
-			
-			MessageDigest md = MessageDigest.getInstance("SHA-256");
-			md.update(final_salt);
-			
-			this.salt = new String(salt, StandardCharsets.ISO_8859_1); // store salt as String
-			String hashedPassword = new String(md.digest(password.getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.ISO_8859_1); //hash and store as String
-			
-			this.password = hashedPassword;
-			System.out.println(hashedPassword);
-		} else {
+		if (!matcher.matches()) {
 			error[7] = true;
 			System.out.println(password);
+			return;
 		}
+		
+		SecureRandom random = new SecureRandom();
+		byte[] salt = new byte[16]; 
+		random.nextBytes(salt); // create random 16-byte salt
+		byte[] secret = "ESAW".getBytes();
+		
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		outputStream.write(secret);
+		outputStream.write(salt); 
+		byte[] final_salt = outputStream.toByteArray(); // final salt is secret + salt
+		
+		MessageDigest md = MessageDigest.getInstance("SHA-256");
+		md.update(final_salt);
+		
+		this.salt = new String(salt, StandardCharsets.ISO_8859_1); // store salt as String
+		String hashedPassword = new String(md.digest(password.getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.ISO_8859_1); //hash and store as String
+		
+		this.password = hashedPassword;
+		System.out.println(hashedPassword);
+	}
+	
+	public String getPasswordCheck() {
+		return this.passwordCheck;
 	}
 	
 	public void setPasswordCheck(String password) {
-		// hash
+		password = password.trim();
 		this.passwordCheck = password;
 		System.out.println(password);
 	}
@@ -167,6 +150,7 @@ public class User implements java.io.Serializable {
 	}
 	
 	public void setGender(String gender) {
+		gender = gender.trim();
 		this.gender = gender;
 		System.out.println(gender);
 	}
@@ -176,6 +160,7 @@ public class User implements java.io.Serializable {
 	}
 	
 	public void setUniversity(String university) {
+		university = university.trim();
 		this.university = university;
 		System.out.println(university);
 	}
@@ -185,6 +170,7 @@ public class User implements java.io.Serializable {
 	}
 	
 	public void setDegree(String degree) {
+		degree = degree.trim();
 		if(degree.length() == 0) {
 			return;
 		}
@@ -205,6 +191,7 @@ public class User implements java.io.Serializable {
 	}
 	
 	public void setCountry(String country) {
+		country = country.trim();
 		this.country = country;
 		System.out.println(country);
 	}
@@ -224,6 +211,7 @@ public class User implements java.io.Serializable {
 	}
 	
 	public void setPosition(String position) {
+		position = position.trim();
 		this.position = position;
 		System.out.println(position);
 	}
@@ -233,6 +221,7 @@ public class User implements java.io.Serializable {
 	}
 	
 	public void setImagePath(String imagePath) {
+		imagePath = imagePath.trim();
 		this.imagePath = imagePath;
 		System.out.println(imagePath);
 	}

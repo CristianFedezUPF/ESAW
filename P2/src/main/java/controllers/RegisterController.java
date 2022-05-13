@@ -47,7 +47,7 @@ public class RegisterController extends HttpServlet {
 			Date defaultValue = null;
 			DateConverter converter = new DateConverter(defaultValue);
 			converter.setPattern("yyyy-mm-dd");
-			ConvertUtils.register(converter, Date.class);
+			ConvertUtils.register(converter, Date.class); // to convert the date from JS to a Date object.
 			
 			BeanUtils.populate(model, request.getParameterMap());
 			if (manager.isComplete(model) && !manager.isUserRegistered(model)) {
@@ -59,10 +59,7 @@ public class RegisterController extends HttpServlet {
 				view = "Registered.jsp";
 			}
 				
-		} catch (IllegalAccessException | InvocationTargetException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} catch (IllegalAccessException | InvocationTargetException | SQLException e) {
 			e.printStackTrace();
 		}
 

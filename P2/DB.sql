@@ -18,7 +18,5 @@ CREATE TABLE user (
     salt VARCHAR(255)
 );
 
-USE lab2;
 SELECT * FROM user;
 
-SELECT username FROM user WHERE username = "Helena";

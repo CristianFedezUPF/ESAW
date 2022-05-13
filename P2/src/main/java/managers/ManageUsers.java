@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 import models.User;
 import utils.DB;
@@ -58,24 +57,35 @@ public class ManageUsers {
 	}
 	
 	public boolean isUserRegistered(User user) throws SQLException {
+		ResultSet rs;
+		PreparedStatement statement;
+		String query;
+		
+		// username
 		String username = user.getUsername();
-		String query = "SELECT * FROM user WHERE username LIKE ?";
-		PreparedStatement statement = null;
+		query = "SELECT * FROM user WHERE username LIKE ?";
 		statement = db.prepareStatement(query);
 		statement.setString(1, username);
-		ResultSet rs = statement.executeQuery();
-		if(!rs.next()) {  // if not next, it's not registered
-			return false;
-		}
-		else {
+		rs = statement.executeQuery();
+		if(rs.next()) {  // if there's some value in the result set, it's registered
 			user.setError(4);
 			return true;
 		}
 		
-		
+		// email
+		String email = user.getEmail();
+		query = "SELECT * FROM user WHERE email LIKE ?";
+		statement =  db.prepareStatement(query);
+		statement.setString(1, email);
+		rs = statement.executeQuery();
+		if(rs.next()) {
+			user.setError(9);
+			return true;
+		}
+		return false;
 	}
 	
-	/*Check if all the fields are filled correctly */
+	/*Check if the required fields are filled correctly */
 	public boolean isComplete(User user) {
 	    return(hasValue(user.getName()) &&
 	    	   hasValue(user.getUsername()) &&
