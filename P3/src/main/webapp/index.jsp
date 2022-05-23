@@ -190,17 +190,28 @@ button:hover {
 }
 
 #content{
+	height: 100%;
+	width: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	margin-top: -40px;
 }
+
+#navigation > .w3-bar > a{
+	color: #ffffff;
+}
+
+ #navigation{
+ 	background-color: #2d323b;
+ }
 
 </style>
 </head>
 <body>
 
  	<!-- Begin Navigation -->
- 	<div class="w3-bar w3-red" id="navigation">
+ 	<div class="w3-bar" id="navigation">
     <jsp:include page="${menu}" />
  	</div>
  	<!-- End Navigation -->

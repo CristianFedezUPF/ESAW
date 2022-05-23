@@ -312,7 +312,7 @@
 	    	<option value="T">Teacher</option>
 	  	</select>	  	
 	  	
-	  	<button>Submit</button>
+	  	<button>Register!</button>
 	</form>
 </div>
 <script>
