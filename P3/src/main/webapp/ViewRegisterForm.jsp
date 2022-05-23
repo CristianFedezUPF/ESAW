@@ -2,6 +2,7 @@
     pageEncoding="UTF-8" session="false"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+
 <div id="form-wrapper">
 	<h1>Welcome!</h1>
 	<form novalidate action="RegisterController" method="POST">
