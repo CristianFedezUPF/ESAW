@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="icon" href="imgs/me.png">
+<link rel="icon" href="imgs/logo.ico" type="image/vnd.microsoft.icon">
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title> Lab 3 template </title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -20,9 +20,7 @@
 $(document).ready(function(){
 	$.ajaxSetup({ cache: false }); //Avoids Internet Explorer caching!	
 	$(document).on("click",".menu", async function(event) {
-		console.dir(await fetch($(this).attr('id')));
 		const response = await fetch($(this).attr('id'));
-		console.log(await response.text());
 		$('#content').html(await response.text());
 		event.preventDefault();
 	});
