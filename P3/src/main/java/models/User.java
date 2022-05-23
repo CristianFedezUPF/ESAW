@@ -238,4 +238,16 @@ private static final long serialVersionUID = 1L;
 	public String getSalt() {
 		return this.salt;
 	}
+	
+	public boolean isComplete() {
+	    return(hasValue(this.getName()) &&
+	    	   hasValue(this.getUsername()) &&
+	    	   hasValue(this.getEmail()) &&
+	           hasValue(this.getPassword()) &&
+	           hasValue(this.getUniversity()));
+	}
+	
+	private boolean hasValue(String val) {
+		return((val != null) && (!val.equals("")));
+	}
 }

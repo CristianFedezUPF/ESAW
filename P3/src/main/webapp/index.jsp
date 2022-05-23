@@ -20,10 +20,10 @@
 $(document).ready(function(){
 	$.ajaxSetup({ cache: false }); //Avoids Internet Explorer caching!	
 	$(document).on("click",".menu", async function(event) {
-		//$('#content').load('ContentController',{content: $(this).attr('id')});
+		console.dir(await fetch($(this).attr('id')));
 		const response = await fetch($(this).attr('id'));
+		console.log(await response.text());
 		$('#content').html(await response.text());
-		//$('#content').load($(this).attr('id'));
 		event.preventDefault();
 	});
 	$(document).on("submit","form", function(event) {
