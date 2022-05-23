@@ -16,8 +16,8 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.converters.DateConverter;
 
-import managers.ManageUsers;
 import models.User;
+import services.UserService;
 
 /**
  * Servlet implementation class FormController
@@ -39,7 +39,7 @@ public class RegisterController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User user = new User();
 		System.out.print("RegisterController: ");
-		ManageUsers manager = new ManageUsers();
+		UserService manager = new UserService();
 		String view = "ViewRegisterForm.jsp";
 
 	   try {
@@ -50,7 +50,7 @@ public class RegisterController extends HttpServlet {
 		   ConvertUtils.register(converter, Date.class); // to convert the date from JS to a Date object.
 		   
 		   BeanUtils.populate(user, request.getParameterMap());
-		   if (manager.isComplete(user) && !manager.isUserRegistered(user)) {
+		   if (user.isComplete() && !manager.isUserRegistered(user)) {
 			   manager.addUser(
 						user.getName(), user.getUsername(), user.getEmail(),
 						user.getPassword(), user.getGender(),  user.getUniversity(), user.getDegree(), user.getCountry(),

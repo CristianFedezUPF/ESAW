@@ -1,4 +1,4 @@
-package managers;
+package services;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -8,11 +8,10 @@ import java.sql.SQLException;
 import models.User;
 import utils.DB;
 
-public class ManageUsers {
-	
+public class UserService {
 	private DB db = null ;
 	
-	public ManageUsers() {
+	public UserService() {
 		try {
 			db = new DB();
 		} catch (Exception e) {
@@ -84,21 +83,4 @@ public class ManageUsers {
 		}
 		return false;
 	}
-	
-	/*Check if the required fields are filled correctly */
-	public boolean isComplete(User user) {
-	    return(hasValue(user.getName()) &&
-	    	   hasValue(user.getUsername()) &&
-	    	   hasValue(user.getEmail()) &&
-	           hasValue(user.getPassword()) &&
-	           hasValue(user.getUniversity()));
-	}
-	
-	private boolean hasValue(String val) {
-		return((val != null) && (!val.equals("")));
-	}
-		
-	
-	// TODO: add other methods 
-
 }
