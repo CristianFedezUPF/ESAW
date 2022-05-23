@@ -105,34 +105,3 @@ function validatePassword(password){
 	<script> showError("Please enter a username.") </script>
 </c:if>
 
-<c:if test = "${model.error[2]}">
-	<script> showError("Username length invalid.") </script>
-</c:if>
-
-<c:if test = "${model.error[3]}">
-	<script> showError("Username is not valid.") </script>
-</c:if>
-
-<c:if test = "${model.error[4]}">
-	<script> showError("Username is already in use.") </script>
-</c:if>
-
-<c:if test = "${model.error[5]}">
-	<script> showError("Email is not valid.") </script>
-</c:if>
-
-<c:if test = "${model.error[6]}">
-	<script> showError("Password length should be longer than 6 characters") </script>
-</c:if>
-
-<c:if test = "${model.error[7]}">
-	<script>showError("Password must contain only alphanumeric characters") </script>
-</c:if>
-
-<c:if test = "${model.error[8]}">
-	<script>showError("Degree must contain only text characters")</script>
-</c:if>
-
-<c:if test = "${model.error[9]}">
-	<script>showError("Email is already in use.")</script>
-</c:if>
