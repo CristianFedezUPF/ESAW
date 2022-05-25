@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 
-<div id="form-wrapper">
+<div class="form-wrapper registration-form">
 	<h1>Welcome!</h1>
 	<form novalidate action="RegisterController" method="POST">
 	  	<label for="name">Name:</label>

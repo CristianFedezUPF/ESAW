@@ -51,6 +51,11 @@ body {
 	background: #1b1e24;
 }
 
+.w3-container{
+	overflow: auto;
+	box-shadow: none;
+}
+
 input:valid {
 	border: 1px solid #47bf26;
 }
@@ -85,28 +90,33 @@ input:invalid {
   padding: 0.3em;
 }
 
-#form-wrapper{
+.form-wrapper{
 	display: flex;
 	flex-direction: column;
 	border: 1px red;
 	background: #2d323b;
 	border-radius: 8px;
     width: max(250px, 35%);
-    height: 90%;
-    max-height: max-content;
     /* offset-x | offset-y | blur-radius | spread-radius | color */
 	box-shadow: 0px 4px 2px 1px rgba(0, 0, 0, 0.2);
 	overflow: scroll;
-	
 }
 
-#form-wrapper > form {
+.registration-form{
+	height: max(94%, 200px);
+}
+
+.login-form{
+	height: max(35%, 200px);
+}
+
+.form-wrapper > form {
 	overflow: scroll;
 	display: flex;
 	flex-direction: column;
 }
 
-#form-wrapper > h1{
+.form-wrapper > h1{
 	color: white;
 	margin-top: 18px;
 	margin-left: 45px;
@@ -132,6 +142,7 @@ form > label{
 }
 
 form > input{
+	flex-shrink: 0;
 	border: 1px gray;
 	border-radius: 6px;
 	width: 70%;
@@ -193,16 +204,16 @@ button:hover {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	margin-top: -40px;
+	margin-top: -25px;
 }
 
 #navigation > .w3-bar > a{
 	color: #ffffff;
 }
 
- #navigation{
+#navigation{
  	background-color: #2d323b;
- }
+}
 
 </style>
 </head>
