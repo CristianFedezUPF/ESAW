@@ -39,7 +39,7 @@ public class RegisterController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User user = new User();
 		System.out.print("RegisterController: ");
-		UserService manager = new UserService();
+		UserService userService = new UserService();
 		String view = "ViewRegisterForm.jsp";
 
 	   try {
@@ -50,12 +50,12 @@ public class RegisterController extends HttpServlet {
 		   ConvertUtils.register(converter, Date.class); // to convert the date from JS to a Date object.
 		   
 		   BeanUtils.populate(user, request.getParameterMap());
-		   if (user.isComplete() && !manager.isUserRegistered(user)) {
-			   manager.addUser(
+		   if (user.isComplete() && !userService.isUserRegistered(user)) {
+			   userService.addUser(
 						user.getName(), user.getUsername(), user.getEmail(),
 						user.getPassword(), user.getGender(),  user.getUniversity(), user.getDegree(), user.getCountry(),
 						user.getBirthday(), user.getPosition(), user.getImagePath(), user.getSalt());
-				manager.finalize();
+				userService.finalize();
 			   System.out.println(" user ok, forwarding to ViewLoginForm");
 			   view = "ViewLoginForm.jsp";
 		   

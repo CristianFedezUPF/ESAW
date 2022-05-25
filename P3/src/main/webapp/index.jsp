@@ -22,17 +22,17 @@
 		<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 		
 		<script type="text/javascript">
-		$(document).ready(function(){
+		window.addEventListener('DOMContentLoaded', () => {
 			$.ajaxSetup({ cache: false }); //Avoids Internet Explorer caching!	
-			$(document).on("click",".menu", async function(event) {
-				const response = await fetch($(this).attr('id'));
-				$('#content').html(await response.text());
-				event.preventDefault();
-			});
-			$(document).on("submit","form", function(event) {
-				$('#content').load($(this).attr('action'),$(this).serialize());
-			    event.preventDefault();
-			});
+			var menuItems = document.getElementsByClassName("menu");
+			var content = document.getElementById("content");
+			for(const item of menuItems){
+				item.addEventListener("click", async function(event){
+					const response = await fetch(item.id);
+					content.innerHTML = await response.text();
+					event.preventDefault();
+				})
+			}
 		});
 		</script>
 
