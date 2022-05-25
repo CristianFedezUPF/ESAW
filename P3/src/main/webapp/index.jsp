@@ -33,6 +33,10 @@
 					event.preventDefault();
 				})
 			}
+			$(document).on("submit","form", function(event) {
+				$('#content').load($(this).attr('action'),$(this).serialize());
+			    event.preventDefault();
+			});
 		});
 		</script>
 

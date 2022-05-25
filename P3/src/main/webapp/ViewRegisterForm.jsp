@@ -323,12 +323,8 @@
 const form  = document.getElementsByTagName('form')[0];
 const email = document.getElementById('mail');
 
-form.addEventListener('submit', (event) => {
+form.addEventListener('submit', function(event){
 	if(!checkInputs()){
-		event.preventDefault();
-	}
-	else{
-		//$('#content').load($(this).attr('action'),$(this).serialize());
 		event.preventDefault();
 	}
 });
