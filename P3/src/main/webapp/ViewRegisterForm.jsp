@@ -328,7 +328,7 @@ form.addEventListener('submit', (event) => {
 		event.preventDefault();
 	}
 	else{
-		$('#content').load($(this).attr('action'),$(this).serialize());
+		//$('#content').load($(this).attr('action'),$(this).serialize());
 		event.preventDefault();
 	}
 });

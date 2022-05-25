@@ -21,12 +21,12 @@
 const form  = document.getElementsByTagName('form')[0];
 const email = document.getElementById('mail');
 
-form.addEventListener('submit',(event) => {
+form.addEventListener('submit', (event) => {
 	if(!checkInputs()){
 		event.preventDefault();
 	}
 	else{
-		$('#content').load($(this).attr('action'),$(this).serialize());
+		//$('#content').load($(this).attr('action'),$(this).serialize());
 		event.preventDefault();
 	}
 });
