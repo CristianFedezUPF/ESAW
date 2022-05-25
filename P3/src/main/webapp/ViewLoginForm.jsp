@@ -21,7 +21,7 @@
 const form  = document.getElementsByTagName('form')[0];
 const email = document.getElementById('mail');
 
-form.addEventListener('submit', function (event) {
+form.addEventListener('submit',(event) => {
 	if(!checkInputs()){
 		event.preventDefault();
 	}
