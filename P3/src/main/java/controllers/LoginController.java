@@ -14,7 +14,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.beanutils.BeanUtils;
 
-import models.Login;
 import models.User;
 import services.UserService;
 
@@ -60,7 +59,7 @@ public class LoginController extends HttpServlet {
 			else {
 		     
 				System.out.println("user is not logged, forwarding to ViewLoginForm ");
-			    request.setAttribute("login",user);
+			    request.setAttribute("user",user);
 			    RequestDispatcher dispatcher = request.getRequestDispatcher("ViewLoginForm.jsp");
 			    dispatcher.forward(request, response);
 		    	
