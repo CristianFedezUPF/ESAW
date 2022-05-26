@@ -1,5 +1,11 @@
 package services;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -81,6 +87,43 @@ public class UserService {
 			user.setError(9);
 			return true;
 		}
+		return false;
+	}
+	
+	public boolean isPasswordCorrect(User user) throws SQLException, NoSuchAlgorithmException, IOException {
+		ResultSet rs;
+		PreparedStatement statement;
+		String query;
+		
+		String username = user.getUsername();
+		String password = user.getLoginPassword();
+		user.detroyLoginPassword();
+
+		query = "SELECT * FROM user WHERE username LIKE ?";
+		statement = db.prepareStatement(query);
+		statement.setString(1, username);
+		rs = statement.executeQuery();
+		
+		if(!rs.next()) return false;
+		
+		String dbPassword = rs.getString("password");		
+		String dbSalt = rs.getString("salt");
+				
+		byte[] secret = "ESAW".getBytes();
+		byte[] salt = dbSalt.getBytes(StandardCharsets.ISO_8859_1); 
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		outputStream.write(secret);
+		outputStream.write(salt); 
+		byte[] final_salt = outputStream.toByteArray();
+		
+		MessageDigest md = MessageDigest.getInstance("SHA-256");
+		md.update(final_salt);
+		String hashedPassword = new String(md.digest(password.getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.ISO_8859_1);
+				
+		if(dbPassword.equals(hashedPassword)) {
+			return true;
+		}
+		
 		return false;
 	}
 }

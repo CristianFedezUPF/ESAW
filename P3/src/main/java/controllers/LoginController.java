@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
@@ -44,7 +45,7 @@ public class LoginController extends HttpServlet {
 			
 	    	BeanUtils.populate(user, request.getParameterMap());
 			
-	    	if (user.isLoginComplete() && userService.isUserRegistered(user)) {
+	    	if (user.isLoginComplete() && userService.isUserRegistered(user) && userService.isPasswordCorrect(user)) {
 		    	
 	    		System.out.println("login OK, forwarding to ViewLoginDone ");
 		    	HttpSession session = request.getSession();
@@ -61,7 +62,7 @@ public class LoginController extends HttpServlet {
 			    dispatcher.forward(request, response);
 		    	
 		    }
-		} catch (IllegalAccessException | InvocationTargetException | SQLException e) {
+		} catch (IllegalAccessException | InvocationTargetException | SQLException | NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
 	    

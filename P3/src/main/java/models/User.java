@@ -28,11 +28,14 @@ private static final long serialVersionUID = 1L;
 	private String imagePath;
 	
 	private String salt;
+	
+	//to store the unhashed password so we can verify it matches when login
+	private String loginPassword;
 	// TODO change errors to integer codes.
 	
 	//[0] = Name missing [1] = Username missing [2] = Username length invalid [3] = Username not valid
 	//[4] = Username in use. [5] = Email not valid. [6] = Password too short. [7] = Password must be alphanumeric.
-	//[8] = Degree must contain only text characters. [9] = Email in use
+	//[8] = Degree must contain only text characters. [9] = Email in use.
 	
 	private boolean[] error  = {false,false,false,false,false,false,false,false,false,false};
 	
@@ -115,6 +118,8 @@ private static final long serialVersionUID = 1L;
 			System.out.println(password);
 			return;
 		}
+		
+		loginPassword = password;
 		
 		SecureRandom random = new SecureRandom();
 		byte[] salt = new byte[16]; 
@@ -239,6 +244,14 @@ private static final long serialVersionUID = 1L;
 		return this.salt;
 	}
 	
+	public String getLoginPassword() {
+		return this.loginPassword;
+	}
+	
+	public void detroyLoginPassword() {
+		this.loginPassword = "";
+	}
+	
 	public boolean isComplete() {
 	    return(hasValue(this.getName()) &&
 	    	   hasValue(this.getUsername()) &&
@@ -255,4 +268,5 @@ private static final long serialVersionUID = 1L;
 	private boolean hasValue(String val) {
 		return((val != null) && (!val.equals("")));
 	}
+	
 }
