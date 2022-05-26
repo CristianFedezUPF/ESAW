@@ -33,10 +33,6 @@
 					event.preventDefault();
 				})
 			}
-			$(document).on("submit","form", function(event) {
-				$('#content').load($(this).attr('action'),$(this).serialize());
-			    event.preventDefault();
-			});
 		});
 		</script>
 
@@ -60,6 +56,7 @@
 		<!-- End Content -->
 		
 		<script>
+			
 			function stack() {
 	  			var x = document.getElementById("stack");
 	  			if (x.className.indexOf("w3-show") == -1) {

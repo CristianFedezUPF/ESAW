@@ -316,21 +316,21 @@
 	  	<button>Register!</button>
 	</form>
 </div>
+
 <script>
 
 //There are many ways to pick a DOM node; here we get the form itself and the email
 //input box, as well as the span element into which we will place the error message.
-const form  = document.getElementsByTagName('form')[0];
-const email = document.getElementById('mail');
-
-form.addEventListener('submit', function(event){
+document.addEventListener("submit", event => {
+	event.preventDefault();
 	if(!checkInputs()){
-		event.preventDefault();
+		return false;
 	}
+	$('#content').load($(this).attr('action'),$(this).serialize());
 });
 
 function checkInputs(){
-	const inputs = form.getElementsByTagName("input");
+	const inputs = document.getElementsByTagName('form')[0].getElementsByTagName("input");
 	for(const input of inputs){
 		if(!isInputValid(input)){
 			return false;
@@ -418,7 +418,7 @@ function showError(errorMessage) {
 	let error = template.content.querySelector("p");
 	if(error !== null){
 		error.innerText = errorMessage;
-		form.getElementsByTagName("button")[0].before(error);
+		document.getElementsByTagName('form')[0].getElementsByTagName("button")[0].before(error);
 	}
 	else{
 		error = document.getElementsByClassName("error-message")[0];
