@@ -61,7 +61,8 @@ public class RegisterController extends HttpServlet {
 		   
 		   } 
 		   else {
-			   System.out.println(" forwarding to ViewRegisterForm");
+			   System.out.println("error, forwarding to ViewRegisterForm ");
+			   view = "ViewRegisterForm.jsp";
 		   }
 	   
 	   } catch (IllegalAccessException | InvocationTargetException | SQLException e) {

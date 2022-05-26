@@ -19,6 +19,6 @@
 <c:if test = "${!model.error[4]}">
 	<script> showError("Username or password not correct.") </script>
 </c:if>
-<c:if test = "${!model.passwordMatches(model.password)}">
+<c:if test = "${model.error[10]}">
 	<script> showError("Username or password not correct.") </script>
 </c:if>

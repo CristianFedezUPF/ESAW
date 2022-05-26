@@ -123,7 +123,7 @@ public class UserService {
 		if(dbPassword.equals(hashedPassword)) {
 			return true;
 		}
-		
+		user.setError(10);
 		return false;
 	}
 }

@@ -35,9 +35,9 @@ private static final long serialVersionUID = 1L;
 	
 	//[0] = Name missing [1] = Username missing [2] = Username length invalid [3] = Username not valid
 	//[4] = Username in use. [5] = Email not valid. [6] = Password too short. [7] = Password must be alphanumeric.
-	//[8] = Degree must contain only text characters. [9] = Email in use.
+	//[8] = Degree must contain only text characters. [9] = Email in use. [10] = Passwords do not match
 	
-	private boolean[] error  = {false,false,false,false,false,false,false,false,false,false};
+	private boolean[] error  = {false,false,false,false,false,false,false,false,false,false,false};
 	
 	public User() {
 		
