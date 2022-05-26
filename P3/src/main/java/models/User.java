@@ -247,6 +247,11 @@ private static final long serialVersionUID = 1L;
 	           hasValue(this.getUniversity()));
 	}
 	
+	public boolean isLoginComplete() {
+	    return(hasValue(this.getUsername()) &&
+	           hasValue(this.getPassword()));
+	}
+	
 	private boolean hasValue(String val) {
 		return((val != null) && (!val.equals("")));
 	}

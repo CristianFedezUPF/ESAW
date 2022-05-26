@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,6 +15,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.beanutils.BeanUtils;
 
 import models.Login;
+import models.User;
+import services.UserService;
 
 /**
  * Servlet implementation class LoginController
@@ -35,18 +38,21 @@ public class LoginController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		System.out.print("LoginController: ");
+		User user = new User();
+		UserService userService = new UserService();
+		String view = "ViewLoginForm.jsp";
 		
-		Login login = new Login();
+		//Login login = new Login();
 		
 	    try {
 			
-	    	BeanUtils.populate(login, request.getParameterMap());
+	    	BeanUtils.populate(user, request.getParameterMap());
 			
-	    	if (login.isComplete()) {
+	    	if (user.isLoginComplete() && userService.isUserRegistered(user)) {
 		    	
 	    		System.out.println("login OK, forwarding to ViewLoginDone ");
 		    	HttpSession session = request.getSession();
-		    	session.setAttribute("user",login.getUser());
+		    	session.setAttribute("user",user.getName());
 		    	RequestDispatcher dispatcher = request.getRequestDispatcher("ViewLoginDone.jsp");
 			    dispatcher.forward(request, response);
 			    
@@ -54,12 +60,12 @@ public class LoginController extends HttpServlet {
 			else {
 		     
 				System.out.println("user is not logged, forwarding to ViewLoginForm ");
-			    request.setAttribute("login",login);
+			    request.setAttribute("login",user);
 			    RequestDispatcher dispatcher = request.getRequestDispatcher("ViewLoginForm.jsp");
 			    dispatcher.forward(request, response);
 		    	
 		    }
-		} catch (IllegalAccessException | InvocationTargetException e) {
+		} catch (IllegalAccessException | InvocationTargetException | SQLException e) {
 			e.printStackTrace();
 		}
 	    
