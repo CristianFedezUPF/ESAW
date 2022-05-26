@@ -13,6 +13,7 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="css/mainStructure.css">
 		<link rel="stylesheet" href="css/form.css">
+		<link rel="stylesheet" href="css/moreStyles.css">
 
 		<link rel="icon" href="imgs/logo.ico" type="image/vnd.microsoft.icon">
 

@@ -4,7 +4,7 @@
 
 
 <div class="form-wrapper registration-form">
-	<h1>Welcome!</h1>
+	<h1>Registration</h1>
 	<form novalidate action="RegisterController" method="POST">
 	  	<label for="name">Name:</label>
 	  	<input type="text" id="name" name="name" placeholder="e.g: Jane Smith" value="${model.name}" required>
