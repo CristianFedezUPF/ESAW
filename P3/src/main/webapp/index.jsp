@@ -5,7 +5,6 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		
 		<title> Lab 3 Unitter</title>
@@ -21,20 +20,9 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
 		<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 		
-		<script type="text/javascript">
-		window.addEventListener('DOMContentLoaded', () => {
-			$.ajaxSetup({ cache: false }); //Avoids Internet Explorer caching!	
-			var menuItems = document.getElementsByClassName("menu");
-			var content = document.getElementById("content");
-			for(const item of menuItems){
-				item.addEventListener("click", async (event) => {
-					const response = await fetch(item.id);
-					content.innerHTML = await response.text();
-					event.preventDefault();
-				})
-			}
-		});
-		</script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" defer></script>
+		<script src = js/init.js type="text/javascript" defer></script>
+		<script src = js/common.js type="text/javascript" async></script>
 
 		<template>
 			<p class="error-message">error</p>
@@ -56,7 +44,6 @@
 		<!-- End Content -->
 		
 		<script>
-			
 			function stack() {
 	  			var x = document.getElementById("stack");
 	  			if (x.className.indexOf("w3-show") == -1) {
