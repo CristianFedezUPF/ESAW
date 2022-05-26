@@ -5,7 +5,7 @@
 
 <div class="form-wrapper login-form">
 	<h1>Welcome!</h1>
-	<form novalidate action="RegisterController" method="POST">
+	<form novalidate action="LoginController" method="POST">
 	  	<label for="username">Username (4 to 15 characters):</label>
 	  	<input type="text" id="username" name="username" placeholder="@" value="${model.username}" required>
 	  	<label for="password">Password (Minimum 6 characters): </label>
