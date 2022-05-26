@@ -39,9 +39,6 @@ public class LoginController extends HttpServlet {
 		System.out.print("LoginController: ");
 		User user = new User();
 		UserService userService = new UserService();
-		String view = "ViewLoginForm.jsp";
-		
-		//Login login = new Login();
 		
 	    try {
 			
@@ -51,7 +48,7 @@ public class LoginController extends HttpServlet {
 		    	
 	    		System.out.println("login OK, forwarding to ViewLoginDone ");
 		    	HttpSession session = request.getSession();
-		    	session.setAttribute("user",user.getName());
+		    	session.setAttribute("user",user.getUsername());
 		    	RequestDispatcher dispatcher = request.getRequestDispatcher("ViewLoginDone.jsp");
 			    dispatcher.forward(request, response);
 			    
