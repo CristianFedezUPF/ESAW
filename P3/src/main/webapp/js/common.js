@@ -3,7 +3,13 @@ document.addEventListener("submit", event => {
 	if(!checkInputs()){
 		return false;
 	}
-	$('#content').load($(this).attr('action'),$(this).serialize());
+	if(document.getElementById("passwordCheck") != null){ // if we are in register form
+		if(!passwordsMatch()){
+			showError("Passwords don't match.");
+			return false;
+		}
+	}
+	$('#content').load($("form").attr("action"), $("form").serialize());
 });
 
 function checkInputs(){
@@ -12,10 +18,6 @@ function checkInputs(){
 		if(!isInputValid(input)){
 			return false;
 		}
-	}
-	if(!passwordsMatch()){
-		showError("Passwords don't match.");
-		return false;
 	}
 	return true;
 }
