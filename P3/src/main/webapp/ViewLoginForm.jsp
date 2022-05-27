@@ -2,10 +2,23 @@
     pageEncoding="UTF-8" session="false"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<form action="LoginController" method="POST">
-	<p>      
-    <label class="w3-text-red"><b> User id </b></label>
-    <input class="w3-input w3-border w3-light-grey" type="text" name="user" value="${login.user}" required minlength="5" ></p>
-    <p>
-    <input class="w3-btn w3-red" type="submit" name="sumbit" value="Submit"></p>
-</form>
+<div class="form-wrapper login-form">
+	<h1>Login</h1>
+	<form novalidate action="LoginController" method="POST">
+	  	<label for="username">Username (4 to 15 characters):</label>
+	  	<input type="text" id="username" name="username" placeholder="@" value="${model.username}" required>
+	  	<label for="password">Password (Minimum 6 characters): </label>
+	  	<input type="password" id="password" name="password" placeholder="password" required>
+	  	<button>Login!</button>
+	</form>
+</div>
+
+<c:if test = "${model.error[1]}">
+	<script> showError("Please enter a username.") </script>
+</c:if>
+<c:if test = "${model.error[11]}">
+	<script> showError("Username or password not correct.") </script>
+</c:if>
+<c:if test = "${model.error[10]}">
+	<script> showError("Username or password not correct.") </script>
+</c:if>

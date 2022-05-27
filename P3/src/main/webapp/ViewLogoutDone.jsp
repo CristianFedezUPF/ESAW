@@ -5,4 +5,6 @@
 $('#navigation').load('MenuController');
 </script>
 
-<p id="nav"> Logout done! </p>
+<div class="text-wrapper">
+	<h2 id="nav"> Logout done! </h2>
+</div>

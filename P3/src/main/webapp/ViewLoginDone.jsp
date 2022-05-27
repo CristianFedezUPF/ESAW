@@ -5,4 +5,7 @@
 $('#navigation').load('MenuController');
 </script>
 
-Login for user ${sessionScope.user} done!
+<div class="text-wrapper">
+	<h2>Login for user ${sessionScope.user} done!</h2>
+</div>
+
