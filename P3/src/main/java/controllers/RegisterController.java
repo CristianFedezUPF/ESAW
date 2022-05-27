@@ -59,6 +59,7 @@ public class RegisterController extends HttpServlet {
 			   System.out.println(" user ok, forwarding to ViewLoginForm");
 			   view = "ViewLoginForm.jsp";
 			   user.detroyLoginPassword();
+			   user.resetError();
 		   } 
 		   else {
 			   System.out.println("error, forwarding to ViewRegisterForm ");
@@ -68,7 +69,7 @@ public class RegisterController extends HttpServlet {
 	   } catch (IllegalAccessException | InvocationTargetException | SQLException e) {
 			e.printStackTrace();
 	   } 
-	   request.setAttribute("user", user);
+	   request.setAttribute("model", user);
 	   RequestDispatcher dispatcher = request.getRequestDispatcher(view);
 	   dispatcher.forward(request, response);		
 	}

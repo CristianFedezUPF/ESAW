@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -76,7 +75,7 @@ public class UserService {
 			user.setError(4);
 			return true;
 		}
-		
+		user.setError(11);		
 		// email
 		String email = user.getEmail();
 		query = "SELECT * FROM user WHERE email LIKE ?";

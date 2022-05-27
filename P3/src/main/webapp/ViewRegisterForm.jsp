@@ -333,7 +333,7 @@
 	<script> showError("Username is not valid.") </script>
 </c:if>
 
-<c:if test = "${!model.error[4]}">
+<c:if test = "${model.error[4]}">
 	<script> showError("Username is already in use.") </script>
 </c:if>
 
@@ -353,6 +353,6 @@
 	<script>showError("Degree must contain only text characters")</script>
 </c:if>
 
-<c:if test = "${!model.error[9]}">
+<c:if test = "${model.error[9]}">
 	<script>showError("Email is already in use.")</script>
 </c:if>
