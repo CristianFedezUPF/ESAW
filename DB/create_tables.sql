@@ -4,7 +4,7 @@ USE lab3;
 
 DROP TABLE IF EXISTS `user`;
 DROP TABLE IF EXISTS tweet;
-DROP TABLE IF EXISTS `following`;
+DROP TABLE IF EXISTS `follows`;
 
 CREATE TABLE `user` (
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -25,7 +25,7 @@ CREATE TABLE `user` (
     salt VARCHAR(255)
     
 );
-CREATE TABLE `following` (
+CREATE TABLE `follows` (
 	follower_id BIGINT,
     followed_id BIGINT,
     `date` DATETIME DEFAULT CURRENT_TIMESTAMP, 
@@ -47,7 +47,7 @@ CREATE TABLE tweet (
 
 DROP TRIGGER IF EXISTS update_follow;
 DELIMITER //
-CREATE TRIGGER update_follow AFTER INSERT ON `following`
+CREATE TRIGGER update_follow AFTER INSERT ON `follows`
 	FOR EACH ROW
     BEGIN 
     UPDATE `user` SET `user`.follower_count = (`user`.follower_count + 1) WHERE `user`.id = NEW.followed_id;
