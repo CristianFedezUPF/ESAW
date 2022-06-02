@@ -24,14 +24,14 @@ INSERT INTO `user`(`name`, username, email,`password`, gender, university, degre
 	image_path, salt) VALUES ('Helena','Helena','helena.pruna01@gmail.com', 'BadBunnyBB', 'F', 'UPF', 'Computer', 'Spain',
     '2001-1-30', 'S', NULL, NULL);
 
-INSERT INTO junction(follower_id, followed_id) VALUES(3, 4);
-INSERT INTO junction(follower_id, followed_id) VALUES(1, 4);
-INSERT INTO junction(follower_id, followed_id) VALUES(3, 2);
-INSERT INTO junction(follower_id, followed_id) VALUES(4, 2);
-INSERT INTO junction(follower_id, followed_id) VALUES(1, 2);
-INSERT INTO junction(follower_id, followed_id) VALUES(3, 1);
-INSERT INTO junction(follower_id, followed_id) VALUES(2, 1);
-INSERT INTO junction(follower_id, followed_id) VALUES(4, 1);
+INSERT INTO `following`(follower_id, followed_id) VALUES(3, 4);
+INSERT INTO `following`(follower_id, followed_id) VALUES(1, 4);
+INSERT INTO `following`(follower_id, followed_id) VALUES(3, 2);
+INSERT INTO `following`(follower_id, followed_id) VALUES(4, 2);
+INSERT INTO `following`(follower_id, followed_id) VALUES(1, 2);
+INSERT INTO `following`(follower_id, followed_id) VALUES(3, 1);
+INSERT INTO `following`(follower_id, followed_id) VALUES(2, 1);
+INSERT INTO `following`(follower_id, followed_id) VALUES(4, 1);
 
 
 INSERT INTO tweet(parent_id, user_id, content) VALUES(NULL, 1, 'hello im Anna');
