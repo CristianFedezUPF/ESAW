@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import managers.ManageUsers;
 import models.User;
+import services.UserService;
 
 /**
  * Servlet implementation class GetFollows
@@ -42,7 +42,7 @@ public class GetUsers extends HttpServlet {
 
 		if (session != null || user != null) {
 		
-			ManageUsers userManager = new ManageUsers();
+			UserService userManager = new UserService();
 			users = userManager.getUsers(0,4);
 			userManager.finalize();
 		

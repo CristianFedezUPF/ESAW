@@ -12,9 +12,9 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.beanutils.BeanUtils;
 
-import managers.ManageTweets;
 import models.Tweet;
 import models.User;
+import services.TweetService;
 
 /**
  * Servlet implementation class DelTweet
@@ -37,7 +37,7 @@ public class DelTweet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
 		Tweet tweet = new Tweet();
-		ManageTweets tweetManager = new ManageTweets();
+		TweetService tweetManager = new TweetService();
 		HttpSession session = request.getSession(false);
 		User user = (User) session.getAttribute("user");
 

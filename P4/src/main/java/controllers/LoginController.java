@@ -14,8 +14,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
-import managers.ManageUsers;
 import models.User;
+import services.UserService;
 
 /**
  * Servlet implementation class LoginController
@@ -39,7 +39,7 @@ public class LoginController extends HttpServlet {
 		System.out.print("LoginController: ");
 		
 		User user = new User();
-		ManageUsers manager = new ManageUsers();
+		UserService manager = new UserService();
 		String view = "ViewLoginForm.jsp";
 		Pair<Boolean,User> pair = null;
 		

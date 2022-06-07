@@ -3,21 +3,24 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 
-<c:if test = "${error}">
-<div class="w3-panel w3-theme-l4 w3-display-container">
-  <span onclick="this.parentElement.style.display='none'"
-  class="w3-button w3-large w3-display-topright">&times;</span>
-  <h3> Identification error! </h3>
-  <p> Provided credentials do not match our database. </p>
+<div class="form-wrapper login-form">
+	<h1>Login</h1>
+	<form novalidate action="LoginController" method="POST">
+	  	<label for="username">Username (4 to 15 characters):</label>
+	  	<input type="text" id="username" name="username" placeholder="@" value="${user.username}" required>
+	  	<label for="password">Password (Minimum 6 characters): </label>
+	  	<input type="password" id="password" name="password" placeholder="password" required>
+	  	<button>Login!</button>
+	</form>
 </div>
+
+<!-- Check model/user thingy in LoginController, setAttribute compared to P3 where it was model -->
+<c:if test = "${user.error[1]}">
+	<script> showError("Please enter a username.") </script>
 </c:if>
-
-
-<form action="LoginController" method="POST">
-	<p>      
-    <label for="user" class="w3-text-theme"> User name </label><br>
-    <input class="w3-input w3-border w3-light-grey" type="text" name="name" placeholder="Username" value="${user.name}" required autocomplete="username"><br>
-    <label for="pwd1" class="w3-text-theme"> Password: </label><br>
-  	<input class="w3-input w3-border w3-light-grey" type="password" id="pwd1" name="pwd" placeholder="Password" value="${user.pwd}" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$" autocomplete="current-password"><br><br>
-    <input class="w3-btn w3-theme" type="submit" name="sumbit" value="Submit"></p>
-</form>
+<c:if test = "${user.error[11]}">
+	<script> showError("Username or password not correct.") </script>
+</c:if>
+<c:if test = "${user.error[10]}">
+	<script> showError("Username or password not correct.") </script>
+</c:if>
