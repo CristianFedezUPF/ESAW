@@ -13,6 +13,9 @@
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 		<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-red.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="css/mainStructure.css">
+		<link rel="stylesheet" href="css/form.css">
+		<link rel="stylesheet" href="css/moreStyles.css">
 		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		
@@ -27,13 +30,12 @@
 	<body>
 
 	 	<!-- Begin Navigation -->
-	 	<div class="w3-theme" id="navigation">
+	 	<div class="w3-bar" id="navigation">
 	    	<jsp:include page="${menu}" />
 	 	</div>
 	 	<!-- End Navigation -->
 	 
 	 	<!-- Begin Content -->
-		<div class="w3-row-padding">
 	 	<!-- Left Column -->
 		<div class="w3-container w3-col m3 w3-hide-small">
 			<div id="rcolumn">
@@ -51,7 +53,6 @@
 			<div id="lcolumn">
 				<p></p>
 			</div>
-		</div>
 		</div>
 		<!-- End Content -->
 		<!-- Footer -->

@@ -1,0 +1,141 @@
+input:valid {
+	border: 1px solid #47bf26;
+}
+
+input:invalid {
+	border: 1px solid red;
+}
+
+#degree:valid {
+	border: 1px dashed #47bf26;
+}
+
+#birthday:valid {
+	border: 1px dashed #47bf26;
+}
+
+
+/* This is the style of our error messages */
+.error {
+  width  : 100%;
+  padding: 0;
+
+  font-size: 80%;
+  color: white;
+  background-color: #900;
+  border-radius: 0 0 5px 5px;
+
+  box-sizing: border-box;
+}
+
+.error.active {
+  padding: 0.3em;
+}
+
+.form-wrapper{
+	display: flex;
+	flex-direction: column;
+	border: 1px red;
+	background: #2d323b;
+	border-radius: 8px;
+    width: max(250px, 35%);
+    /* offset-x | offset-y | blur-radius | spread-radius | color */
+	box-shadow: 0px 4px 2px 1px rgba(0, 0, 0, 0.2);
+	overflow: scroll;
+}
+
+.registration-form{
+	height: max(94%, 200px);
+}
+
+.login-form{
+	height: max(35%, 200px);
+}
+
+.form-wrapper > form {
+	overflow: scroll;
+	display: flex;
+	flex-direction: column;
+}
+
+.form-wrapper > h1{
+	color: white;
+	margin-top: 18px;
+	margin-left: 45px;
+	margin-bottom: 12px;
+}
+
+form > * {
+	margin-left: 40px;
+}
+
+form:first-child{
+	margin-top: 10px;
+}
+
+form:last-child{
+	margin-bottom: 10px;
+}
+
+form > label{
+	margin-bottom: 2px;
+	font-size: 16px;
+	color: white;
+}
+
+form > input{
+	flex-shrink: 0;
+	border: 1px gray;
+	border-radius: 6px;
+	width: 70%;
+	height: 26px;
+	background: #373b40;
+	padding-left: 10px;
+	font-size: 13px;
+	color: white;
+	margin-bottom: 6px
+}
+
+form > input:focus{
+	outline: 1px white;
+}
+
+form > input::placeholder{
+	font-size: 13px;
+	color: #c2c2c2;
+}
+
+form > select{
+	width: 200px;
+	font-size: 13px;
+	background: transparent;
+	background-color: #373b40;
+	border-radius: 6px;
+	color: white;
+	margin-bottom: 6px
+}
+
+form > select:checked{
+	color: #c2c2c2;
+}
+
+button{
+	margin-left: 0px;
+	margin-top: 6px;
+	align-self: center;
+	padding: 8px;
+	font-size: 15px;
+	border: 1px blue;
+	border-radius: 6px;
+	color: white;
+	background: #5aa854;
+	border: 1px solid #376933;
+}
+
+button:hover {
+	cursor: pointer;
+}
+
+.error-message{
+	color: #f7665c;
+}
