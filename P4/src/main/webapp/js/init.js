@@ -1,4 +1,3 @@
-// TODO update this as in P3
 window.addEventListener('DOMContentLoaded', () => {
 			$.ajaxSetup({ cache: false }); //Avoids Internet Explorer caching!	
 			$(document).on("click",".menu",function(event) {

@@ -59,7 +59,6 @@ public class UserService {
 		
 	// Add new user
 	public void addUser(User user) {
-		// TODO UPDATE QUERY WITH ALL FIELDS
 		String query = "INSERT INTO user (name, username, email,"
 				+ " password, gender, university, degree, country, birthday, position, image_path, salt) "
 				+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -228,7 +227,7 @@ public class UserService {
 	}
 	
 	public boolean checkUser(String user) {
-		// TODO WHAT DOES THIS CHECK FOR?
+		// TODO WHAT DOES THIS CHECK FOR? RENAME
 		String query = "SELECT username from user where username=?";
 		PreparedStatement statement = null;
 		ResultSet rs = null;
@@ -256,7 +255,7 @@ public class UserService {
 	}
 	
 	public boolean checkEmail(String email) {
-		// TODO WHAT DOES THIS CHECK FOR?
+		// TODO WHAT DOES THIS CHECK FOR? RENAME
 		String query = "SELECT email from user where email=?";
 		PreparedStatement statement = null;
 		ResultSet rs = null;
