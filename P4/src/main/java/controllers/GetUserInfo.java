@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import managers.ManageUsers;
 import models.User;
+import services.UserService;
 
 /**
  * Servlet implementation class GetUserInfo
@@ -36,7 +36,7 @@ public class GetUserInfo extends HttpServlet {
 		User user = (User) session.getAttribute("user");
 		
 		if (session != null || user != null) {
-			ManageUsers userManager = new ManageUsers();
+			UserService userManager = new UserService();
 			user = userManager.getUser(user.getId());
 			userManager.finalize();
 		}

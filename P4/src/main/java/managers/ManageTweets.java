@@ -63,13 +63,13 @@ public class ManageTweets {
 	
 	
 	/* Get tweets from a user given start and end*/
-	public List<Tweet> getUserTweets(Integer uid,Integer start, Integer end) {
+	public List<Tweet> getUserTweets(Long long1,Integer start, Integer end) {
 		 String query = "SELECT tweets.id,tweets.uid,tweets.postdatetime,tweets.content,users.name FROM tweets INNER JOIN users ON tweets.uid = users.id where tweets.uid = ? ORDER BY tweets.postdatetime DESC LIMIT ?,? ;";
 		 PreparedStatement statement = null;
 		 List<Tweet> l = new ArrayList<Tweet>();
 		 try {
 			 statement = db.prepareStatement(query);
-			 statement.setInt(1,uid);
+			 statement.setLong(1,long1);
 			 statement.setInt(2,start);
 			 statement.setInt(3,end);
 			 ResultSet rs = statement.executeQuery();

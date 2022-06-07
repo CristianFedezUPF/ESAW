@@ -8,3 +8,5 @@ SELECT * FROM tweet;
 #	for the tweets these people have posted
 
 SELECT content FROM tweet WHERE user_id IN (SELECT followed_id FROM `follows` WHERE follower_id = 3);
+
+SELECT * FROM user WHERE username LIKE "Anna";

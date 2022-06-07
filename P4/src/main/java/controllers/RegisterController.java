@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
 
-import managers.ManageUsers;
 import models.User;
+import services.UserService;
 
 /**
  * Servlet implementation class FormController
@@ -36,7 +36,7 @@ public class RegisterController extends HttpServlet {
 
 	   System.out.print("RegisterController: ");
 	   User user = new User();
-	   ManageUsers manager = new ManageUsers();
+	   UserService manager = new UserService();
 	   boolean cn = false;
 	   boolean cm = false;
 	
@@ -45,7 +45,7 @@ public class RegisterController extends HttpServlet {
 		   BeanUtils.populate(user, request.getParameterMap());
 		   
 		   cn = manager.checkUser(user.getName());
-		   cm = manager.chekMail(user.getEmail());
+		   cm = manager.checkEmail(user.getEmail());
 		   
 		   
 		   // TODO THIS ON USER CLASS
