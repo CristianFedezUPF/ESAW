@@ -1,6 +1,6 @@
-DROP SCHEMA IF EXISTS lab3;
-CREATE DATABASE IF NOT EXISTS lab3;
-USE lab3;
+DROP SCHEMA IF EXISTS unitter;
+CREATE DATABASE IF NOT EXISTS unitter;
+USE unitter;
 
 DROP TABLE IF EXISTS `user`;
 DROP TABLE IF EXISTS tweet;
@@ -21,6 +21,7 @@ CREATE TABLE `user` (
     following_count INT DEFAULT 0,
     follower_count INT DEFAULT 0,
     `position` ENUM('S', 'T'),
+    admin BOOLEAN NOT NULL,
     image_path VARCHAR(255), 
     salt VARCHAR(255)
     
