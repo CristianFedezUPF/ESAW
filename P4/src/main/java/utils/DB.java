@@ -12,7 +12,7 @@ public class DB {
 		String user = "mysql";
 		String password="prac";
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		connection=DriverManager.getConnection("jdbc:mysql://localhost/lab4?serverTimezone=UTC&user="+user+"&password="+password);
+		connection=DriverManager.getConnection("jdbc:mysql://localhost/unitter?serverTimezone=UTC&user="+user+"&password="+password);
 
 	}
 	
