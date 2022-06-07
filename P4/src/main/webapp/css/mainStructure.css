@@ -31,6 +31,16 @@ body {
  	background-color: #2d323b;
 }
 
+footer{
+	background-color: #2d323b;
+}
+
+footer > p{
+	color: #fff;
+	margin-left: 2%;
+}
+
+
 /*.w3-container{
 	overflow: auto;
 	box-shadow: none;

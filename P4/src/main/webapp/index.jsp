@@ -54,7 +54,7 @@
 		</div>
 		<!-- End Content -->
 		<!-- Footer -->
-		<footer class="w3-container w3-theme">
+		<footer>
 		  <p> Universitat Pompeu Fabra </p>
 		</footer>
 		
