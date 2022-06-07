@@ -17,7 +17,7 @@ CREATE TABLE `user` (
     following_count INT DEFAULT 0,
     follower_count INT DEFAULT 0,
     `position` ENUM('S', 'T'),
-    admin BOOLEAN DEFAULT false,
+    admin BOOLEAN NOT NULL,
     image_path VARCHAR(255), 
     salt VARCHAR(255)
     

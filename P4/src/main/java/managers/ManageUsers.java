@@ -44,9 +44,9 @@ public class ManageUsers {
 			rs = statement.executeQuery();
 			if (rs.next()) {
 				user = new User();
-				user.setId(rs.getLong("id"));
+				user.setId(rs.getInt("id"));
 				user.setName(rs.getString("name"));
-				user.setEmail(rs.getString("mail"));
+				user.setMail(rs.getString("mail"));
 			}
 			rs.close();
 			statement.close();
@@ -64,8 +64,8 @@ public class ManageUsers {
 		try {
 			statement = db.prepareStatement(query);
 			statement.setString(1,user.getName());
-			statement.setString(2,user.getEmail());
-			statement.setString(3,user.getPassword());
+			statement.setString(2,user.getMail());
+			statement.setString(3,user.getPwd());
 			statement.executeUpdate();
 			statement.close();
 		} catch (SQLIntegrityConstraintViolationException e) {
@@ -123,7 +123,7 @@ public class ManageUsers {
 			 ResultSet rs = statement.executeQuery();
 			 while (rs.next()) {
 				 User user = new User();
-				 user.setId(rs.getLong("id"));
+				 user.setId(rs.getInt("id"));
 				 user.setName(rs.getString("name"));
 				 l.add(user);
 			 }
@@ -148,7 +148,7 @@ public class ManageUsers {
 			 ResultSet rs = statement.executeQuery();
 			 while (rs.next()) {
 				 User user = new User();
-				 user.setId(rs.getLong("id"));
+				 user.setId(rs.getInt("id"));
 				 user.setName(rs.getString("name"));
 				 l.add(user);
 			 }
@@ -172,7 +172,7 @@ public class ManageUsers {
 			 ResultSet rs = statement.executeQuery();
 			 while (rs.next()) {
 				 User user = new User();
-				 user.setId(rs.getLong("id"));
+				 user.setId(rs.getInt("id"));
 				 user.setName(rs.getString("name"));
 				 l.add(user);
 			 }
@@ -185,18 +185,18 @@ public class ManageUsers {
 	}
 	
 	public Pair<Boolean,User> checkLogin(User user) {
-		// TODO update this
+		
 		String query = "SELECT id,mail from users where name=? AND pwd=?";
 		PreparedStatement statement = null;
 		boolean output = false;
 		try {
 			statement = db.prepareStatement(query);
 			statement.setString(1,user.getName());
-			statement.setString(2,user.getPassword());
+			statement.setString(2,user.getPwd());
 			ResultSet rs = statement.executeQuery();
 			if (rs.next()) {
-				user.setId(rs.getLong("id"));
-				user.setEmail(rs.getString("mail"));
+				user.setId(rs.getInt("id"));
+				user.setMail(rs.getString("mail"));
 				output = true;
 			} 
 			rs.close();
@@ -266,18 +266,17 @@ public class ManageUsers {
 		return output;
 		
 	}
-	
-	//TODO change this
+		
 	/*Check if all the fields are filled correctly */
 	public boolean isComplete(User user) {
 	    return(hasValue(user.getName()) &&
-	    	   hasValue(user.getEmail()) &&
-	    	   hasValue(user.getPassword()) );
+	    	   hasValue(user.getMail()) &&
+	    	   hasValue(user.getPwd()) );
 	}
 	
 	public boolean isLoginComplete(User user) {
-	    return(hasValue(user.getUsername()) &&
-	    	   hasValue(user.getPassword()) );
+	    return(hasValue(user.getName()) &&
+	    	   hasValue(user.getPwd()) );
 	}
 	
 	private boolean hasValue(String val) {
