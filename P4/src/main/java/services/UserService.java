@@ -59,13 +59,25 @@ public class UserService {
 		
 	// Add new user
 	public void addUser(User user) {
-		String query = "INSERT INTO users (name,mail,pwd) VALUES (?,?,?)";
+		// TODO UPDATE QUERY WITH ALL FIELDS
+		String query = "INSERT INTO user (name, username, email,"
+				+ " password, gender, university, degree, country, birthday, position, image_path, salt) "
+				+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 		PreparedStatement statement = null;
 		try {
 			statement = db.prepareStatement(query);
-			statement.setString(1,user.getName());
-			statement.setString(2,user.getEmail());
-			statement.setString(3,user.getPassword());
+			statement.setString(1, user.getName());
+			statement.setString(2, user.getUsername());
+			statement.setString(3, user.getEmail());
+			statement.setString(4, user.getPassword());
+			statement.setString(5, user.getGender());
+			statement.setString(6, user.getUniversity());
+			statement.setString(7, user.getDegree());
+			statement.setString(8, user.getCountry());
+			statement.setDate(9, user.getBirthday());
+			statement.setString(10, user.getPosition());
+			statement.setString(11, user.getImagePath());
+			statement.setString(12, user.getSalt());
 			statement.executeUpdate();
 			statement.close();
 		} catch (SQLIntegrityConstraintViolationException e) {

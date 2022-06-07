@@ -1,4 +1,4 @@
-package managers;
+package services;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,11 +10,11 @@ import models.Tweet;
 import utils.DB;
 
 
-public class ManageTweets {
+public class TweetService {
 	
 	private DB db = null ;
 	
-	public ManageTweets() {
+	public TweetService() {
 		try {
 			db = new DB();
 		} catch (Exception e) {
@@ -32,6 +32,7 @@ public class ManageTweets {
 	
 	/* Add a tweet */
 	public void addTweet(Tweet tweet) {
+		// TODO update query
 		String query = "INSERT INTO tweets (uid,postdatetime,content) VALUES (?,?,?)";
 		PreparedStatement statement = null;
 		try {
@@ -48,6 +49,7 @@ public class ManageTweets {
 	
 	/* Delete existing tweet */
 	public void deleteTweet(Integer id,Integer uid) {
+		// TODO update query
 		String query = "DELETE FROM tweets WHERE id = ? AND uid=?";
 		PreparedStatement statement = null;
 		try {

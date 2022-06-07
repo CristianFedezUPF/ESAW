@@ -12,9 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import managers.ManageTweets;
 import models.Tweet;
 import models.User;
+import services.TweetService;
 
 /**
  * Servlet implementation class dTcontroller
@@ -40,7 +40,7 @@ public class GetUserTweets extends HttpServlet {
 		User user = (User) session.getAttribute("user");
 		
 		if (session != null || user != null) {
-			ManageTweets tweetManager = new ManageTweets();
+			TweetService tweetManager = new TweetService();
 			tweets = tweetManager.getUserTweets(user.getId(),0,4);
 			tweetManager.finalize();
 		}
