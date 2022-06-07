@@ -21,6 +21,7 @@
 		</template>
 		
 		<script src = js/init.js type="text/javascript" defer></script>
+		<script src = js/common.js type="text/javascript" async></script>
 
 	</head>
 	<body>
