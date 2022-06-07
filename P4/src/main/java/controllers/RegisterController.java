@@ -45,10 +45,12 @@ public class RegisterController extends HttpServlet {
 		   BeanUtils.populate(user, request.getParameterMap());
 		   
 		   cn = manager.checkUser(user.getName());
-		   cm = manager.chekMail(user.getMail());
+		   cm = manager.chekMail(user.getEmail());
 		   
-		   user.setError("user", cn);
-		   user.setError("mail", cm);
+		   
+		   // TODO THIS ON USER CLASS
+		   //user.setError("user", cn);
+		   //user.setError("mail", cm);
 		   
 		   if (manager.isComplete(user) && !cn && !cm) {
 			   
