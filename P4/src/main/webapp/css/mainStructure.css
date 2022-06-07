@@ -11,7 +11,7 @@ html {
 body {
 	width: 100%;
 	height: 100%;
-	background: #1b1e24;
+	background: #00000a;
 }
 
 #content{
@@ -20,7 +20,6 @@ body {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	margin-top: -25px;
 }
 
 #navigation > .w3-bar > a{
@@ -28,11 +27,11 @@ body {
 }
 
 #navigation{
- 	background-color: #2d323b;
+ 	background-color: #00000a;
 }
 
 footer{
-	background-color: #2d323b;
+	background-color: #09090f;
 	width: 100%;
 }
 
