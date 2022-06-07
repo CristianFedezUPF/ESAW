@@ -14,19 +14,14 @@ body {
 	background: #1b1e24;
 }
 
-/*.w3-container{
-	overflow: auto;
-	box-shadow: none;
-}*/
-
-/*#content{
+#content{
 	height: 100%;
 	width: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	margin-top: -25px;
-}*/
+}
 
 #navigation > .w3-bar > a{
 	color: #ffffff;
@@ -35,3 +30,8 @@ body {
 #navigation{
  	background-color: #2d323b;
 }
+
+/*.w3-container{
+	overflow: auto;
+	box-shadow: none;
+}*/

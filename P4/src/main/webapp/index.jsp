@@ -43,10 +43,8 @@
 			</div>
 		</div>
 		<!-- Middle Column -->	
-		<div class="e3-container w3-col m6">
-			<div id="content">
-				<jsp:include page="${content}" />
-			</div>
+		<div id="content">
+			<jsp:include page="${content}" />
 		</div>
 		<!-- Right Column -->
 		<div class="w3-container w3-col m3 w3-hide-small">
