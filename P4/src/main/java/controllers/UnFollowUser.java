@@ -12,8 +12,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.beanutils.BeanUtils;
 
-import managers.ManageUsers;
 import models.User;
+import services.UserService;
 
 /**
  * Servlet implementation class UnFollowUser
@@ -35,7 +35,7 @@ public class UnFollowUser extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		User fuser = new User();
-		ManageUsers userManager = new ManageUsers();
+		UserService userManager = new UserService();
 		HttpSession session = request.getSession(false);
 		User user = (User) session.getAttribute("user");
 		

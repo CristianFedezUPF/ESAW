@@ -1,4 +1,4 @@
-package managers;
+package services;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,11 +10,11 @@ import models.Tweet;
 import utils.DB;
 
 
-public class ManageTweets {
+public class TweetService {
 	
 	private DB db = null ;
 	
-	public ManageTweets() {
+	public TweetService() {
 		try {
 			db = new DB();
 		} catch (Exception e) {
@@ -32,6 +32,7 @@ public class ManageTweets {
 	
 	/* Add a tweet */
 	public void addTweet(Tweet tweet) {
+		// TODO update query
 		String query = "INSERT INTO tweets (uid,postdatetime,content) VALUES (?,?,?)";
 		PreparedStatement statement = null;
 		try {
@@ -48,6 +49,7 @@ public class ManageTweets {
 	
 	/* Delete existing tweet */
 	public void deleteTweet(Integer id,Integer uid) {
+		// TODO update query
 		String query = "DELETE FROM tweets WHERE id = ? AND uid=?";
 		PreparedStatement statement = null;
 		try {
@@ -63,13 +65,13 @@ public class ManageTweets {
 	
 	
 	/* Get tweets from a user given start and end*/
-	public List<Tweet> getUserTweets(Integer uid,Integer start, Integer end) {
+	public List<Tweet> getUserTweets(Long long1,Integer start, Integer end) {
 		 String query = "SELECT tweets.id,tweets.uid,tweets.postdatetime,tweets.content,users.name FROM tweets INNER JOIN users ON tweets.uid = users.id where tweets.uid = ? ORDER BY tweets.postdatetime DESC LIMIT ?,? ;";
 		 PreparedStatement statement = null;
 		 List<Tweet> l = new ArrayList<Tweet>();
 		 try {
 			 statement = db.prepareStatement(query);
-			 statement.setInt(1,uid);
+			 statement.setLong(1,long1);
 			 statement.setInt(2,start);
 			 statement.setInt(3,end);
 			 ResultSet rs = statement.executeQuery();

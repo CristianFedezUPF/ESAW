@@ -40,13 +40,9 @@ public class LoginController extends HttpServlet {
 		System.out.print("LoginController: ");
 		User user = new User();
 		UserService userService = new UserService();
-		
 	    try {
-			
 	    	BeanUtils.populate(user, request.getParameterMap());
-			
 	    	if (user.isLoginComplete() && userService.isUserRegistered(user) && userService.isPasswordCorrect(user)) {
-		    	
 	    		System.out.println("login OK, forwarding to ViewLoginDone ");
 		    	HttpSession session = request.getSession();
 		    	session.setAttribute("user",user.getUsername());

@@ -1,6 +1,8 @@
 DROP SCHEMA IF EXISTS unitter;
-CREATE DATABASE IF NOT EXISTS unitter;
+CREATE DATABASE IF NOT EXISTS unitter
+CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 USE unitter;
+
 
 CREATE TABLE `user` (
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -17,7 +19,7 @@ CREATE TABLE `user` (
     following_count INT DEFAULT 0,
     follower_count INT DEFAULT 0,
     `position` ENUM('S', 'T'),
-    admin BOOLEAN NOT NULL,
+    admin BOOLEAN DEFAULT false,
     image_path VARCHAR(255), 
     salt VARCHAR(255)
     
