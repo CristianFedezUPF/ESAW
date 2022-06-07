@@ -1,4 +1,5 @@
-USE lab3; 
+USE unitter; 
+
 SELECT * FROM `user`;
 SELECT * FROM `follows`;
 SELECT * FROM tweet;

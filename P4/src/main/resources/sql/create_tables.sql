@@ -2,10 +2,6 @@ DROP SCHEMA IF EXISTS unitter;
 CREATE DATABASE IF NOT EXISTS unitter;
 USE unitter;
 
-DROP TABLE IF EXISTS `user`;
-DROP TABLE IF EXISTS tweet;
-DROP TABLE IF EXISTS `follows`;
-
 CREATE TABLE `user` (
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	`name` VARCHAR(128) NOT NULl, 		
@@ -46,7 +42,7 @@ CREATE TABLE tweet (
     FOREIGN KEY(user_id) REFERENCES `user`(id)
 );
 
-DROP TRIGGER IF EXISTS update_follow;
+
 DELIMITER //
 CREATE TRIGGER update_follow AFTER INSERT ON `follows`
 	FOR EACH ROW
@@ -56,7 +52,6 @@ CREATE TRIGGER update_follow AFTER INSERT ON `follows`
     END //
     DELIMITER ;
     
-DROP TRIGGER IF EXISTS counter_post;
 DELIMITER //
 CREATE TRIGGER counter_post AFTER INSERT ON tweet
 	FOR EACH ROW
