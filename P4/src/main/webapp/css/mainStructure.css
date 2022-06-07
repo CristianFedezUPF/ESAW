@@ -15,7 +15,7 @@ body {
 }
 
 #content{
-	height: 93%;
+	height: calc(100% - 60px);
 	width: 100%;
 	display: flex;
 	align-items: center;
@@ -33,6 +33,7 @@ body {
 
 footer{
 	background-color: #2d323b;
+	width: 100%;
 }
 
 footer > p{
