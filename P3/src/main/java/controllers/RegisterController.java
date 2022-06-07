@@ -2,6 +2,8 @@ package controllers;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Date;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,8 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.converters.DateConverter;
 
 import models.User;
+import services.UserService;
 
 /**
  * Servlet implementation class FormController
@@ -32,33 +37,41 @@ public class RegisterController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		User user = new User();
+		System.out.print("RegisterController: ");
+		UserService userService = new UserService();
+		String view = "ViewRegisterForm.jsp";
 
-	   System.out.print("RegisterController: ");
-		
 	   try {
 	
-		   User user = new User();
-		   BeanUtils.populate(user, request.getParameterMap());
-		
-		   if (user.isComplete()) {
-			   
-			   System.out.println(" user ok, forwarding to ViewLoginForm");
-			   RequestDispatcher dispatcher = request.getRequestDispatcher("ViewLoginForm.jsp");
-			   dispatcher.forward(request, response);
+		   Date defaultValue = null;
+		   DateConverter converter = new DateConverter(defaultValue);
+		   converter.setPattern("yyyy-mm-dd");
+		   ConvertUtils.register(converter, Date.class); // to convert the date from JS to a Date object.
 		   
+		   BeanUtils.populate(user, request.getParameterMap());
+		   if (user.isComplete() && !userService.isUserRegistered(user)) {
+			   userService.addUser(
+						user.getName(), user.getUsername(), user.getEmail(),
+						user.getPassword(), user.getGender(),  user.getUniversity(), user.getDegree(), user.getCountry(),
+						user.getBirthday(), user.getPosition(), user.getImagePath(), user.getSalt());
+				userService.finalize();
+			   System.out.println(" user ok, forwarding to ViewLoginForm");
+			   view = "ViewLoginForm.jsp";
+			   user.detroyLoginPassword();
+			   user.resetError();
 		   } 
 		   else {
-		
-			   System.out.println(" forwarding to ViewRegisterForm");
-			   request.setAttribute("user",user);
-			   RequestDispatcher dispatcher = request.getRequestDispatcher("ViewRegisterForm.jsp");
-			   dispatcher.forward(request, response);
+			   System.out.println("error, forwarding to ViewRegisterForm ");
+			   view = "ViewRegisterForm.jsp";
 		   }
 	   
-	   } catch (IllegalAccessException | InvocationTargetException e) {
+	   } catch (IllegalAccessException | InvocationTargetException | SQLException e) {
 			e.printStackTrace();
-	   }
-		
+	   } 
+	   request.setAttribute("model", user);
+	   RequestDispatcher dispatcher = request.getRequestDispatcher(view);
+	   dispatcher.forward(request, response);		
 	}
 
 	/**
