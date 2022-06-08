@@ -48,14 +48,14 @@ public class TweetService {
 	}
 	
 	/* Delete existing tweet */
-	public void deleteTweet(Integer id,Integer uid) {
+	public void deleteTweet(Long long1,Long long2) {
 		// TODO update query
 		String query = "DELETE FROM tweets WHERE id = ? AND uid=?";
 		PreparedStatement statement = null;
 		try {
 			statement = db.prepareStatement(query);
-			statement.setInt(1,id);
-			statement.setInt(2,uid);
+			statement.setLong(1,long1);
+			statement.setLong(2,long2);
 			statement.executeUpdate();
 			statement.close();
 		} catch (SQLException e) {
@@ -65,13 +65,13 @@ public class TweetService {
 	
 	
 	/* Get tweets from a user given start and end*/
-	public List<Tweet> getUserTweets(Long long1,Integer start, Integer end) {
+	public List<Tweet> getUserTweets(Long userId,Integer start, Integer end) {
 		 String query = "SELECT tweet.id,tweet.user_id,tweet.date,tweet.content,user.username,user.name FROM tweet INNER JOIN user ON tweet.user_id = user.id where tweet.user_id = ? ORDER BY tweet.date DESC LIMIT ?,? ;";
 		 PreparedStatement statement = null;
-		 List<Tweet> l = new ArrayList<Tweet>();
+		 List<Tweet> tweets = new ArrayList<Tweet>();
 		 try {
 			 statement = db.prepareStatement(query);
-			 statement.setLong(1,long1);
+			 statement.setLong(1,userId);
 			 statement.setInt(2,start);
 			 statement.setInt(3,end);
 			 ResultSet rs = statement.executeQuery();
@@ -83,14 +83,41 @@ public class TweetService {
 				 tweet.setContent(rs.getString("content"));
 				 tweet.setUsername(rs.getString("username"));
 				 tweet.setName(rs.getString("name"));;
-				 l.add(tweet);
+				 tweets.add(tweet);
 			 }
 			 rs.close();
 			 statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} 
-		return  l;
+		return tweets;
+	}
+	
+	public List<Tweet> getTweets(Integer start, Integer end){
+		String query = "SELECT tweet.id,tweet.user_id,tweet.date,tweet.content,user.username,user.name FROM tweet INNER JOIN user ON user.id = tweet.user_id ORDER BY tweet.date DESC LIMIT ?,?";
+		PreparedStatement statement = null;
+		List<Tweet> tweets = new ArrayList<Tweet>();
+		try {
+			 statement = db.prepareStatement(query);
+			 statement.setInt(1,start);
+			 statement.setInt(2,end);
+			 ResultSet rs = statement.executeQuery();
+			 while (rs.next()) {
+				 Tweet tweet = new Tweet();
+      		     tweet.setId(rs.getLong("id"));
+				 tweet.setUserId(rs.getLong("user_id"));
+				 tweet.setPostDateTime(rs.getTimestamp("date"));
+				 tweet.setContent(rs.getString("content"));
+				 tweet.setUsername(rs.getString("username"));
+				 tweet.setName(rs.getString("name"));
+				 tweets.add(tweet);
+			 }
+			 rs.close();
+			 statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		return tweets;
 	}
 	
 	

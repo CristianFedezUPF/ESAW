@@ -17,7 +17,9 @@ p{
 #mcolumn{
 	grid-column: 2 / 3;
 	display: flex;
+	height: 100%;
 	flex-direction: column;
+	overflow: scroll;
 }
 
 #rcolumn{
@@ -36,6 +38,7 @@ p{
 	flex-direction: column;
 	align-items: center;
 	padding-bottom: 10px;
+	padding-top: 10px;
 	border-bottom: 1px solid #1b222e;
 }
 
