@@ -5,40 +5,49 @@ public class Tweet implements java.io.Serializable {
 
 	 private static final long serialVersionUID = 1L;
 
-	 private int id;
-	 private int uid;
-	 private String uname;
+	 private Long id;
+	 private Long userId;
+	 private String username;
+	 private String name;
 	 private Timestamp postDateTime;
 	 private String content;
 
 	 public Tweet() {
 	 }
 
-	 public Integer getId() {
+	 public Long getId() {
 		 return this.id;
 	 }
 	 
-	 public void setId(Integer id) {
+	 public void setId(Long id) {
 		 this.id = id;
 	 }
 
-	 public int getUid() {
-		 return this.uid;
+	 public Long getUserId() {
+		 return this.userId;
 	 }
 	 
-	 public void setUid(int uid) {
-		 this.uid = uid;
+	 public void setUserId(Long uid) {
+		 this.userId = uid;
 	 }
 	 
-	 public String getUname() {
-		 return this.uname;
+	 public String getUsername() {
+		 return this.username;
 	 }
 	 
-	 public void setUname(String uname) {
-		 this.uname = uname;
+	 public void setUsername(String uname) {
+		 this.username = uname;
 	 }
 	 
-	 public Timestamp getPostDateTime() {
+	 public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Timestamp getPostDateTime() {
 		 return this.postDateTime;
 	 }
 	 public void setPostDateTime(Timestamp postDateTime) {

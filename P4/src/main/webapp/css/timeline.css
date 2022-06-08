@@ -1,3 +1,7 @@
+p{
+	color: #fff;	
+}
+
 #grid-layout{
 	display: grid;
 	width: 100%;
@@ -7,19 +11,18 @@
 
 #lcolumn{
 	grid-column: 1 / 2;
-	border-right: 1px solid #0e1219;
+	border-right: 1px solid #1b222e;
 }
 
 #mcolumn{
 	grid-column: 2 / 3;
 	display: flex;
-	flex-direction: row;
-	justify-content: center;
+	flex-direction: column;
 }
 
 #rcolumn{
 	grid-column: 3 / 4;
-	border-left: 1px solid #0e1219;
+	border-left: 1px solid #1b222e;
 }
 
 #grid-layout > div > p{
@@ -33,12 +36,13 @@
 	flex-direction: column;
 	align-items: center;
 	padding-bottom: 10px;
-	border-bottom: 1px solid #0e1219;
+	border-bottom: 1px solid #1b222e;
 }
 
 #typing-input{
 	width: 95%;
 	height: 80px;
+	min-height: 50px;
 	max-height: 200px;
 	resize: vertical;
 	border-radius: 8px;
@@ -51,6 +55,47 @@
 	padding-right: 10px;
 }
 
-#send-icon{
-	width: 50px;
+.tweet{
+	display: flex;
+	flex-direction: row;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #1b222e;
+}
+
+.avatar-wrapper{
+	margin-top: 12px;
+	margin-left: 20px;
+}
+
+.avatar-wrapper > img{
+	height: 50px;
+	border-radius: 50%;
+}
+
+.tweet-content-wrapper{
+	display: flex;
+	flex-direction: column;
+	margin-top: 10px;
+	margin-left: 15px;
+	margin-right: 10px;
+}
+
+.tweet-content-header{
+	display: flex;
+	flex-direction: row;
+}
+
+.tweet-username{
+	padding-left: 8px;
+	color: #888;
+}
+
+.tweet-datetime-separator{
+	padding-left: 6px;
+	padding-right: 6px;
+	color: #888;
+}
+
+.tweet-datetime{
+	color: #888;
 }

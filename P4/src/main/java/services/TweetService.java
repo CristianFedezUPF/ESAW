@@ -37,7 +37,7 @@ public class TweetService {
 		PreparedStatement statement = null;
 		try {
 			statement = db.prepareStatement(query);
-			statement.setInt(1,tweet.getUid());
+			statement.setLong(1,tweet.getUserId());
 			statement.setTimestamp(2,tweet.getPostDateTime());
 			statement.setString(3,tweet.getContent());
 			statement.executeUpdate();
@@ -66,7 +66,7 @@ public class TweetService {
 	
 	/* Get tweets from a user given start and end*/
 	public List<Tweet> getUserTweets(Long long1,Integer start, Integer end) {
-		 String query = "SELECT tweets.id,tweets.uid,tweets.postdatetime,tweets.content,users.name FROM tweets INNER JOIN users ON tweets.uid = users.id where tweets.uid = ? ORDER BY tweets.postdatetime DESC LIMIT ?,? ;";
+		 String query = "SELECT tweet.id,tweet.user_id,tweet.date,tweet.content,user.username,user.name FROM tweet INNER JOIN user ON tweet.user_id = user.id where tweet.user_id = ? ORDER BY tweet.date DESC LIMIT ?,? ;";
 		 PreparedStatement statement = null;
 		 List<Tweet> l = new ArrayList<Tweet>();
 		 try {
@@ -77,11 +77,12 @@ public class TweetService {
 			 ResultSet rs = statement.executeQuery();
 			 while (rs.next()) {
 				 Tweet tweet = new Tweet();
-       		     tweet.setId(rs.getInt("id"));
-				 tweet.setUid(rs.getInt("uid"));
-				 tweet.setPostDateTime(rs.getTimestamp("postdatetime"));
+       		     tweet.setId(rs.getLong("id"));
+				 tweet.setUserId(rs.getLong("user_id"));
+				 tweet.setPostDateTime(rs.getTimestamp("date"));
 				 tweet.setContent(rs.getString("content"));
-				 tweet.setUname(rs.getString("name"));
+				 tweet.setUsername(rs.getString("username"));
+				 tweet.setName(rs.getString("name"));;
 				 l.add(tweet);
 			 }
 			 rs.close();
