@@ -9,13 +9,16 @@
 </script>
 
 <div id="grid-layout">
-	<div id="test1">
+	<div id="lcolumn">
 		<p>test1</p>
 	</div>
-	<div id="test2">
-		<p>test2</p>
+	<div id="mcolumn">
+		<div id="input-wrapper">
+			<textarea id="typing-input" placeholder="What's happening?"></textarea>
+			<button>Post</button>
+		</div>
 	</div>
-	<div id="test3">
+	<div id="rcolumn">
 		<p>test3</p>
 	</div>
 </div>

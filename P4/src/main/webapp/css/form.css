@@ -36,7 +36,7 @@ input:invalid {
 	display: flex;
 	flex-direction: column;
 	border: 1px red;
-	background: #171d2d;
+	background: #131c2a;
 	border-radius: 8px;
     width: max(250px, 35%);
     /* offset-x | offset-y | blur-radius | spread-radius | color */
