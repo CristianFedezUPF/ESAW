@@ -11,6 +11,10 @@ p{
 
 #lcolumn{
 	grid-column: 1 / 2;
+	display: flex;
+	height: 100%;
+	flex-direction: column;
+	align-items: center;
 	border-right: 1px solid #1b222e;
 }
 
@@ -113,6 +117,14 @@ p{
 	color: #888;
 }
 
+.tweet-username:hover{
+	cursor: pointer;
+}
+
+.tweet-user:hover{
+	cursor: pointer;
+}
+
 .tweet-datetime-separator{
 	padding-left: 6px;
 	padding-right: 6px;
@@ -121,4 +133,25 @@ p{
 
 .tweet-datetime{
 	color: #888;
+}
+
+#logo{
+	font-size: 40px;
+	margin-top: 10px;
+	font-family: NotoSerif;
+}
+
+.lcolumn-menu{
+	margin-top: 25px;
+	font-size: 20px;
+	padding: 4px;
+	padding-left: 16px;
+	padding-right: 16px;
+	transition: 0.25s;
+}
+
+.lcolumn-menu:hover{
+	cursor: pointer;
+	background-color: #131c2a;
+	border-radius: 25px;
 }

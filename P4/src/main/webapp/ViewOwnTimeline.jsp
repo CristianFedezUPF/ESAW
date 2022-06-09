@@ -10,7 +10,11 @@
 
 <div id="grid-layout">
 	<div id="lcolumn">
-		<p>test1</p>
+		<p id="logo">Unitter</p>
+		<p class="lcolumn-menu" style="margin-top: 50px;">Home</p>
+		<p class="lcolumn-menu">Explore</p>
+		<p class="lcolumn-menu">Following</p>
+		<p class="lcolumn-menu">Profile</p>
 	</div>
 	<div id="mcolumn">
 		<div id="input-wrapper">
