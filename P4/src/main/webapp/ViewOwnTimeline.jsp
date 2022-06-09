@@ -15,7 +15,7 @@
 	<div id="mcolumn">
 		<div id="input-wrapper">
 			<textarea id="typing-input" placeholder="What's happening?"></textarea>
-			<button>Post</button>
+			<button id="post-button">Post</button>
 		</div>
 		<div id="tweet-list">
 		</div>

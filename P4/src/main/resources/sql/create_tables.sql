@@ -27,7 +27,7 @@ CREATE TABLE `user` (
 CREATE TABLE `follows` (
 	follower_id BIGINT,
     followed_id BIGINT,
-    `date` DATETIME DEFAULT CURRENT_TIMESTAMP, 
+    create_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, 
     FOREIGN KEY(follower_id) REFERENCES `user`(id),
     FOREIGN KEY(followed_id) REFERENCES `user`(id),
     PRIMARY KEY(follower_id, followed_id)
@@ -39,7 +39,7 @@ CREATE TABLE tweet (
     parent_id BIGINT,
     user_id BIGINT NOT NULL,
     content VARCHAR(255) NOT NULL,
-    `date` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    creation_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(parent_id) REFERENCES tweet(id),
     FOREIGN KEY(user_id) REFERENCES `user`(id)
 );

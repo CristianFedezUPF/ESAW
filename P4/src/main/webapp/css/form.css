@@ -119,7 +119,7 @@ form > select:checked{
 	color: #c2c2c2;
 }
 
-button{
+.login-register-button{
 	margin-left: 0px;
 	margin-top: 6px;
 	align-self: center;

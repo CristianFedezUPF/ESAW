@@ -3,6 +3,8 @@ package services;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,13 +35,12 @@ public class TweetService {
 	/* Add a tweet */
 	public void addTweet(Tweet tweet) {
 		// TODO update query
-		String query = "INSERT INTO tweets (uid,postdatetime,content) VALUES (?,?,?)";
+		String query = "INSERT INTO tweet (user_id, content) VALUES (?,?)";
 		PreparedStatement statement = null;
 		try {
 			statement = db.prepareStatement(query);
 			statement.setLong(1,tweet.getUserId());
-			statement.setTimestamp(2,tweet.getPostDateTime());
-			statement.setString(3,tweet.getContent());
+			statement.setString(2,tweet.getContent());
 			statement.executeUpdate();
 			statement.close();
 		} catch (SQLException e) {
@@ -66,7 +67,7 @@ public class TweetService {
 	
 	/* Get tweets from a user given start and end*/
 	public List<Tweet> getUserTweets(Long userId,Integer start, Integer end) {
-		 String query = "SELECT tweet.id,tweet.user_id,tweet.date,tweet.content,user.username,user.name FROM tweet INNER JOIN user ON tweet.user_id = user.id where tweet.user_id = ? ORDER BY tweet.date DESC LIMIT ?,? ;";
+		 String query = "SELECT tweet.id,tweet.user_id,tweet.creation_timestamp,tweet.content,user.username,user.name FROM tweet INNER JOIN user ON tweet.user_id = user.id where tweet.user_id = ? ORDER BY tweet.creation_timestamp DESC LIMIT ?,? ;";
 		 PreparedStatement statement = null;
 		 List<Tweet> tweets = new ArrayList<Tweet>();
 		 try {
@@ -79,7 +80,9 @@ public class TweetService {
 				 Tweet tweet = new Tweet();
        		     tweet.setId(rs.getLong("id"));
 				 tweet.setUserId(rs.getLong("user_id"));
-				 tweet.setPostDateTime(rs.getTimestamp("date"));
+				 LocalDateTime then = rs.getObject("creation_timestamp", LocalDateTime.class);
+				 LocalDateTime now = LocalDateTime.now();
+				 tweet.setTimeSince(computeTimeSince(then, now));
 				 tweet.setContent(rs.getString("content"));
 				 tweet.setUsername(rs.getString("username"));
 				 tweet.setName(rs.getString("name"));;
@@ -94,7 +97,7 @@ public class TweetService {
 	}
 	
 	public List<Tweet> getTweets(Integer start, Integer end){
-		String query = "SELECT tweet.id,tweet.user_id,tweet.date,tweet.content,user.username,user.name FROM tweet INNER JOIN user ON user.id = tweet.user_id ORDER BY tweet.date DESC LIMIT ?,?";
+		String query = "SELECT tweet.id,tweet.user_id,tweet.creation_timestamp,tweet.content,user.username,user.name FROM tweet INNER JOIN user ON user.id = tweet.user_id ORDER BY tweet.creation_timestamp DESC LIMIT ?,?";
 		PreparedStatement statement = null;
 		List<Tweet> tweets = new ArrayList<Tweet>();
 		try {
@@ -106,7 +109,9 @@ public class TweetService {
 				 Tweet tweet = new Tweet();
       		     tweet.setId(rs.getLong("id"));
 				 tweet.setUserId(rs.getLong("user_id"));
-				 tweet.setPostDateTime(rs.getTimestamp("date"));
+				 LocalDateTime then = rs.getObject("creation_timestamp", LocalDateTime.class);
+				 LocalDateTime now = LocalDateTime.now();
+				 tweet.setTimeSince(computeTimeSince(then, now));
 				 tweet.setContent(rs.getString("content"));
 				 tweet.setUsername(rs.getString("username"));
 				 tweet.setName(rs.getString("name"));
@@ -118,6 +123,33 @@ public class TweetService {
 			e.printStackTrace();
 		} 
 		return tweets;
+	}
+	
+	private String computeTimeSince(LocalDateTime from, LocalDateTime to) {
+		Long yearDiff = ChronoUnit.YEARS.between(from, to);
+		if(yearDiff != 0) {
+			return yearDiff.toString() + "Y";
+		}
+		Long monthDiff = ChronoUnit.MONTHS.between(from, to);
+		if(monthDiff != 0) {
+			return monthDiff.toString() + "M";
+		}
+		Long dayDiff = ChronoUnit.DAYS.between(from, to);
+		if(dayDiff != 0) {
+			return dayDiff.toString() + "d";
+		}
+		Long hourDiff = ChronoUnit.HOURS.between(from, to);
+		if(hourDiff != 0) {
+			return hourDiff.toString() + "h";
+		}
+		Long minuteDiff = ChronoUnit.MINUTES.between(from, to);
+		if(minuteDiff != 0) {
+			return minuteDiff.toString() + "m";
+		}
+		Long secondDiff = ChronoUnit.SECONDS.between(from, to);
+		return secondDiff.toString() + "s";
+		
+		
 	}
 	
 	

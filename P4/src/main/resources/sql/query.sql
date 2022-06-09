@@ -9,5 +9,9 @@ SELECT * FROM tweet;
 
 SELECT content FROM tweet WHERE user_id IN (SELECT followed_id FROM `follows` WHERE follower_id = 3);
 
-SELECT * FROM user;
+SELECT * FROM tweet ORDER BY creation_timestamp DESC;
+SELECT TIMEDIFF(NOW(), UTC_TIMESTAMP);
+
+
+
 SELECT username from user where username="helena";

@@ -10,7 +10,7 @@
 	  	<input type="text" id="username" name="username" placeholder="@" value="${user.username}" required>
 	  	<label for="password">Password (Minimum 6 characters): </label>
 	  	<input type="password" id="password" name="password" placeholder="password" required>
-	  	<button>Login!</button>
+	  	<button class="login-register-button">Login!</button>
 	</form>
 </div>
 

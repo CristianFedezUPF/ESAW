@@ -11,7 +11,7 @@
  				<p class="tweet-user">${t.name}</p>
  				<p class="tweet-username">@${t.username}</p>
  				<p class="tweet-datetime-separator">·</p>
- 				<p class="tweet-datetime">${t.postDateTime}</p>
+ 				<p class="tweet-datetime">${t.timeSince}</p>
  			</div>
    			<p>${t.content}</p>
  		</div>

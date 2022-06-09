@@ -312,7 +312,7 @@
 	    	<option value="T">Teacher</option>
 	  	</select>	  	
 	  	
-	  	<button>Register!</button>
+	  	<button class="login-register-button">Register!</button>
 	</form>
 </div>
 

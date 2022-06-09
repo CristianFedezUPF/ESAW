@@ -9,8 +9,8 @@ window.addEventListener('DOMContentLoaded', () => {
 			    event.preventDefault();
 			});
 			/* Add tweet */
-			$(document).on("click","#addTweet",function(event){
-				$.post( "AddTweet", { content: $("#tweetContent").text()}, function(event) {
+			$(document).on("click","#post-button",function(event){
+				$.post( "AddTweet", { content: $("#typing-input").val()}, function(event) {
 					$("#content").load("GetOwnTimeline");		
 				});
 				event.preventDefault();

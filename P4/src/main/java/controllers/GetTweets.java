@@ -34,7 +34,7 @@ public class GetTweets extends HttpServlet {
 		
 		List<Tweet> tweets = Collections.emptyList();
 		TweetService tweetService = new TweetService();
-		tweets = tweetService.getTweets(0,10);
+		tweets = tweetService.getTweets(0, 20);
 		tweetService.finalize();
 
 		request.setAttribute("tweets", tweets);

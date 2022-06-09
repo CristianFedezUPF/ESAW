@@ -1,5 +1,6 @@
 package models;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class Tweet implements java.io.Serializable {
 
@@ -9,7 +10,7 @@ public class Tweet implements java.io.Serializable {
 	 private Long userId;
 	 private String username;
 	 private String name;
-	 private Timestamp postDateTime;
+	 private String timeSince;
 	 private String content;
 
 	 public Tweet() {
@@ -27,16 +28,16 @@ public class Tweet implements java.io.Serializable {
 		 return this.userId;
 	 }
 	 
-	 public void setUserId(Long uid) {
-		 this.userId = uid;
+	 public void setUserId(Long userId) {
+		 this.userId = userId;
 	 }
 	 
 	 public String getUsername() {
 		 return this.username;
 	 }
 	 
-	 public void setUsername(String uname) {
-		 this.username = uname;
+	 public void setUsername(String username) {
+		 this.username = username;
 	 }
 	 
 	 public String getName() {
@@ -47,11 +48,11 @@ public class Tweet implements java.io.Serializable {
 		this.name = name;
 	}
 
-	public Timestamp getPostDateTime() {
-		 return this.postDateTime;
+	public String getTimeSince() {
+		 return this.timeSince;
 	 }
-	 public void setPostDateTime(Timestamp postDateTime) {
-		 this.postDateTime = postDateTime;
+	 public void setTimeSince(String timeSince) {
+		 this.timeSince = timeSince;
 	 }
 	 
 	 public String getContent() {
