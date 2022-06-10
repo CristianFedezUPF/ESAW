@@ -40,7 +40,9 @@
 		</div>
 	</div>
 	<div id="rcolumn">
-		<p>test3</p>
+		<div id="who-to-follow">
+			<p>Who to follow</p>
+		</div>
 	</div>
 </div>
  
