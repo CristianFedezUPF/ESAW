@@ -4,7 +4,7 @@
  <script type="text/javascript">
  $(document).ready(function(){
 	$('#navigation').load('MenuController');
-	$('#tweet-list').load('GetCustomTweets');
+	$('#tweet-list').load('GetGlobalTweets');
  });
 </script>
 
