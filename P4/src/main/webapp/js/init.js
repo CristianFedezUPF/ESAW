@@ -11,7 +11,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			/* Add tweet */
 			$(document).on("click","#post-button",function(event){
 				$.post( "AddTweet", { content: $("#typing-input").val()}, function(event) {
-					$("#content").load("GetOwnTimeline");		
+					$("#content").load("GetCustomTimeline");		
 				});
 				event.preventDefault();
 			});
@@ -19,7 +19,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			$(document).on("click",".delTweet",function(event){
 				var tweet = $(this).parent();
 				$.post( "DelTweet", { id: $(this).parent().attr("id") } , function(event) {
-					$("#content").load("GetOwnTimeline");				
+					$("#content").load("GetCustomTimeline");				
 				});
 				event.preventDefault();
 			});

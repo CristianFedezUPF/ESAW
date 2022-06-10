@@ -56,6 +56,8 @@ public class UserService {
 		
 		return user;
 	}
+	
+	//public String getName(String )
 		
 	// Add new user
 	public void addUser(User user) {
@@ -201,7 +203,7 @@ public class UserService {
 	
 	public Pair<Boolean,User> checkLogin(User user) {
 		// TODO update this
-		String query = "SELECT id, email from user where username=? AND password=?";
+		String query = "SELECT id, email, name from user where username=? AND password=?";
 		PreparedStatement statement = null;
 		boolean output = false;
 		try {
@@ -212,6 +214,7 @@ public class UserService {
 			if (rs.next()) {
 				user.setId(rs.getLong("id"));
 				user.setEmail(rs.getString("email"));
+				user.setName(rs.getString("name"));;
 				output = true;
 			} 
 			rs.close();

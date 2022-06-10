@@ -96,7 +96,7 @@ public class TweetService {
 		return tweets;
 	}
 	
-	public List<Tweet> getTweets(Integer start, Integer end){
+	public List<Tweet> getGlobalTweets(Integer start, Integer end){
 		String query = "SELECT tweet.id,tweet.user_id,tweet.creation_timestamp,tweet.content,user.username,user.name FROM tweet INNER JOIN user ON user.id = tweet.user_id ORDER BY tweet.creation_timestamp DESC LIMIT ?,?";
 		PreparedStatement statement = null;
 		List<Tweet> tweets = new ArrayList<Tweet>();
@@ -104,6 +104,43 @@ public class TweetService {
 			 statement = db.prepareStatement(query);
 			 statement.setInt(1,start);
 			 statement.setInt(2,end);
+			 ResultSet rs = statement.executeQuery();
+			 while (rs.next()) {
+				 Tweet tweet = new Tweet();
+      		     tweet.setId(rs.getLong("id"));
+				 tweet.setUserId(rs.getLong("user_id"));
+				 LocalDateTime then = rs.getObject("creation_timestamp", LocalDateTime.class);
+				 LocalDateTime now = LocalDateTime.now();
+				 tweet.setTimeSince(computeTimeSince(then, now));
+				 tweet.setContent(rs.getString("content"));
+				 tweet.setUsername(rs.getString("username"));
+				 tweet.setName(rs.getString("name"));
+				 tweets.add(tweet);
+			 }
+			 rs.close();
+			 statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		return tweets;
+	}
+	
+	public List<Tweet> getCustomTweets(Long userId, Integer start, Integer end){
+		
+		String query = "SELECT tweet.id, tweet.user_id, tweet.creation_timestamp, tweet.content, user.username, user.name\r\n"
+				+ "FROM tweet JOIN user ON tweet.user_id = user.id\r\n"
+				+ "WHERE tweet.user_id IN \r\n"
+				+ "(SELECT followed_id FROM follows WHERE follower_id = ?)\r\n"
+				+ "OR tweet.user_id = ?\r\n"
+				+ "ORDER BY tweet.creation_timestamp DESC LIMIT ?,?";
+		PreparedStatement statement = null;
+		List<Tweet> tweets = new ArrayList<Tweet>();
+		try {
+			 statement = db.prepareStatement(query);
+			 statement.setLong(1, userId);
+			 statement.setLong(2, userId);
+			 statement.setInt(3,start);
+			 statement.setInt(4,end);
 			 ResultSet rs = statement.executeQuery();
 			 while (rs.next()) {
 				 Tweet tweet = new Tweet();

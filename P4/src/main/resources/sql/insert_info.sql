@@ -11,7 +11,7 @@ INSERT INTO `user`(`name`, username, email,`password`, gender, university, degre
 	image_path, salt, admin) VALUES ('a','b','b.pruna01@gmail.com', '4', 'NS', 'UPF', 'Computer', 'Spain','2003-1-1', 
     'S', NULL, NULL, false);
 INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
-	image_path, salt, admin) VALUES ('Cristian','cristy2001','cristian.pruna01@gmail.com', 'HelenaEsPreciosa', 'M', 'UPF', 'Audio', 'Spain',
+	image_path, salt, admin) VALUES ('Cristian Fernández Moreno','cristy2001','cristian.pruna01@gmail.com', 'HelenaEsPreciosa', 'M', 'UPF', 'Audio', 'Spain',
     '2001-7-30', 'S', NULL, NULL, true);
 INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
 	image_path, salt, admin) VALUES ('Lucas','lucas','lucas.pruna01@gmail.com', 'lucasEsUnPelotudo', 'M', 'UPF', 'Computer', 

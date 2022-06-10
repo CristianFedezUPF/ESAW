@@ -11,10 +11,9 @@ p{
 
 #lcolumn{
 	grid-column: 1 / 2;
-	display: flex;
+	display: grid;
+	grid-template-rows: 90% 10%;
 	height: 100%;
-	flex-direction: column;
-	align-items: center;
 	border-right: 1px solid #1b222e;
 }
 
@@ -55,7 +54,7 @@ p{
 	background-color: #131c2a;  
 	font-size: 20px;
 	color: #fff;
-	border: none;
+	border: 2px solid #131c2a;
 	padding-left: 10px;
 	padding-top: 10px;
 	padding-right: 10px;
@@ -64,7 +63,7 @@ p{
 }
 
 #typing-input:focus{
-	border: 2px solid #2838b2;
+	border: 2px solid #214088;
 }
 
 #post-button{
@@ -89,14 +88,15 @@ p{
 	border-bottom: 1px solid #1b222e;
 }
 
-.avatar-wrapper{
+.tweet-avatar-wrapper{
 	margin-top: 12px;
 	margin-left: 20px;
 }
 
-.avatar-wrapper > img{
+.tweet-avatar{
 	height: 50px;
 	border-radius: 50%;
+	cursor: pointer;
 }
 
 .tweet-content-wrapper{
@@ -141,7 +141,7 @@ p{
 	font-family: NotoSerif;
 }
 
-.lcolumn-menu{
+.lcolumn-menu-item{
 	margin-top: 25px;
 	font-size: 20px;
 	padding: 4px;
@@ -150,8 +150,55 @@ p{
 	transition: 0.25s;
 }
 
-.lcolumn-menu:hover{
+.lcolumn-menu-item:hover{
 	cursor: pointer;
 	background-color: #131c2a;
 	border-radius: 25px;
+}
+
+#lcolumn-menu{
+	grid-row: 1 / 2;
+	display: flex;
+	height: 100%;
+	flex-direction: column;
+	align-items: center;
+	overflow: scroll;
+}
+
+#lcolumn-profile{
+	grid-row: 2 / 3;
+	display: flex;
+	height: 100%;
+	width: 100%;
+	align-items: flex-start;
+	justify-content: center;
+}
+
+#profile-wrapper{
+	width: 80%;
+	height: 88%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	border-radius: 34px;
+}
+
+#profile-wrapper:hover{
+	background-color: #131c2a;
+	cursor: pointer;
+}
+
+.user-profile-avatar{
+	width: 50px;
+	margin-left: 15px;
+	border-radius: 50%;
+	overflow: scroll;
+}
+
+#user-profile-info{
+	margin-left: 20px;
+}
+
+#user-profile-username{
+	color: #888;
 }

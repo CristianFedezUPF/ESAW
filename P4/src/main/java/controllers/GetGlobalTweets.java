@@ -1,6 +1,8 @@
 package controllers;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,19 +10,20 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import models.Tweet;
+import services.TweetService;
 
 /**
- * Servlet implementation class MainController
+ * Servlet implementation class dTcontroller
  */
-@WebServlet("/MainController")
-public class MainController extends HttpServlet {
+@WebServlet("/GetGlobalTweets")
+public class GetGlobalTweets extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MainController() {
+    public GetGlobalTweets() {
         super();
     }
 
@@ -29,21 +32,16 @@ public class MainController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		HttpSession session = request.getSession(false);
+		List<Tweet> tweets = Collections.emptyList();
+		TweetService tweetService = new TweetService();
+		tweets = tweetService.getGlobalTweets(0, 20);
+		tweetService.finalize();
+
+		request.setAttribute("tweets", tweets);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/ViewTweets.jsp"); 
+		dispatcher.forward(request,response);
 		
-		if (session==null || session.getAttribute("user")==null) {
-			System.out.println("MainController: NO active session has been found.");
-			request.setAttribute("menu","ViewMenuNotLogged.jsp");
-			request.setAttribute("content","ViewLoginForm.jsp");
-		}
-		else {
-			System.out.println("Main Controller: active session has been found.");
-			request.setAttribute("menu","ViewMenuLogged.jsp");
-			request.setAttribute("content","ViewCustomTimeline.jsp");
-		}
-		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
-		dispatcher.forward(request, response);	}
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

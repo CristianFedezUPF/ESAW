@@ -6,7 +6,7 @@ USE unitter;
 
 CREATE TABLE `user` (
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	`name` VARCHAR(128) NOT NULl, 		
+	`name` VARCHAR(60) NOT NULl, 		
     username VARCHAR(20) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
     `password` VARCHAR(255) NOT NULL,

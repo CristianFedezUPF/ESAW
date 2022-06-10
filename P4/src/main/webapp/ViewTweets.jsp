@@ -3,8 +3,8 @@
 
 <c:forEach var="t" items="${tweets}">       
  	<div id="${t.id}" class="tweet">
-		<div class="avatar-wrapper">
- 			<img src="imgs/avatar2.png" alt="Avatar">
+		<div class="tweet-avatar-wrapper">
+ 			<img class="tweet-avatar" src="imgs/avatar2.png" alt="Avatar">
  		</div>
  		<div class="tweet-content-wrapper">
  			<div class="tweet-content-header">
