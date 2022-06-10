@@ -66,9 +66,22 @@ p{
 	border: 2px solid #214088;
 }
 
+#input-bottom{
+	width: 100%;
+	height: fit-content;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+#input-bottom > p{
+	align-self: end;
+	margin-left: 20px;
+	color: #888;
+}
+
 #post-button{
 	width: 70px;
-	align-self: end;
 	margin-top: 10px;
 	margin-right: 18px;
 	padding: 5px;

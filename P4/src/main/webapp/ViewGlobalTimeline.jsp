@@ -4,7 +4,7 @@
  <script type="text/javascript">
  $(document).ready(function(){
 	$('#navigation').load('MenuController');
-	$('#tweet-list').load('GetGlobalTweets');
+	$('#tweet-list').load('GetCustomTweets');
  });
 </script>
 
@@ -30,7 +30,11 @@
 	<div id="mcolumn">
 		<div id="input-wrapper">
 			<textarea id="typing-input" placeholder="What's happening?"></textarea>
-			<button id="post-button">Post</button>
+			<div id="input-bottom">
+				<p>These are posts from everyone.</p>
+				<button id="post-button">Post</button>
+			</div>
+			
 		</div>
 		<div id="tweet-list">
 		</div>

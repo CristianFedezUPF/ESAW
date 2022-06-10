@@ -30,7 +30,11 @@
 	<div id="mcolumn">
 		<div id="input-wrapper">
 			<textarea id="typing-input" placeholder="What's happening?"></textarea>
-			<button id="post-button">Post</button>
+			<div id="input-bottom">
+				<p>These are posts from your followers.</p>
+				<button id="post-button">Post</button>
+			</div>
+			
 		</div>
 		<div id="tweet-list">
 		</div>
