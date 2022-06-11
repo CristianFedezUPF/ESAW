@@ -27,6 +27,7 @@ INSERT INTO `follows`(follower_id, followed_id) VALUES(3, 2);
 INSERT INTO `follows`(follower_id, followed_id) VALUES(4, 2);
 INSERT INTO `follows`(follower_id, followed_id) VALUES(1, 2);
 INSERT INTO `follows`(follower_id, followed_id) VALUES(3, 1);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(3, 5);
 INSERT INTO `follows`(follower_id, followed_id) VALUES(2, 1);
 INSERT INTO `follows`(follower_id, followed_id) VALUES(4, 1);
 
