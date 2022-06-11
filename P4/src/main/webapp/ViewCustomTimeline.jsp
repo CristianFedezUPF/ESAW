@@ -5,6 +5,7 @@
  $(document).ready(function(){
 	$('#navigation').load('MenuController');
 	$('#tweet-list').load('GetCustomTweets');
+	$('#who-to-follow').load('GetWhoToFollow')
  });
 </script>
 
@@ -27,11 +28,11 @@
 			</div>
 		</div>
 	</div>
-	<div id="mcolumn">
+		<div id="mcolumn">
 		<div id="input-wrapper">
 			<textarea id="typing-input" placeholder="What's happening?"></textarea>
 			<div id="input-bottom">
-				<p>These are posts from your followers.</p>
+				<p>These are posts from everyone.</p>
 				<button id="post-button">Post</button>
 			</div>
 			
@@ -41,7 +42,6 @@
 	</div>
 	<div id="rcolumn">
 		<div id="who-to-follow">
-			<p>Who to follow</p>
 		</div>
 	</div>
 </div>

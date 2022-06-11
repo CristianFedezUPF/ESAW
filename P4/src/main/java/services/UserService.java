@@ -175,6 +175,42 @@ public class UserService {
 		} 
 		return  l;
 	}
+	
+	public List<User> getWhoToFollow(Long userId, Integer amount){
+		 String query = "SELECT user.id, user.username, user.name, user.university, user.degree\r\n"
+		 		+ "FROM user\r\n"
+		 		+ "WHERE user.id NOT IN\r\n"
+		 		+ "(SELECT user.id \r\n"
+		 		+ "FROM user JOIN follows ON user.id = follows.followed_id\r\n"
+		 		+ "WHERE follows.follower_id = ?)\r\n"
+		 		+ "AND user.id != ?\r\n"
+		 		+ "ORDER BY rand()\r\n"
+		 		+ "LIMIT ?";
+		 PreparedStatement statement = null;
+		 List<User> users = new ArrayList<User>();
+		 try {
+			 statement = db.prepareStatement(query);
+			 statement.setLong(1, userId);
+			 statement.setLong(2, userId);
+			 statement.setInt(3, amount);
+			 ResultSet rs = statement.executeQuery();
+			 while (rs.next()) {
+				 User user = new User();
+				 user.setId(rs.getLong("id"));
+				 user.setUsername(rs.getString("username"));
+				 user.setName(rs.getString("name"));
+				 user.setUniversity(rs.getString("university"));
+				 user.setDegree(rs.getString("degree"));
+				 users.add(user);
+			 }
+			 rs.close();
+			 statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		return  users;
+	}
+	
 	// TODO LO DE START & END ES MEGA CUTRE
 	public List<User> getFollowedUsers(Long long1, Integer start, Integer end) {
 		 // TODO UPDATE QUERY

@@ -220,7 +220,7 @@ p{
 }
 
 #who-to-follow{
-	height: 65%;
+	height: fit-content;
 	width: 90%;
 	align-self: center;
 	background-color: #131c2a;
@@ -232,5 +232,62 @@ p{
 	font-size: 20px;
 	padding-left: 20px;
 	padding-top: 10px;
-	font-weight: bold
+	padding-bottom: 8px;
+	font-weight: bold;	
+}
+.who-to-follow-info{
+	display :flex;
+	flex-direction: row;
+	width: 100%;
+	align-items: center;
+}
+
+.who-to-follow-user{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: fit-content;
+	width: 100%;
+	border-top: 1px solid #1b222e;
+	transition: 0.15s ease-out;
+}
+
+.who-to-follow-user:hover{
+	cursor: pointer;
+	background-color: #1a2639;
+	
+}
+
+.who-to-follow-avatar{
+	width: 60px;
+	border-radius: 50%;
+	margin-left: 15px;
+}
+
+.who-to-follow-content-wrapper{
+	display: flex;
+	flex-direction: column;
+	margin-left: 10px;
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+
+.follow-button{
+	width: fit-content;
+	height: fit-content;
+	padding: 5px;
+	padding-left: 12px;
+	padding-right: 12px;
+	align-self: flex-end;
+	margin-right: 15%;
+	margin-bottom: 10px;
+	border: none;
+	border-radius: 18px;
+	color: #131c2a;
+	background-color: #fff;
+}
+
+.follow-button:hover{
+	background-color: #3e4e66;
+	color: #fff;
 }

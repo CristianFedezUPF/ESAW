@@ -5,6 +5,7 @@
  $(document).ready(function(){
 	$('#navigation').load('MenuController');
 	$('#tweet-list').load('GetGlobalTweets');
+	$('#who-to-follow').load('GetWhoToFollow')
  });
 </script>
 
@@ -41,7 +42,6 @@
 	</div>
 	<div id="rcolumn">
 		<div id="who-to-follow">
-			<p>Who to follow</p>
 		</div>
 	</div>
 </div>
