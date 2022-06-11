@@ -291,3 +291,16 @@ p{
 	background-color: #3e4e66;
 	color: #fff;
 }
+
+.who-to-follow-message{
+	width: 100%;
+	height: fit-content;
+	display: flex;
+	border-top: 1px solid #1b222e;
+	justify-content: center;
+	
+}
+
+.who-to-follow-message > p{
+	color: #888;
+}

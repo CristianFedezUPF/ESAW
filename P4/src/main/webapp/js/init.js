@@ -4,6 +4,10 @@ window.addEventListener('DOMContentLoaded', () => {
 				$('#content').load($(this).attr('id'));
 				event.preventDefault();
 			});
+			$(document).on("click",".timeline-menu",function(event) {
+				$('#tweet-list').load($(this).attr('id'));
+				event.preventDefault();
+			});
 			$(document).on("submit","form", function(event) {
 				$('#content').load($(this).attr('action'),$(this).serialize());
 			    event.preventDefault();
@@ -41,4 +45,6 @@ window.addEventListener('DOMContentLoaded', () => {
 				});
 				event.preventDefault();
 			});
+			
+			
 });
