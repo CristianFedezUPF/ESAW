@@ -15,7 +15,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			/* Add tweet */
 			$(document).on("click","#post-button",function(event){
 				$.post( "AddTweet", { content: $("#typing-input").val()}, function(event) {
-					$("#content").load("GetCustomTimeline");		
+					$('#tweet-list').load("GetCustomTweets");
 				});
 				event.preventDefault();
 			});
@@ -43,6 +43,11 @@ window.addEventListener('DOMContentLoaded', () => {
 					$("#content").load("GetFollowedUsers");
 					$("#lcolumn").load("GetNotFollowedUsers");
 				});
+				event.preventDefault();
+			});
+			/* Add tweet */
+			$(document).on("click",".who-to-follow-user", function(event){
+				$("#mcolumn").load("GetProfile/"+$(this).attr("id"));
 				event.preventDefault();
 			});
 			

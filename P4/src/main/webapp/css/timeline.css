@@ -97,6 +97,10 @@ p{
 	font-size: 18px;
 }
 
+#post-button:hover{
+	background-color: #275dbc;
+}
+
 .tweet{
 	display: flex;
 	flex-direction: row;
