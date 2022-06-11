@@ -1,5 +1,10 @@
 package services;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -86,6 +91,72 @@ public class UserService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public boolean isUserRegistered(User user) throws SQLException {
+		ResultSet rs;
+		PreparedStatement statement;
+		String query;
+		
+		// username
+		String username = user.getUsername();
+		query = "SELECT * FROM user WHERE username LIKE ?";
+		statement = db.prepareStatement(query);
+		statement.setString(1, username);
+		rs = statement.executeQuery();
+		if(rs.next()) {  // if there's some value in the result set, it's registered
+			user.setError(4);
+			return true;
+		}
+		user.setError(11);		
+		// email
+		String email = user.getEmail();
+		query = "SELECT * FROM user WHERE email LIKE ?";
+		statement =  db.prepareStatement(query);
+		statement.setString(1, email);
+		rs = statement.executeQuery();
+		if(rs.next()) {
+			user.setError(9);
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isPasswordCorrect(User user) throws SQLException, NoSuchAlgorithmException, IOException {
+		ResultSet rs;
+		PreparedStatement statement;
+		String query;
+		
+		String username = user.getUsername();
+		String password = user.getLoginPassword();
+		user.detroyLoginPassword();
+
+		query = "SELECT * FROM user WHERE username LIKE ?";
+		statement = db.prepareStatement(query);
+		statement.setString(1, username);
+		rs = statement.executeQuery();
+		
+		if(!rs.next()) return false;
+		
+		String dbPassword = rs.getString("password");		
+		String dbSalt = rs.getString("salt");
+				
+		byte[] secret = "ESAW".getBytes();
+		byte[] salt = dbSalt.getBytes(StandardCharsets.ISO_8859_1); 
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		outputStream.write(secret);
+		outputStream.write(salt); 
+		byte[] final_salt = outputStream.toByteArray();
+		
+		MessageDigest md = MessageDigest.getInstance("SHA-256");
+		md.update(final_salt);
+		String hashedPassword = new String(md.digest(password.getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.ISO_8859_1);
+				
+		if(dbPassword.equals(hashedPassword)) {
+			return true;
+		}
+		user.setError(10);
+		return false;
 	}
 	
 	// Follow a user
@@ -201,7 +272,7 @@ public class UserService {
 		return  l;
 	}
 	
-	public Pair<Boolean,User> checkLogin(User user) {
+	public Pair<Boolean,User> getUserByUsername(User user) {
 		// TODO update this
 		String query = "SELECT id, email, name from user where username=? AND password=?";
 		PreparedStatement statement = null;
