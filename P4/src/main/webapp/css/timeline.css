@@ -212,6 +212,7 @@ p{
 	width: 50px;
 	margin-left: 15px;
 	border-radius: 50%;
+	flex-shrink: 0;
 	overflow: scroll;
 }
 
@@ -311,4 +312,8 @@ p{
 
 .who-to-follow-message > p{
 	color: #888;
+}
+
+.who-to-follow-secondary-text{
+	color: #aaa;
 }

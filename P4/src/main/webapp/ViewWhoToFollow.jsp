@@ -13,8 +13,8 @@
 	 			</div>
 	 			<div class="who-to-follow-content-wrapper">
 	 				<p>${u.name}</p>
-	 				<p>@${u.username}</p>
-	 				<p>${u.university}</p>
+	 				<p class="who-to-follow-secondary-text">@${u.username}</p>
+	 				<p class="who-to-follow-secondary-text">${u.university}</p>
 	 			</div>
 	 		</div>
 	 		<button class="follow-button">Follow</button>

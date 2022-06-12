@@ -37,8 +37,10 @@ public class GetWhoToFollow extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		User user = (User) session.getAttribute("user");
+		
 		List<User> users = Collections.emptyList();
 		UserService userService = new UserService();
+		
 		users = userService.getWhoToFollow(user.getId(), 4);
 		userService.finalize();
 

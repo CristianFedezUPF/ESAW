@@ -1,7 +1,9 @@
 package controllers;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
+import javax.servlet.FilterChain;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -39,7 +41,8 @@ public class GetProfile extends HttpServlet {
 		User user = userService.getUser(userId);
 		
 		
-		request.setAttribute("userProfile", user);
+		request.setAttribute("profile", user);
+		response.setContentType("text/html; charset=UTF-8");
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/ViewProfile.jsp"); 
 		dispatcher.include(request,response);
 	}
