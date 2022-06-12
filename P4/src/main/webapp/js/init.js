@@ -1,21 +1,22 @@
 window.addEventListener('DOMContentLoaded', () => {
 			$.ajaxSetup({ cache: false }); //Avoids Internet Explorer caching!	
+			
 			$(document).on("click",".menu",function(event) {
 				$('#content').load($(this).attr('id'));
 				event.preventDefault();
 			});
 			$(document).on("click",".timeline-menu",function(event) {
-				$('#tweet-list').load($(this).attr('id'));
+				$('#mcolumn').load($(this).attr('id'));
 				event.preventDefault();
 			});
 			$(document).on("submit","form", function(event) {
-				$('#content').load($(this).attr('action'),$(this).serialize());
+				//$('#content').load($(this).attr('action'),$(this).serialize());
 			    event.preventDefault();
 			});
 			/* Add tweet */
 			$(document).on("click","#post-button",function(event){
 				$.post( "AddTweet", { content: $("#typing-input").val()}, function(event) {
-					$("#content").load("GetCustomTimeline");		
+					$('#tweet-list').load("GetCustomTweets");
 				});
 				event.preventDefault();
 			});
@@ -45,6 +46,10 @@ window.addEventListener('DOMContentLoaded', () => {
 				});
 				event.preventDefault();
 			});
-			
-			
+			/* Load profile */
+			$(document).on("click",".who-to-follow-user", function(event){
+				$("#mcolumn").load("GetProfileInfo/"+$(this).attr("id"));
+				event.preventDefault();
+			});
+
 });
