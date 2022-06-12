@@ -3,6 +3,7 @@ package controllers;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Date;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -40,8 +41,7 @@ public class RegisterController extends HttpServlet {
 	   System.out.print("RegisterController: ");
 	   User user = new User();
 	   UserService userService = new UserService();
-	   boolean cn = false;
-	   boolean cm = false;
+	   String view = "ViewRegisterForm.jsp";
 	
 	   try {
 		   Date defaultValue = null;
@@ -51,36 +51,31 @@ public class RegisterController extends HttpServlet {
 	
 		   BeanUtils.populate(user, request.getParameterMap());
 		   
-		   cn = userService.checkUser(user.getName());
-		   cm = userService.checkEmail(user.getEmail());
-		   
-		   
-		   // TODO THIS ON USER CLASS
-		   //user.setError("user", cn);
-		   //user.setError("mail", cm);
-		   
-		   if (userService.isComplete(user) && !cn && !cm) {
+		   if (user.isComplete() && !userService.isUserRegistered(user)) {
 			   
 			   userService.addUser(user);
 			   userService.finalize();
 			   System.out.println(" user ok, forwarding to ViewLoginForm.");
-			   RequestDispatcher dispatcher = request.getRequestDispatcher("ViewLoginForm.jsp");
-			   dispatcher.forward(request, response);
-		   
+			   view = "ViewLoginForm.jsp";
+			   
+			   user.detroyLoginPassword();
+			   //user.resetError();
 		   } 
 		   
 		   else  {
 		
 			   System.out.println(" forwarding to ViewRegisterForm.");
 			   request.setAttribute("user",user);
-			   RequestDispatcher dispatcher = request.getRequestDispatcher("ViewRegisterForm.jsp");
-			   dispatcher.forward(request, response);
+			   view = "ViewRegisterForm.jsp";
 		   }
 	   
-	   } catch (IllegalAccessException | InvocationTargetException e) {
+	   } catch (IllegalAccessException | InvocationTargetException | SQLException e) {
 			e.printStackTrace();
 	   }
 		
+	   RequestDispatcher dispatcher = request.getRequestDispatcher(view);
+	   dispatcher.forward(request, response);
+	   
 	}
 
 	/**

@@ -7,6 +7,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,11 +40,13 @@ private static final long serialVersionUID = 1L;
 	//[8] = Degree must contain only text characters. [9] = Email in use. [10] = Passwords do not match (login)
 	//[11] = User does not exist (login).
 	
-	private boolean[] error  = {false,false,false,false,false,false,false,false,false,false,false,false};
+	//private boolean[] error  = {false,false,false,false,false,false,false,false,false,false,false,false};
+	private HashMap<String,Boolean> error = null;
 	
 	public User() {
-		
+		error = new HashMap<String, Boolean>();
 	}
+	
 	
 	public Long getId() {
 		return id;
@@ -60,7 +63,7 @@ private static final long serialVersionUID = 1L;
 	public void setName(String name) {
 		name = name.trim();
 		if(name.length() < 1) {
-			error[0] = true;
+			error.put("0", true);
 		}
 		else {
 			this.name = name;
@@ -76,10 +79,10 @@ private static final long serialVersionUID = 1L;
 		username = username.trim();
 		int length = username.length();
 		if(length < 1) {
-			error[1] = true;
+			error.put("1", true);
 		}
 		else if(length < 4 || length > 15) {
-			error[2] = true;
+			error.put("2", true);
 		}
 		String regex = "^[a-zA-Z0-9]+$";
 		Pattern pattern = Pattern.compile(regex);
@@ -89,7 +92,7 @@ private static final long serialVersionUID = 1L;
 			System.out.println(username);
 		}
 		else {
-			error[3] = true;
+			error.put("3", true);
 		}
 	}
 	
@@ -106,7 +109,7 @@ private static final long serialVersionUID = 1L;
 			this.email = email;
 			System.out.println(email);
 		} else {
-			error[5] = true;
+			error.put("5", true);
 			System.out.println(email);
 		}
 	}
@@ -118,13 +121,13 @@ private static final long serialVersionUID = 1L;
 	public void setPassword(String password) throws NoSuchAlgorithmException, IOException {
 		password = password.trim();
 		if(password.length() < 6) {
-			error[6] = true;
+			error.put("6", true);
 		}
 		String regex = "^[a-zA-Z0-9]+$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(password);
 		if (!matcher.matches()) {
-			error[7] = true;
+			error.put("7", true);
 			System.out.println(password);
 			return;
 		}
@@ -186,6 +189,7 @@ private static final long serialVersionUID = 1L;
 	}
 	
 	public void setDegree(String degree) {
+		if (degree == null) return;
 		degree = degree.trim();
 		if(degree.length() == 0) {
 			return;
@@ -197,7 +201,7 @@ private static final long serialVersionUID = 1L;
 			this.degree = degree;
 			System.out.println(degree);
 		} else {
-			error[8] = true;
+			error.put("8", true);
 			System.out.println(degree);
 		}
 	}
@@ -237,23 +241,22 @@ private static final long serialVersionUID = 1L;
 	}
 	
 	public void setImagePath(String imagePath) {
+		if (imagePath == null) return;
 		imagePath = imagePath.trim();
 		this.imagePath = imagePath;
 		System.out.println(imagePath);
 	}
 	
-	public boolean[] getError() {
-		return error;
+	public HashMap<String,Boolean> getError() {
+		return this.error;
 	}
 	
-	public void setError(int index) {
-		this.error[index] = true;
+	public void setError(String name, boolean error) {
+		this.error.put(name, error);
 	}
 	
 	public void resetError() {
-		for(int i=0 ; i < this.error.length ; i++) {
-			this.error[i] = false;
-		}
+		this.error.clear();
 	}
 	
 	public String getSalt() {

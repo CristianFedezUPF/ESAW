@@ -1,5 +1,6 @@
 window.addEventListener('DOMContentLoaded', () => {
 			$.ajaxSetup({ cache: false }); //Avoids Internet Explorer caching!	
+			
 			$(document).on("click",".menu",function(event) {
 				$('#content').load($(this).attr('id'));
 				event.preventDefault();
@@ -9,7 +10,7 @@ window.addEventListener('DOMContentLoaded', () => {
 				event.preventDefault();
 			});
 			$(document).on("submit","form", function(event) {
-				$('#content').load($(this).attr('action'),$(this).serialize());
+				//$('#content').load($(this).attr('action'),$(this).serialize());
 			    event.preventDefault();
 			});
 			/* Add tweet */
@@ -45,11 +46,10 @@ window.addEventListener('DOMContentLoaded', () => {
 				});
 				event.preventDefault();
 			});
-			/* Add tweet */
+			/* Load profile */
 			$(document).on("click",".who-to-follow-user", function(event){
 				$("#mcolumn").load("GetProfile/"+$(this).attr("id"));
 				event.preventDefault();
 			});
-			
-			
+
 });
