@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,24 +39,31 @@ public class UserService {
 	}
 	
 	/* Get a user given its PK*/
-	public User getUser(Long long1) {
-		String query = "SELECT id, email, name, degree, country, birthday, position FROM users WHERE id = ? ;";
+
+	public User getUser(Long userId) {
+		String query = "SELECT user.id, user.username, user.name, user.university,\r\n"
+				+ "user.degree, user.country, user.position, \r\n"
+				+ "user.post_count, user.follower_count, user.following_count,\r\n"
+				+ "user.birthday\r\n"
+				+ "FROM user WHERE user.id = ?;";
 		PreparedStatement statement = null;
 		ResultSet rs = null;
 		User user = null;
 		try {
 			statement = db.prepareStatement(query);
-			statement.setLong(1,long1);
+			statement.setLong(1, userId);
 			rs = statement.executeQuery();
 			if (rs.next()) {
 				user = new User();
 				user.setId(rs.getLong("id"));
-				user.setEmail(rs.getString("email"));
+				user.setUsername(rs.getString("username"));
 				user.setName(rs.getString("name"));
+				user.setUniversity(rs.getString("university"));
 				user.setDegree(rs.getString("degree"));
 				user.setCountry(rs.getString("country"));
-				user.setBirthday(rs.getDate("birthday"));
 				user.setPosition(rs.getString("position"));
+				// TODO attributes
+				user.setBirthday(rs.getDate("birthday"));
 			}
 			rs.close();
 			statement.close();
@@ -250,6 +258,42 @@ public class UserService {
 		} 
 		return  l;
 	}
+	
+	public List<User> getWhoToFollow(Long userId, Integer amount){
+		 String query = "SELECT user.id, user.username, user.name, user.university, user.degree\r\n"
+		 		+ "FROM user\r\n"
+		 		+ "WHERE user.id NOT IN\r\n"
+		 		+ "(SELECT user.id \r\n"
+		 		+ "FROM user JOIN follows ON user.id = follows.followed_id\r\n"
+		 		+ "WHERE follows.follower_id = ?)\r\n"
+		 		+ "AND user.id != ?\r\n"
+		 		+ "ORDER BY rand()\r\n"
+		 		+ "LIMIT ?";
+		 PreparedStatement statement = null;
+		 List<User> users = new ArrayList<User>();
+		 try {
+			 statement = db.prepareStatement(query);
+			 statement.setLong(1, userId);
+			 statement.setLong(2, userId);
+			 statement.setInt(3, amount);
+			 ResultSet rs = statement.executeQuery();
+			 while (rs.next()) {
+				 User user = new User();
+				 user.setId(rs.getLong("id"));
+				 user.setUsername(rs.getString("username"));
+				 user.setName(rs.getString("name"));
+				 user.setUniversity(rs.getString("university"));
+				 user.setDegree(rs.getString("degree"));
+				 users.add(user);
+			 }
+			 rs.close();
+			 statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		return  users;
+	}
+	
 	// TODO LO DE START & END ES MEGA CUTRE
 	public List<User> getFollowedUsers(Long long1, Integer start, Integer end) {
 		 // TODO UPDATE QUERY

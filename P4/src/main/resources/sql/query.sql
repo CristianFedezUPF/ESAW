@@ -24,7 +24,7 @@ WHERE tweet.user_id IN
 (SELECT followed_id FROM follows WHERE follower_id = 1 OR follower_id = 2)
 ORDER BY tweet.creation_timestamp DESC;
 
-
+SELECT user.id, user.username, user.name, user.university, user.degree
 
 
 SELECT username from user where username="helena";

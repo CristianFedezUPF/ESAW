@@ -5,7 +5,10 @@ window.addEventListener('DOMContentLoaded', () => {
 				$('#content').load($(this).attr('id'));
 				event.preventDefault();
 			});
-			
+			$(document).on("click",".timeline-menu",function(event) {
+				$('#tweet-list').load($(this).attr('id'));
+				event.preventDefault();
+			});
 			$(document).on("submit","form", function(event) {
 				//$('#content').load($(this).attr('action'),$(this).serialize());
 			    event.preventDefault();
@@ -13,7 +16,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			/* Add tweet */
 			$(document).on("click","#post-button",function(event){
 				$.post( "AddTweet", { content: $("#typing-input").val()}, function(event) {
-					$("#content").load("GetCustomTimeline");		
+					$('#tweet-list').load("GetCustomTweets");
 				});
 				event.preventDefault();
 			});
@@ -43,4 +46,10 @@ window.addEventListener('DOMContentLoaded', () => {
 				});
 				event.preventDefault();
 			});
+			/* Load profile */
+			$(document).on("click",".who-to-follow-user", function(event){
+				$("#mcolumn").load("GetProfile/"+$(this).attr("id"));
+				event.preventDefault();
+			});
+
 });

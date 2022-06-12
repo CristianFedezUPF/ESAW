@@ -58,6 +58,19 @@ public class LoginController extends HttpServlet {
     			session.setAttribute("user",pair.getRight());
     			view = "ViewCustomTimeline.jsp";
 	    		
+	    		if (pair.getLeft()) {
+		    		System.out.println("login OK, forwarding to ViewMainPage ");
+	    			HttpSession session = request.getSession();
+	    			session.setAttribute("user",pair.getRight());
+	    			view = "ViewMainPage.jsp";
+	    			
+	    		}
+	    		else {
+	    			System.out.println("user is not logged (user not found), forwarding to ViewLoginForm ");
+	    			request.setAttribute("error", true);
+					request.setAttribute("user",user);
+				}
+
 		    } 
 	    	else {
 			    System.out.println("user is not logged (first time) or incorrect, forwarding to ViewLoginForm ");

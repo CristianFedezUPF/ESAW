@@ -16,14 +16,14 @@ import services.UserService;
 /**
  * Servlet implementation class GetUserInfo
  */
-@WebServlet("/GetUserInfo")
-public class GetUserInfo extends HttpServlet {
+@WebServlet("/GetProfile/*")
+public class GetProfile extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetUserInfo() {
+    public GetProfile() {
         super();
     }
 
@@ -32,17 +32,15 @@ public class GetUserInfo extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		HttpSession session = request.getSession(false);
-		User user = (User) session.getAttribute("user");
+		String pathInfo = request.getPathInfo();
+		Long userId = Long.valueOf(pathInfo.substring(1));
+
+		UserService userService = new UserService();
+		User user = userService.getUser(userId);
 		
-		if (session != null || user != null) {
-			UserService userManager = new UserService();
-			user = userManager.getUser(user.getId());
-			userManager.finalize();
-		}
 		
-		request.setAttribute("user",user);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/ViewUserInfo.jsp"); 
+		request.setAttribute("userProfile", user);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/ViewProfile.jsp"); 
 		dispatcher.include(request,response);
 	}
 
