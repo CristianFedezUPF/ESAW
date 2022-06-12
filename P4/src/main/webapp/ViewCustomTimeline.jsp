@@ -9,7 +9,7 @@
 <div id="input-wrapper">
 	<textarea id="typing-input" placeholder="What's happening?"></textarea>
 	<div id="input-bottom">
-		<p id="input-info">These are posts from everyone.</p>
+		<p id="input-info">These are posts from the people you follow.</p>
 		<button id="post-button">Post</button>
 	</div>			
 </div>

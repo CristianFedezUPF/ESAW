@@ -4,7 +4,7 @@
  <script type="text/javascript">
  $(document).ready(function(){
 	$('#navigation').load('MenuController');
-	$('#mcolumn').load('GetGlobalTimeline');
+	$('#mcolumn').load('GetCustomTimeline');
 	$('#who-to-follow').load('GetWhoToFollow')
  });
 </script>
