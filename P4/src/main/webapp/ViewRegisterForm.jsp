@@ -312,46 +312,46 @@
 	    	<option value="T">Teacher</option>
 	  	</select>	  	
 	  	
-	  	<button>Register!</button>
+	  	<button class="login-register-button">Register!</button>
 	</form>
 </div>
 
-<c:if test = "${user.error[0]}">
+<c:if test = "${user.error['0']}">
 	<script> showError("Please enter a name.") </script>
 </c:if>
 
-<c:if test = "${user.error[1]}">
+<c:if test = "${user.error['1']}">
 	<script> showError("Please enter a username.") </script>
 </c:if>
 
-<c:if test = "${user.error[2]}">
+<c:if test = "${user.error['2']}">
 	<script> showError("Username length invalid.") </script>
 </c:if>
 
-<c:if test = "${user.error[3]}">
+<c:if test = "${user.error['3']}">
 	<script> showError("Username is not valid.") </script>
 </c:if>
 
-<c:if test = "${user.error[4]}">
+<c:if test = "${user.error['4']}">
 	<script> showError("Username is already in use.") </script>
 </c:if>
 
-<c:if test = "${user.error[5]}">
+<c:if test = "${user.error['5']}">
 	<script> showError("Email is not valid.") </script>
 </c:if>
 
-<c:if test = "${user.error[6]}">
+<c:if test = "${user.error['6']}">
 	<script> showError("Password length should be longer than 6 characters") </script>
 </c:if>
 
-<c:if test = "${user.error[7]}">
+<c:if test = "${user.error['7']}">
 	<script>showError("Password must contain only alphanumeric characters") </script>
 </c:if>
 
-<c:if test = "${user.error[8]}">
+<c:if test = "${user.error['8']}">
 	<script>showError("Degree must contain only text characters")</script>
 </c:if>
 
-<c:if test = "${user.error[9]}">
+<c:if test = "${user.error['9']}">
 	<script>showError("Email is already in use.")</script>
 </c:if>

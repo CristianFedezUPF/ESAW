@@ -4,27 +4,35 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		
 		<title> Lab 4 Unitter</title>
 		<link rel="icon" href="imgs/logo.ico" type="image/vnd.microsoft.icon">
 	
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-		<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-red.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="css/mainStructure.css">
+		<link rel="stylesheet" href="css/timeline.css">
+		<link rel="stylesheet" href="css/profile.css">
 		<link rel="stylesheet" href="css/form.css">
 		<link rel="stylesheet" href="css/moreStyles.css">
+		<link rel="stylesheet" href="css/noto.css">
+		
+				
+		<link rel="preconnect" href="https://fonts.googleapis.com"> 
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+		<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		
+		<script src = js/init.js type="text/javascript" defer></script>
+		<script src = js/common.js type="text/javascript" async></script>
 		
 		<template>
 			<p class="error-message">error</p>
 		</template>
-		
-		<script src = js/init.js type="text/javascript" defer></script>
-		<script src = js/common.js type="text/javascript" async></script>
 
 	</head>
 	<body>
@@ -35,24 +43,10 @@
 	 	</div>
 	 	<!-- End Navigation -->
 	 
-	 	<!-- Begin Content -->
-	 	<!-- Left Column -->
-		<div class="w3-container w3-col m3 w3-hide-small">
-			<div id="rcolumn">
-				<p></p>
-			</div>
-		</div>
-		<!-- Middle Column -->	
 		<div id="content">
 			<jsp:include page="${content}" />
 		</div>
-		<!-- Right Column -->
-		<div class="w3-container w3-col m3 w3-hide-small">
-			<div id="lcolumn">
-				<p></p>
-			</div>
-		</div>
-		<!-- End Content -->
+
 		<!-- Footer -->
 		<footer>
 		  <p> Universitat Pompeu Fabra </p>

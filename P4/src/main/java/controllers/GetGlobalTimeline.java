@@ -12,14 +12,14 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class GetOwnTimeline
  */
-@WebServlet("/GetOwnTimeline")
-public class GetOwnTimeline extends HttpServlet {
+@WebServlet("/GetGlobalTimeline")
+public class GetGlobalTimeline extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetOwnTimeline() {
+    public GetGlobalTimeline() {
         super();
     }
 
@@ -28,7 +28,7 @@ public class GetOwnTimeline extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("ViewOwnTimeline.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("ViewGlobalTimeline.jsp");
 		dispatcher.forward(request, response);
 		
 	}

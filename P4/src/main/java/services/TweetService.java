@@ -3,6 +3,8 @@ package services;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,13 +35,12 @@ public class TweetService {
 	/* Add a tweet */
 	public void addTweet(Tweet tweet) {
 		// TODO update query
-		String query = "INSERT INTO tweets (uid,postdatetime,content) VALUES (?,?,?)";
+		String query = "INSERT INTO tweet (user_id, content) VALUES (?,?)";
 		PreparedStatement statement = null;
 		try {
 			statement = db.prepareStatement(query);
-			statement.setInt(1,tweet.getUid());
-			statement.setTimestamp(2,tweet.getPostDateTime());
-			statement.setString(3,tweet.getContent());
+			statement.setLong(1,tweet.getUserId());
+			statement.setString(2,tweet.getContent());
 			statement.executeUpdate();
 			statement.close();
 		} catch (SQLException e) {
@@ -48,14 +49,14 @@ public class TweetService {
 	}
 	
 	/* Delete existing tweet */
-	public void deleteTweet(Integer id,Integer uid) {
+	public void deleteTweet(Long long1,Long long2) {
 		// TODO update query
 		String query = "DELETE FROM tweets WHERE id = ? AND uid=?";
 		PreparedStatement statement = null;
 		try {
 			statement = db.prepareStatement(query);
-			statement.setInt(1,id);
-			statement.setInt(2,uid);
+			statement.setLong(1,long1);
+			statement.setLong(2,long2);
 			statement.executeUpdate();
 			statement.close();
 		} catch (SQLException e) {
@@ -65,31 +66,127 @@ public class TweetService {
 	
 	
 	/* Get tweets from a user given start and end*/
-	public List<Tweet> getUserTweets(Long long1,Integer start, Integer end) {
-		 String query = "SELECT tweets.id,tweets.uid,tweets.postdatetime,tweets.content,users.name FROM tweets INNER JOIN users ON tweets.uid = users.id where tweets.uid = ? ORDER BY tweets.postdatetime DESC LIMIT ?,? ;";
+	public List<Tweet> getUserTweets(Long userId,Integer start, Integer end) {
+		 String query = "SELECT tweet.id,tweet.user_id,tweet.creation_timestamp,tweet.content,user.username,user.name FROM tweet INNER JOIN user ON tweet.user_id = user.id where tweet.user_id = ? ORDER BY tweet.creation_timestamp DESC LIMIT ?,? ;";
 		 PreparedStatement statement = null;
-		 List<Tweet> l = new ArrayList<Tweet>();
+		 List<Tweet> tweets = new ArrayList<Tweet>();
 		 try {
 			 statement = db.prepareStatement(query);
-			 statement.setLong(1,long1);
+			 statement.setLong(1,userId);
 			 statement.setInt(2,start);
 			 statement.setInt(3,end);
 			 ResultSet rs = statement.executeQuery();
 			 while (rs.next()) {
 				 Tweet tweet = new Tweet();
-       		     tweet.setId(rs.getInt("id"));
-				 tweet.setUid(rs.getInt("uid"));
-				 tweet.setPostDateTime(rs.getTimestamp("postdatetime"));
+       		     tweet.setId(rs.getLong("id"));
+				 tweet.setUserId(rs.getLong("user_id"));
+				 LocalDateTime then = rs.getObject("creation_timestamp", LocalDateTime.class);
+				 LocalDateTime now = LocalDateTime.now();
+				 tweet.setTimeSince(computeTimeSince(then, now));
 				 tweet.setContent(rs.getString("content"));
-				 tweet.setUname(rs.getString("name"));
-				 l.add(tweet);
+				 tweet.setUsername(rs.getString("username"));
+				 tweet.setName(rs.getString("name"));;
+				 tweets.add(tweet);
 			 }
 			 rs.close();
 			 statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} 
-		return  l;
+		return tweets;
+	}
+	
+	public List<Tweet> getGlobalTweets(Integer start, Integer end){
+		String query = "SELECT tweet.id,tweet.user_id,tweet.creation_timestamp,tweet.content,user.username,user.name FROM tweet INNER JOIN user ON user.id = tweet.user_id ORDER BY tweet.creation_timestamp DESC LIMIT ?,?";
+		PreparedStatement statement = null;
+		List<Tweet> tweets = new ArrayList<Tweet>();
+		try {
+			 statement = db.prepareStatement(query);
+			 statement.setInt(1,start);
+			 statement.setInt(2,end);
+			 ResultSet rs = statement.executeQuery();
+			 while (rs.next()) {
+				 Tweet tweet = new Tweet();
+      		     tweet.setId(rs.getLong("id"));
+				 tweet.setUserId(rs.getLong("user_id"));
+				 LocalDateTime then = rs.getObject("creation_timestamp", LocalDateTime.class);
+				 LocalDateTime now = LocalDateTime.now();
+				 tweet.setTimeSince(computeTimeSince(then, now));
+				 tweet.setContent(rs.getString("content"));
+				 tweet.setUsername(rs.getString("username"));
+				 tweet.setName(rs.getString("name"));
+				 tweets.add(tweet);
+			 }
+			 rs.close();
+			 statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		return tweets;
+	}
+	
+	public List<Tweet> getCustomTweets(Long userId, Integer start, Integer end){
+		
+		String query = "SELECT tweet.id, tweet.user_id, tweet.creation_timestamp, tweet.content, user.username, user.name\r\n"
+				+ "FROM tweet JOIN user ON tweet.user_id = user.id\r\n"
+				+ "WHERE tweet.user_id IN \r\n"
+				+ "(SELECT followed_id FROM follows WHERE follower_id = ?)\r\n"
+				+ "OR tweet.user_id = ?\r\n"
+				+ "ORDER BY tweet.creation_timestamp DESC LIMIT ?,?";
+		PreparedStatement statement = null;
+		List<Tweet> tweets = new ArrayList<Tweet>();
+		try {
+			 statement = db.prepareStatement(query);
+			 statement.setLong(1, userId);
+			 statement.setLong(2, userId);
+			 statement.setInt(3,start);
+			 statement.setInt(4,end);
+			 ResultSet rs = statement.executeQuery();
+			 while (rs.next()) {
+				 Tweet tweet = new Tweet();
+      		     tweet.setId(rs.getLong("id"));
+				 tweet.setUserId(rs.getLong("user_id"));
+				 LocalDateTime then = rs.getObject("creation_timestamp", LocalDateTime.class);
+				 LocalDateTime now = LocalDateTime.now();
+				 tweet.setTimeSince(computeTimeSince(then, now));
+				 tweet.setContent(rs.getString("content"));
+				 tweet.setUsername(rs.getString("username"));
+				 tweet.setName(rs.getString("name"));
+				 tweets.add(tweet);
+			 }
+			 rs.close();
+			 statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		return tweets;
+	}
+	
+	private String computeTimeSince(LocalDateTime from, LocalDateTime to) {
+		Long yearDiff = ChronoUnit.YEARS.between(from, to);
+		if(yearDiff != 0) {
+			return yearDiff.toString() + "Y";
+		}
+		Long monthDiff = ChronoUnit.MONTHS.between(from, to);
+		if(monthDiff != 0) {
+			return monthDiff.toString() + "M";
+		}
+		Long dayDiff = ChronoUnit.DAYS.between(from, to);
+		if(dayDiff != 0) {
+			return dayDiff.toString() + "d";
+		}
+		Long hourDiff = ChronoUnit.HOURS.between(from, to);
+		if(hourDiff != 0) {
+			return hourDiff.toString() + "h";
+		}
+		Long minuteDiff = ChronoUnit.MINUTES.between(from, to);
+		if(minuteDiff != 0) {
+			return minuteDiff.toString() + "m";
+		}
+		Long secondDiff = ChronoUnit.SECONDS.between(from, to);
+		return secondDiff.toString() + "s";
+		
+		
 	}
 	
 	

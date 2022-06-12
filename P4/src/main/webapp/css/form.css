@@ -36,7 +36,7 @@ input:invalid {
 	display: flex;
 	flex-direction: column;
 	border: 1px red;
-	background: #2d323b;
+	background: #131c2a;
 	border-radius: 8px;
     width: max(250px, 35%);
     /* offset-x | offset-y | blur-radius | spread-radius | color */
@@ -119,7 +119,7 @@ form > select:checked{
 	color: #c2c2c2;
 }
 
-button{
+.login-register-button{
 	margin-left: 0px;
 	margin-top: 6px;
 	align-self: center;

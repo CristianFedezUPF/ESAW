@@ -46,9 +46,8 @@ public class AddTweet extends HttpServlet {
 			
 			if (session != null || user != null)
 				BeanUtils.populate(tweet, request.getParameterMap());
-				tweet.setUid(user.getId());
-				tweet.setUname(user.getName());
-				tweet.setPostDateTime(new Timestamp(System.currentTimeMillis()));
+				tweet.setUserId(user.getId());
+				tweet.setUsername(user.getName());
 				tweetManager.addTweet(tweet);
 				tweetManager.finalize();
 

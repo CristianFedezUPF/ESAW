@@ -19,7 +19,7 @@ import services.TweetService;
 /**
  * Servlet implementation class dTcontroller
  */
-@WebServlet("/GetUserTweets")
+@WebServlet("/GetUserTweets/*")
 public class GetUserTweets extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -35,15 +35,14 @@ public class GetUserTweets extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		HttpSession session = request.getSession(false);
+		String pathInfo = request.getPathInfo();
+		Long userId = Long.valueOf(pathInfo.substring(1));
 		List<Tweet> tweets = Collections.emptyList();
-		User user = (User) session.getAttribute("user");
 		
-		if (session != null || user != null) {
-			TweetService tweetManager = new TweetService();
-			tweets = tweetManager.getUserTweets(user.getId(),0,4);
-			tweetManager.finalize();
-		}
+		TweetService tweetManager = new TweetService();
+		tweets = tweetManager.getUserTweets(userId,0,10);
+		tweetManager.finalize();
+		
 
 		request.setAttribute("tweets",tweets);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/ViewTweets.jsp"); 

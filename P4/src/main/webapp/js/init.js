@@ -1,17 +1,22 @@
 window.addEventListener('DOMContentLoaded', () => {
 			$.ajaxSetup({ cache: false }); //Avoids Internet Explorer caching!	
+			
 			$(document).on("click",".menu",function(event) {
 				$('#content').load($(this).attr('id'));
 				event.preventDefault();
 			});
+			$(document).on("click",".timeline-menu",function(event) {
+				$('#mcolumn').load($(this).attr('id'));
+				event.preventDefault();
+			});
 			$(document).on("submit","form", function(event) {
-				$('#content').load($(this).attr('action'),$(this).serialize());
+				//$('#content').load($(this).attr('action'),$(this).serialize());
 			    event.preventDefault();
 			});
 			/* Add tweet */
-			$(document).on("click","#addTweet",function(event){
-				$.post( "AddTweet", { content: $("#tweetContent").text()}, function(event) {
-					$("#content").load("GetOwnTimeline");		
+			$(document).on("click","#post-button",function(event){
+				$.post( "AddTweet", { content: $("#typing-input").val()}, function(event) {
+					$('#tweet-list').load("GetCustomTweets");
 				});
 				event.preventDefault();
 			});
@@ -19,7 +24,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			$(document).on("click",".delTweet",function(event){
 				var tweet = $(this).parent();
 				$.post( "DelTweet", { id: $(this).parent().attr("id") } , function(event) {
-					$("#content").load("GetOwnTimeline");				
+					$("#content").load("GetCustomTimeline");				
 				});
 				event.preventDefault();
 			});
@@ -41,4 +46,10 @@ window.addEventListener('DOMContentLoaded', () => {
 				});
 				event.preventDefault();
 			});
+			/* Load profile */
+			$(document).on("click",".who-to-follow-user", function(event){
+				$("#mcolumn").load("GetProfileInfo/"+$(this).attr("id"));
+				event.preventDefault();
+			});
+
 });

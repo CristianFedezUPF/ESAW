@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,20 +11,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.tuple.Pair;
+
 import models.User;
 import services.UserService;
 
 /**
- * Servlet implementation class GetUserInfo
+ * Servlet implementation class LoginController
  */
-@WebServlet("/GetUserInfo")
-public class GetUserInfo extends HttpServlet {
+@WebServlet("/AnonymousController")
+public class AnonymousController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetUserInfo() {
+    public AnonymousController() {
         super();
     }
 
@@ -31,21 +35,13 @@ public class GetUserInfo extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		HttpSession session = request.getSession(false);
-		User user = (User) session.getAttribute("user");
-		
-		if (session != null || user != null) {
-			UserService userManager = new UserService();
-			user = userManager.getUser(user.getId());
-			userManager.finalize();
-		}
-		
-		request.setAttribute("user",user);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/ViewUserInfo.jsp"); 
-		dispatcher.include(request,response);
-	}
 
+	    RequestDispatcher dispatcher = request.getRequestDispatcher("ViewAnonymousTimeline.jsp");
+		dispatcher.forward(request, response);
+		    
+	    
+	}
+		
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -54,3 +50,4 @@ public class GetUserInfo extends HttpServlet {
 	}
 
 }
+
