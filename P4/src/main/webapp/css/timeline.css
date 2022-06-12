@@ -194,7 +194,7 @@ p{
 	justify-content: center;
 }
 
-#profile-wrapper{
+.user-profile-wrapper{
 	width: 80%;
 	height: 88%;
 	display: flex;
@@ -203,7 +203,7 @@ p{
 	border-radius: 34px;
 }
 
-#profile-wrapper:hover{
+.user-profile-wrapper:hover{
 	background-color: #131c2a;
 	cursor: pointer;
 }

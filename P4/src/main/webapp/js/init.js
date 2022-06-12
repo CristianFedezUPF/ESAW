@@ -6,7 +6,7 @@ window.addEventListener('DOMContentLoaded', () => {
 				event.preventDefault();
 			});
 			$(document).on("click",".timeline-menu",function(event) {
-				$('#tweet-list').load($(this).attr('id'));
+				$('#mcolumn').load($(this).attr('id'));
 				event.preventDefault();
 			});
 			$(document).on("submit","form", function(event) {
@@ -48,7 +48,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			});
 			/* Load profile */
 			$(document).on("click",".who-to-follow-user", function(event){
-				$("#mcolumn").load("GetProfile/"+$(this).attr("id"));
+				$("#mcolumn").load("GetProfileInfo/"+$(this).attr("id"));
 				event.preventDefault();
 			});
 

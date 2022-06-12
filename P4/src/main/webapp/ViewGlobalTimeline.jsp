@@ -5,8 +5,15 @@
  $(document).ready(function(){
 	$('#tweet-list').load('GetGlobalTweets');
  });
- document.getElementById("input-info").innerText = "These are posts from everyone.";
 </script>
 
  
-
+<div id="input-wrapper">
+	<textarea id="typing-input" placeholder="What's happening?"></textarea>
+	<div id="input-bottom">
+		<p id="input-info">These are posts from everyone.</p>
+		<button id="post-button">Post</button>
+	</div>			
+</div>
+<div id="tweet-list">
+</div>

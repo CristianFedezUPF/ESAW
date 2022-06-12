@@ -62,7 +62,9 @@ public class UserService {
 				user.setDegree(rs.getString("degree"));
 				user.setCountry(rs.getString("country"));
 				user.setPosition(rs.getString("position"));
-				// TODO attributes
+				user.setPostCount(rs.getInt("post_count"));
+				user.setFollowingCount(rs.getInt("following_count"));
+				user.setFollowerCount(rs.getInt("follower_count"));
 				user.setBirthday(rs.getDate("birthday"));
 			}
 			rs.close();

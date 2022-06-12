@@ -36,3 +36,14 @@
 .profile-text{
 	color: #aaa;
 }
+
+.profile-stats{
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	height: fit-content;
+	justify-content: space-evenly;
+	margin-top: 15px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #1b222e;
+}
