@@ -45,8 +45,6 @@ private static final long serialVersionUID = 1L;
 	
 	public User() {
 		error = new HashMap<String, Boolean>();
-		error.put("11", true);
-
 	}
 	
 	
@@ -191,6 +189,7 @@ private static final long serialVersionUID = 1L;
 	}
 	
 	public void setDegree(String degree) {
+		if (degree == null) return;
 		degree = degree.trim();
 		if(degree.length() == 0) {
 			return;
@@ -242,6 +241,7 @@ private static final long serialVersionUID = 1L;
 	}
 	
 	public void setImagePath(String imagePath) {
+		if (imagePath == null) return;
 		imagePath = imagePath.trim();
 		this.imagePath = imagePath;
 		System.out.println(imagePath);

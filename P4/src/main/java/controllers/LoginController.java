@@ -51,24 +51,16 @@ public class LoginController extends HttpServlet {
 			
 	    	if (user.isLoginComplete() && userService.isUserRegistered(user) && userService.isPasswordCorrect(user) ) {
 	    		
-	    		pair = userService.getUserByUsername(user);
+	    		pair = userService.getUserByUsername(user); //will always find the user as we have checked it is correct
 	    		
-	    		if (pair.getLeft()) {
-		    		System.out.println("login OK, forwarding to ViewCustomTimeline ");
-	    			HttpSession session = request.getSession();
-	    			session.setAttribute("user",pair.getRight());
-	    			view = "ViewCustomTimeline.jsp";
-	    			
-	    		}
-	    		else {
-	    			System.out.println("user is not logged (user not found), forwarding to ViewLoginForm ");
-	    			request.setAttribute("error", true);
-					request.setAttribute("user",user);
-				}
+	    		System.out.println("login OK, forwarding to ViewCustomTimeline ");
+    			HttpSession session = request.getSession();
+    			session.setAttribute("user",pair.getRight());
+    			view = "ViewCustomTimeline.jsp";
+	    		
 		    } 
-			
 	    	else {
-			    System.out.println("user is not logged (first time), forwarding to ViewLoginForm ");
+			    System.out.println("user is not logged (first time) or incorrect, forwarding to ViewLoginForm ");
 				request.setAttribute("user",user);
 	    	}
 	    	

@@ -39,7 +39,7 @@ public class UserService {
 	
 	/* Get a user given its PK*/
 	public User getUser(Long long1) {
-		String query = "SELECT id,name,mail FROM users WHERE id = ? ;";
+		String query = "SELECT id, email, name, degree, country, birthday, position FROM users WHERE id = ? ;";
 		PreparedStatement statement = null;
 		ResultSet rs = null;
 		User user = null;
@@ -50,8 +50,12 @@ public class UserService {
 			if (rs.next()) {
 				user = new User();
 				user.setId(rs.getLong("id"));
+				user.setEmail(rs.getString("email"));
 				user.setName(rs.getString("name"));
-				user.setEmail(rs.getString("mail"));
+				user.setDegree(rs.getString("degree"));
+				user.setCountry(rs.getString("country"));
+				user.setBirthday(rs.getDate("birthday"));
+				user.setPosition(rs.getString("position"));
 			}
 			rs.close();
 			statement.close();
@@ -274,18 +278,21 @@ public class UserService {
 	
 	public Pair<Boolean,User> getUserByUsername(User user) {
 		// TODO update this
-		String query = "SELECT id, email, name from user where username=? AND password=?";
+		String query = "SELECT id, email, name, degree, country, birthday, position from user where username=?";
 		PreparedStatement statement = null;
 		boolean output = false;
 		try {
 			statement = db.prepareStatement(query);
 			statement.setString(1,user.getUsername());
-			statement.setString(2,user.getLoginPassword());
 			ResultSet rs = statement.executeQuery();
 			if (rs.next()) {
 				user.setId(rs.getLong("id"));
 				user.setEmail(rs.getString("email"));
-				user.setName(rs.getString("name"));;
+				user.setName(rs.getString("name"));
+				user.setDegree(rs.getString("degree"));
+				user.setCountry(rs.getString("country"));
+				user.setBirthday(rs.getDate("birthday"));
+				user.setPosition(rs.getString("position"));
 				output = true;
 			} 
 			rs.close();
@@ -300,80 +307,5 @@ public class UserService {
 		
 	}
 	
-	public boolean checkUser(String user) {
-		// TODO WHAT DOES THIS CHECK FOR? RENAME
-		String query = "SELECT username from user where username=?";
-		PreparedStatement statement = null;
-		ResultSet rs = null;
-		boolean output = false;
-		try {
-			
-			statement = db.prepareStatement(query);
-			statement.setString(1,user);
-			rs = statement.executeQuery();
-			if (rs.isBeforeFirst()) {
-				output = true;
-			}
-			rs.close();
-			statement.close();
-			return output;
-			
-		} catch (SQLIntegrityConstraintViolationException e) {
-			System.out.println(e.getMessage());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return output;
-		
-	}
-	
-	public boolean checkEmail(String email) {
-		// TODO WHAT DOES THIS CHECK FOR? RENAME
-		String query = "SELECT email from user where email=?";
-		PreparedStatement statement = null;
-		ResultSet rs = null;
-		boolean output = false;
-		try {
-			
-			statement = db.prepareStatement(query);
-			statement.setString(1, email);
-			rs = statement.executeQuery();
-			if (rs.isBeforeFirst()) {
-				output = true;
-			}
-			rs.close();
-			statement.close();
-			return output;
-			
-		} catch (SQLIntegrityConstraintViolationException e) {
-			System.out.println(e.getMessage());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return output;
-		
-	}
-	
-	//TODO change this
-	/*Check if all the fields are filled correctly */
-	public boolean isComplete(User user) {
-	    return(hasValue(user.getName()) &&
-	    	   hasValue(user.getEmail()) &&
-	    	   hasValue(user.getPassword()) );
-	}
-	
-	public boolean isLoginComplete(User user) {
-	    return(hasValue(user.getUsername()) &&
-	    	   hasValue(user.getPassword()) );
-	}
-	
-	private boolean hasValue(String val) {
-		return((val != null) && (!val.equals("")));
-	}
-		
-	
-	// TODO: add other methods 
 
 }
