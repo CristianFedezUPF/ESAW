@@ -267,7 +267,7 @@ private static final long serialVersionUID = 1L;
 		return this.loginPassword;
 	}
 	
-	public void detroyLoginPassword() {
+	public void destroyLoginPassword() {
 		this.loginPassword = "";
 	}
 	

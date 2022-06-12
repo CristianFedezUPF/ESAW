@@ -276,6 +276,10 @@ p{
 	margin-bottom: 8px;
 }
 
+.who-to-follow-content-wrapper > p{
+	margin-right: 5px;
+}
+
 .follow-button{
 	width: fit-content;
 	height: fit-content;

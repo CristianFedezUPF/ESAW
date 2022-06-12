@@ -141,7 +141,7 @@ public class UserService {
 		
 		String username = user.getUsername();
 		String password = user.getLoginPassword();
-		user.detroyLoginPassword();
+		user.destroyLoginPassword();
 
 		query = "SELECT * FROM user WHERE username LIKE ?";
 		statement = db.prepareStatement(query);

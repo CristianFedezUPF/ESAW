@@ -60,7 +60,6 @@ public class LoginController extends HttpServlet {
 	    		
 	    		if (pair.getLeft()) {
 		    		System.out.println("login OK, forwarding to ViewMainPage ");
-	    			HttpSession session = request.getSession();
 	    			session.setAttribute("user",pair.getRight());
 	    			view = "ViewMainPage.jsp";
 	    			

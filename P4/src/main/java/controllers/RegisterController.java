@@ -58,7 +58,7 @@ public class RegisterController extends HttpServlet {
 			   System.out.println(" user ok, forwarding to ViewLoginForm.");
 			   view = "ViewLoginForm.jsp";
 			   
-			   user.detroyLoginPassword();
+			   user.destroyLoginPassword();
 			   //user.resetError();
 		   } 
 		   
