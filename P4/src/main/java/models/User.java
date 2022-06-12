@@ -26,7 +26,11 @@ private static final long serialVersionUID = 1L;
 	private String degree;
 	private String country;
 	private Date birthday;
+	private Long postCount;
+	private Long followingCount;
+	private Long followerCount;
 	private String position;	// student/teacher
+	private boolean admin;
 	private String imagePath;
 	
 	private String salt;
@@ -226,6 +230,36 @@ private static final long serialVersionUID = 1L;
 		System.out.println(birthday);
 	}
 	
+	public Long getPostCount() {
+		return this.postCount;
+	}
+	
+	public void setPostCount(Long count) {
+		this.postCount = count;
+		System.out.println(postCount);
+	}
+	
+	public Long getFollowingCount() {
+		return this.followingCount;
+	}
+	
+	public void setFollowingCount(Long count) {
+		this.followingCount = count;
+		System.out.println(followingCount);
+
+	}
+	
+	public Long getFollowerCount() {
+		return this.followerCount;
+		
+	}
+	
+	public void setFollowerCount(Long count) {
+		this.followerCount = count;
+		System.out.println(followerCount);
+
+	}
+	
 	public String getPosition() {
 		return this.position;
 	}
@@ -234,6 +268,17 @@ private static final long serialVersionUID = 1L;
 		position = position.trim();
 		this.position = position;
 		System.out.println(position);
+	}
+	
+	public boolean isAdmin() {
+		return this.admin;
+		
+	}
+	
+	public void setAdmin(boolean val) {
+		this.admin = val;
+		System.out.println(admin);
+
 	}
 	
 	public String getImagePath() {
