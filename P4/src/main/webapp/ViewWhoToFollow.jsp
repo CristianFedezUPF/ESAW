@@ -26,3 +26,15 @@
 		<p>It seems that you already follow everyone!</p>
 	</div>
 </c:if>
+
+<script type="text/javascript">
+	// to set the bottom who to follow user to same round borders
+	let who_to_follow = document.getElementById("who-to-follow");
+	let border_radius = getComputedStyle(who_to_follow).borderBottomLeftRadius;
+	let element = who_to_follow.children[who_to_follow.childElementCount - 2];
+	if(element.tagName === "DIV"){
+		element.style["border-bottom-left-radius"] = border_radius;
+		element.style["border-bottom-right-radius"] = border_radius;
+	}
+	
+</script>
