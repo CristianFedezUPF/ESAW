@@ -1,11 +1,24 @@
 window.addEventListener('DOMContentLoaded', () => {
 			$.ajaxSetup({ cache: false }); //Avoids Internet Explorer caching!	
+			
 			$(document).on("click",".menu",function(event) {
 				$('#content').load($(this).attr('id'));
 				event.preventDefault();
 			});
+			
+			
+			var menuItems = document.getElementsByClassName("menu");
+			var content = document.getElementById("content");
+			for(const item of menuItems){
+				item.addEventListener("click", async (event) => {
+					const response = await fetch(item.id);
+					content.innerHTML = await response.text();
+					event.preventDefault();
+				});
+			}
+			
 			$(document).on("submit","form", function(event) {
-				$('#content').load($(this).attr('action'),$(this).serialize());
+				//$('#content').load($(this).attr('action'),$(this).serialize());
 			    event.preventDefault();
 			});
 			/* Add tweet */

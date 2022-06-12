@@ -1,4 +1,7 @@
 document.addEventListener("submit", event => {
+	
+	console.log("common.js");
+	
 	event.preventDefault();
 	if(!checkInputs()){
 		return false;

@@ -105,10 +105,10 @@ public class UserService {
 		statement.setString(1, username);
 		rs = statement.executeQuery();
 		if(rs.next()) {  // if there's some value in the result set, it's registered
-			user.setError(4);
+			user.setError("4", true);
 			return true;
 		}
-		user.setError(11);		
+		user.setError("11", true);		
 		// email
 		String email = user.getEmail();
 		query = "SELECT * FROM user WHERE email LIKE ?";
@@ -116,7 +116,7 @@ public class UserService {
 		statement.setString(1, email);
 		rs = statement.executeQuery();
 		if(rs.next()) {
-			user.setError(9);
+			user.setError("9", true);
 			return true;
 		}
 		return false;
@@ -155,7 +155,7 @@ public class UserService {
 		if(dbPassword.equals(hashedPassword)) {
 			return true;
 		}
-		user.setError(10);
+		user.setError("10", true);
 		return false;
 	}
 	
