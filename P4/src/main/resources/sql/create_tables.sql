@@ -3,6 +3,9 @@ CREATE DATABASE IF NOT EXISTS unitter
 CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 USE unitter;
 
+DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS tweet;
+DROP TABLE IF EXISTS `follows`;
 
 CREATE TABLE `user` (
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -27,8 +30,8 @@ CREATE TABLE `user` (
 CREATE TABLE `follows` (
 	follower_id BIGINT,
     followed_id BIGINT,
-    create_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, 
-    FOREIGN KEY(follower_id) REFERENCES `user`(id),
+	create_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, 
+	FOREIGN KEY(follower_id) REFERENCES `user`(id),
     FOREIGN KEY(followed_id) REFERENCES `user`(id),
     PRIMARY KEY(follower_id, followed_id)
 );
@@ -39,12 +42,12 @@ CREATE TABLE tweet (
     parent_id BIGINT,
     user_id BIGINT NOT NULL,
     content VARCHAR(255) NOT NULL,
-    creation_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY(parent_id) REFERENCES tweet(id),
+	create_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, 
+	FOREIGN KEY(parent_id) REFERENCES tweet(id),
     FOREIGN KEY(user_id) REFERENCES `user`(id)
 );
 
-
+DROP TRIGGER IF EXISTS update_follow;
 DELIMITER //
 CREATE TRIGGER update_follow AFTER INSERT ON `follows`
 	FOR EACH ROW
@@ -53,11 +56,31 @@ CREATE TRIGGER update_follow AFTER INSERT ON `follows`
     UPDATE `user` SET `user`.following_count = (`user`.following_count + 1) WHERE `user`.id = NEW.follower_id;
     END //
     DELIMITER ;
-    
+
+DROP TRIGGER IF EXISTS update_unfollow;
 DELIMITER //
-CREATE TRIGGER counter_post AFTER INSERT ON tweet
+CREATE TRIGGER update_unfollow AFTER DELETE ON `follows`
+	FOR EACH ROW
+    BEGIN 
+    UPDATE `user` SET `user`.follower_count = (`user`.follower_count - 1) WHERE `user`.id = OLD.followed_id;
+    UPDATE `user` SET `user`.following_count = (`user`.following_count - 1) WHERE `user`.id = OLD.follower_id;
+    END //
+    DELIMITER ;
+
+DROP TRIGGER IF EXISTS counter_post_added;
+DELIMITER //
+CREATE TRIGGER counter_post_added AFTER INSERT ON tweet
 	FOR EACH ROW
     BEGIN 
     UPDATE `user` SET `user`.post_count = (`user`.post_count + 1) WHERE `user`.id = NEW.user_id;
+    END //
+    DELIMITER ;
+    
+DROP TRIGGER IF EXISTS counter_post_del;
+DELIMITER //
+CREATE TRIGGER counter_post_del AFTER DELETE ON tweet
+	FOR EACH ROW
+    BEGIN 
+    UPDATE `user` SET `user`.post_count = (`user`.post_count - 1) WHERE `user`.id = OLD.user_id;
     END //
     DELIMITER ;
