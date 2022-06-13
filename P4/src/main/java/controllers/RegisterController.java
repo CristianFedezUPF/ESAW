@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.TimeZone;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -46,13 +47,13 @@ public class RegisterController extends HttpServlet {
 	   try {
 		   Date defaultValue = null;
 		   DateConverter converter = new DateConverter(defaultValue);
-		   converter.setPattern("yyyy-mm-dd");
+		   converter.setPattern("yyyy-MM-dd");
+		   converter.setTimeZone(TimeZone.getTimeZone("UTC"));
 		   ConvertUtils.register(converter, Date.class); // to convert the date from JS to a Date object.
 	
 		   BeanUtils.populate(user, request.getParameterMap());
 		   
 		   if (user.isComplete() && !userService.isUserRegistered(user)) {
-			   
 			   userService.addUser(user);
 			   userService.finalize();
 			   System.out.println(" user ok, forwarding to ViewLoginForm.");
