@@ -48,8 +48,33 @@ window.addEventListener('DOMContentLoaded', () => {
 			});
 			/* Load profile */
 			$(document).on("click",".who-to-follow-user", function(event){
-				$("#mcolumn").load("GetProfileInfo/"+$(this).attr("id"));
+				$("#mcolumn").load("GetProfileInfo/"+$(this).attr("data-userid"));
 				event.preventDefault();
 			});
-
+			/* Load profile on tweet avatar click */
+			$(document).on("click",".tweet-avatar", (event) => {
+				$("#mcolumn").load("GetProfileInfo/"+event.target.parentElement.parentElement.getAttribute("data-posterid"));
+				event.preventDefault();
+			});
+			/* Load profile on tweet content header click */
+			$(document).on("click",".tweet-content-header", (event) => {
+				$("#mcolumn").load("GetProfileInfo/"+event.target.closest(".tweet").getAttribute("data-posterid"));
+				event.preventDefault();
+			});
+			// Follow user from who-to-follow
+			$(document).on("click",".follow-button", (event) => {
+				$.post( "FollowUser/" + event.target.parentElement.getAttribute("data-userid"), {}, () => {
+					let who_to_follow_tab = document.getElementById("who-to-follow");
+					let children = who_to_follow_tab.getElementsByClassName("who-to-follow-user");
+					if(children.length > 1){
+						who_to_follow_tab.removeChild(children[children.length -1]);
+						setBottomWhoToFollowUserToRoundBorders();
+					}
+					else{
+						$("#who-to-follow").load("GetWhoToFollow");
+					}
+				});
+				event.stopPropagation();
+				event.preventDefault();
+			});
 });

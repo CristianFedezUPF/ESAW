@@ -5,6 +5,11 @@
 	height: fit-content;
 }
 
+.profile-avatar-wrapper{
+	display: flex;
+	flex-direction: column;
+}
+
 .profile-avatar{
 	width: 120px;
 	border-radius: 50%;
@@ -46,4 +51,24 @@
 	margin-top: 15px;
 	padding-bottom: 10px;
 	border-bottom: 1px solid #1b222e;
+}
+
+.profile-follow-button{
+	width: fit-content;
+	height: fit-content;
+	padding: 5px;
+	padding-left: 12px;
+	padding-right: 12px;
+	margin-left: 60px;
+	margin-top: 10px;
+	align-self: center;
+	border: none;
+	border-radius: 18px;
+	color: #131c2a;
+	background-color: #fff;
+}
+
+.profile-follow-button:hover{
+	background-color: #3e4e66;
+	color: #fff;
 }

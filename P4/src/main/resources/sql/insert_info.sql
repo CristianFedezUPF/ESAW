@@ -18,8 +18,29 @@ INSERT INTO `user`(`name`, username, email,`password`, gender, university, degre
 	image_path, salt, admin) VALUES ('Lucas Damián Chindemi Santa Cruz','PatoLucas','lucas.chindemi@gmail.com', 'nR²¶êLðùR
 Êø³üÏ¹¯¥ûlHÁS®', 'M', 'UPF', 'Computer', 
     'Argentina', '1999-3-1', 'S', NULL, '9û>íue ©.²;[=', true);
-    INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
+INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
 	image_path, salt, admin) VALUES ('Moni','moni','moni01@gmail.com', 'xUh·Z7âU³¢2yù$öäg¶åáhéþì', 'F', 'Universitat Pompeu Fabra', 'Computer Science', 'Spain',
+    '2001-02-20', 'S', NULL, '?ïÛ¨:6±¥­p', true);
+    INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
+	image_path, salt, admin) VALUES ('Moni','moni2','moni02@gmail.com', 'xUh·Z7âU³¢2yù$öäg¶åáhéþì', 'F', 'Universitat Pompeu Fabra', 'Computer Science', 'Spain',
+    '2001-02-20', 'S', NULL, '?ïÛ¨:6±¥­p', true);
+    INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
+	image_path, salt, admin) VALUES ('Moni','moni3','moni03@gmail.com', 'xUh·Z7âU³¢2yù$öäg¶åáhéþì', 'F', 'Universitat Pompeu Fabra', 'Computer Science', 'Spain',
+    '2001-02-20', 'S', NULL, '?ïÛ¨:6±¥­p', true);
+    INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
+	image_path, salt, admin) VALUES ('Moni','moni4','moni04@gmail.com', 'xUh·Z7âU³¢2yù$öäg¶åáhéþì', 'F', 'Universitat Pompeu Fabra', 'Computer Science', 'Spain',
+    '2001-02-20', 'S', NULL, '?ïÛ¨:6±¥­p', true);
+    INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
+	image_path, salt, admin) VALUES ('Moni','moni5','moni05@gmail.com', 'xUh·Z7âU³¢2yù$öäg¶åáhéþì', 'F', 'Universitat Pompeu Fabra', 'Computer Science', 'Spain',
+    '2001-02-20', 'S', NULL, '?ïÛ¨:6±¥­p', true);
+    INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
+	image_path, salt, admin) VALUES ('Moni','moni6','moni06@gmail.com', 'xUh·Z7âU³¢2yù$öäg¶åáhéþì', 'F', 'Universitat Pompeu Fabra', 'Computer Science', 'Spain',
+    '2001-02-20', 'S', NULL, '?ïÛ¨:6±¥­p', true);
+    INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
+	image_path, salt, admin) VALUES ('Moni','moni7','moni07@gmail.com', 'xUh·Z7âU³¢2yù$öäg¶åáhéþì', 'F', 'Universitat Pompeu Fabra', 'Computer Science', 'Spain',
+    '2001-02-20', 'S', NULL, '?ïÛ¨:6±¥­p', true);
+    INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
+	image_path, salt, admin) VALUES ('Moni','moni8','moni08@gmail.com', 'xUh·Z7âU³¢2yù$öäg¶åáhéþì', 'F', 'Universitat Pompeu Fabra', 'Computer Science', 'Spain',
     '2001-02-20', 'S', NULL, '?ïÛ¨:6±¥­p', true);
 
 

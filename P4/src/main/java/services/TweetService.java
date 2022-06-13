@@ -184,7 +184,10 @@ public class TweetService {
 			return minuteDiff.toString() + "m";
 		}
 		Long secondDiff = ChronoUnit.SECONDS.between(from, to);
-		return secondDiff.toString() + "s";
+		if(secondDiff != 0) {
+			return secondDiff.toString() + "s";
+		}
+		return "Now";
 		
 		
 	}

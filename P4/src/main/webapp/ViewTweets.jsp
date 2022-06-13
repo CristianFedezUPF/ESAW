@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <c:forEach var="t" items="${tweets}">       
- 	<div id="${t.id}" class="tweet">
+ 	<div data-tweetid="${t.id}" data-posterid="${t.userId}" class="tweet">
 		<div class="tweet-avatar-wrapper">
  			<img class="tweet-avatar" src="imgs/avatar2.png" alt="Avatar">
  		</div>

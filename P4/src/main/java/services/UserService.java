@@ -174,13 +174,13 @@ public class UserService {
 	}
 	
 	// Follow a user
-	public void followUser(Long long1, Long long2) {
-		String query = "INSERT INTO follows (uid,fid) VALUES (?,?)";
+	public void followUser(Long followerId, Long followedId) {
+		String query = "INSERT INTO follows (follower_id, followed_id) VALUES (?,?)";
 		PreparedStatement statement = null;
 		try {
 			statement = db.prepareStatement(query);
-			statement.setLong(1,long1);
-			statement.setLong(2,long2);
+			statement.setLong(1, followerId);
+			statement.setLong(2, followedId);
 			statement.executeUpdate();
 			statement.close();
 		} catch (SQLIntegrityConstraintViolationException e) {

@@ -10,6 +10,9 @@
 <div class="profile-wrapper">
 	<div class="profile-avatar-wrapper">
 		<img class="profile-avatar" src="imgs/avatar5.png">
+		<c:if test="${profile.id != user.id}">
+		<button class="profile-follow-button">Follow</button>
+		</c:if>
 	</div>
 	<div class="profile-info">
 		<p class="profile-name">${profile.name}</p>

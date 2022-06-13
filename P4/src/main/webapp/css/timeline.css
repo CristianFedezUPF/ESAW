@@ -132,18 +132,15 @@ p{
 	flex-direction: row;
 }
 
+.tweet-content-header:hover{
+	cursor: pointer;
+}
+
 .tweet-username{
 	padding-left: 8px;
 	color: #888;
 }
 
-.tweet-username:hover{
-	cursor: pointer;
-}
-
-.tweet-user:hover{
-	cursor: pointer;
-}
 
 .tweet-datetime-separator{
 	padding-left: 6px;

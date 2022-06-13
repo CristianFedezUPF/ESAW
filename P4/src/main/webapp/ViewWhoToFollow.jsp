@@ -4,9 +4,9 @@
 
 
 <p>Who to follow</p>
-<c:if test="${fn:length(users) > 1}">
+<c:if test="${fn:length(users) >= 1}">
 	<c:forEach var="u" items="${users}">       
-	 	<div id="${u.id}" class="who-to-follow-user">
+	 	<div data-userid="${u.id}" class="who-to-follow-user">
 	 		<div class="who-to-follow-info">
 	 			<div class="who-to-follow-avatar-wrapper">
 	 				<img class="who-to-follow-avatar" src="imgs/avatar2.png" alt="Avatar">
@@ -29,12 +29,17 @@
 
 <script type="text/javascript">
 	// to set the bottom who to follow user to same round borders
-	let who_to_follow = document.getElementById("who-to-follow");
-	let border_radius = getComputedStyle(who_to_follow).borderBottomLeftRadius;
-	let element = who_to_follow.children[who_to_follow.childElementCount - 2];
-	if(element.tagName === "DIV"){
-		element.style["border-bottom-left-radius"] = border_radius;
-		element.style["border-bottom-right-radius"] = border_radius;
+	function setBottomWhoToFollowUserToRoundBorders(){
+		let who_to_follow = document.getElementById("who-to-follow");
+		let border_radius = getComputedStyle(who_to_follow).borderBottomLeftRadius;
+		let element = who_to_follow.children[who_to_follow.childElementCount - 2];
+		if(element.tagName === "DIV"){
+			element.style["border-bottom-left-radius"] = border_radius;
+			element.style["border-bottom-right-radius"] = border_radius;
+		}
 	}
+	
+	setBottomWhoToFollowUserToRoundBorders();
+	
 	
 </script>

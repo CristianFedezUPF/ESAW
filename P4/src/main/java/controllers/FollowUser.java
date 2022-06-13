@@ -18,7 +18,7 @@ import services.UserService;
 /**
  * Servlet implementation class FollowUser
  */
-@WebServlet("/FollowUser")
+@WebServlet("/FollowUser/*")
 public class FollowUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -34,21 +34,18 @@ public class FollowUser extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		User fuser = new User();
-		UserService userManager = new UserService();
+		String pathInfo = request.getPathInfo();
+		Long followUserId = Long.valueOf(pathInfo.substring(1));
+		
 		HttpSession session = request.getSession(false);
 		User user = (User) session.getAttribute("user");
+		Long userId = user.getId();
 		
-		try {
-			
-			if (session != null || user != null)
-				BeanUtils.populate(fuser, request.getParameterMap());
-				userManager.followUser(user.getId(),fuser.getId());
-				userManager.finalize();
+		UserService userService = new UserService();
+		userService.followUser(userId, followUserId);
+		userService.finalize();
 
-		} catch (IllegalAccessException | InvocationTargetException e) {
-			e.printStackTrace();
-		}
+		
 	}
 
 	/**
