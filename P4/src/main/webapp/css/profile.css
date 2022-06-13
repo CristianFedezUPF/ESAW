@@ -53,7 +53,7 @@
 	border-bottom: 1px solid #1b222e;
 }
 
-.profile-follow-button{
+.profile-follow-button, .profile-unfollow-button{
 	width: fit-content;
 	height: fit-content;
 	padding: 5px;
@@ -68,7 +68,8 @@
 	background-color: #fff;
 }
 
-.profile-follow-button:hover{
+.profile-follow-button:hover, .profile-unfollow-button:hover{
 	background-color: #3e4e66;
 	color: #fff;
 }
+

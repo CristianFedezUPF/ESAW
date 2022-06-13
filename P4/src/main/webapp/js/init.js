@@ -77,4 +77,43 @@ window.addEventListener('DOMContentLoaded', () => {
 				event.stopPropagation();
 				event.preventDefault();
 			});
+			// Follow user from profile
+			$(document).on("click",".profile-follow-button", (event) => {
+				$.post( "FollowUser/" + event.target.closest(".profile-wrapper").getAttribute("data-profileid"), {}, () => {
+					// delete follow button and make unfollow button
+					let new_button = document.createElement('button');
+					new_button.classList.add("profile-unfollow-button");
+					new_button.innerText = "Unfollow";
+					$(event.target).fadeOut();
+					event.target.parentElement.appendChild(new_button);
+					event.target.parentElement.removeChild(event.target);
+					$(new_button).fadeIn();
+					event.preventDefault();
+					
+					//fake increase in follower count
+					let profile_stats = document.getElementsByClassName("profile-stats")[0];
+					let follower_count = profile_stats.querySelector(".follower-count span").innerText;
+					profile_stats.querySelector(".follower-count span").innerText = ++follower_count
+					
+				});
+			});
+			// Unfollow user from profile
+			$(document).on("click",".profile-unfollow-button", (event) => {
+				$.post( "UnfollowUser/" + event.target.closest(".profile-wrapper").getAttribute("data-profileid"), {}, () => {
+					// delete unfollow button and make follow button
+					let new_button = document.createElement('button');
+					new_button.classList.add("profile-follow-button");
+					new_button.innerText = "Follow";
+					$(event.target).fadeOut();
+					event.target.parentElement.appendChild(new_button);
+					event.target.parentElement.removeChild(event.target);
+					$(new_button).fadeIn();
+					event.preventDefault();
+					
+					//fake decrease in follower count
+					let profile_stats = document.getElementsByClassName("profile-stats")[0];
+					let follower_count = profile_stats.querySelector(".follower-count span").innerText;
+					profile_stats.querySelector(".follower-count span").innerText = --follower_count
+				});
+			});
 });

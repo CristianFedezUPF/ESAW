@@ -191,13 +191,13 @@ public class UserService {
 	}
 	
 	// Unfollow a user
-	public void unfollowUser(Long long1, Long long2) {
-		String query = "DELETE FROM follows WHERE uid = ? AND fid = ?";
+	public void unfollowUser(Long followerId, Long followedId) {
+		String query = "DELETE FROM follows WHERE follower_id = ? AND followed_id = ?";
 		PreparedStatement statement = null;
 		try {
 			statement = db.prepareStatement(query);
-			statement.setLong(1,long1);
-			statement.setLong(2,long2);
+			statement.setLong(1, followerId);
+			statement.setLong(2, followedId);
 			statement.executeUpdate();
 			statement.close();
 		} catch (SQLIntegrityConstraintViolationException e) {
@@ -320,6 +320,22 @@ public class UserService {
 			e.printStackTrace();
 		} 
 		return  l;
+	}
+	
+	public boolean isUserFollowingUser(Long followerId, Long followedId) {
+		String query = "SELECT * from follows WHERE follower_id = ? AND followed_id = ?;";
+		PreparedStatement statement = null;
+		boolean output = false;
+		try {
+			statement = db.prepareStatement(query);
+			statement.setLong(1, followerId);
+			statement.setLong(2, followedId);
+			ResultSet rs = statement.executeQuery();
+			output = rs.next();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		return output;
 	}
 	
 	public Pair<Boolean,User> getUserByUsername(User user) {

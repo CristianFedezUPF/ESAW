@@ -16,16 +16,16 @@ import models.User;
 import services.UserService;
 
 /**
- * Servlet implementation class UnFollowUser
+ * Servlet implementation class FollowUser
  */
-@WebServlet("/UnFollowUser")
-public class UnFollowUser extends HttpServlet {
+@WebServlet("/UnfollowUser/*")
+public class UnfollowUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UnFollowUser() {
+    public UnfollowUser() {
         super();
     }
 
@@ -34,21 +34,17 @@ public class UnFollowUser extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		User fuser = new User();
-		UserService userManager = new UserService();
+		String pathInfo = request.getPathInfo();
+		Long unfollowUserId = Long.valueOf(pathInfo.substring(1));
+		
 		HttpSession session = request.getSession(false);
 		User user = (User) session.getAttribute("user");
+		Long userId = user.getId();
 		
-		try {
-			
-			if (session != null || user != null)
-				BeanUtils.populate(fuser, request.getParameterMap());
-				userManager.unfollowUser(user.getId(),fuser.getId());
-				userManager.finalize();
+		UserService userService = new UserService();
+		userService.unfollowUser(userId, unfollowUserId);
+		userService.finalize();
 
-		} catch (IllegalAccessException | InvocationTargetException e) {
-			e.printStackTrace();
-		}
 		
 	}
 

@@ -20,14 +20,14 @@ import services.UserService;
 /**
  * Servlet implementation class LoginController
  */
-@WebServlet("/AnonymousController")
-public class AnonymousController extends HttpServlet {
+@WebServlet("/GetAnonymousTimeline")
+public class GetAnonymousTimeline extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AnonymousController() {
+    public GetAnonymousTimeline() {
         super();
     }
 

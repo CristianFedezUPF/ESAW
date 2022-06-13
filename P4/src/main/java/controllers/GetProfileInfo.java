@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.FilterChain;
@@ -36,14 +37,28 @@ public class GetProfileInfo extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		HttpSession session = request.getSession(false);
+		User user = (User) session.getAttribute("user");
+		System.out.println(session.getAttributeNames().toString());
+		Iterator<String> it = session.getAttributeNames().asIterator();
+		while(it.hasNext()) {
+			System.out.println(it.next());
+		}
+
 		String pathInfo = request.getPathInfo();
-		Long userId = Long.valueOf(pathInfo.substring(1));
-
+		Long profileId = Long.valueOf(pathInfo.substring(1));
+		
+		
 		UserService userService = new UserService();
-		User user = userService.getUser(userId);
+		
+		if(user != null) {
+			boolean isUserFollowing = userService.isUserFollowingUser(user.getId(), profileId);
+			request.setAttribute("is_user_following", isUserFollowing);
+		}
 
-		request.setAttribute("profile", user);
+		User profile = userService.getUser(profileId);
+		
+		request.setAttribute("profile", profile);
 		response.setContentType("text/html; charset=UTF-8");
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/ViewProfile.jsp"); 
 		dispatcher.include(request,response);

@@ -27,4 +27,5 @@ ORDER BY tweet.creation_timestamp DESC;
 SELECT user.id, user.username, user.name, user.university, user.degree;
 
 
-SELECT salt, password from user where username="HelenaPruna" OR username="AnnaPruna";
+SELECT * from follows
+WHERE follower_id = 1 AND followed_id = 2;

@@ -7,11 +7,16 @@
  });
 </script>
 
-<div class="profile-wrapper">
+<div data-profileid="${profile.id}" class="profile-wrapper">
 	<div class="profile-avatar-wrapper">
 		<img class="profile-avatar" src="imgs/avatar5.png">
 		<c:if test="${profile.id != user.id}">
-		<button class="profile-follow-button">Follow</button>
+			<c:if test="${!is_user_following}">
+				<button class="profile-follow-button">Follow</button>
+			</c:if>
+			<c:if test="${is_user_following}">
+				<button class="profile-unfollow-button">Unfollow</button>
+			</c:if>
 		</c:if>
 	</div>
 	<div class="profile-info">
@@ -32,9 +37,13 @@
 	</div>
 </div>
 <div class="profile-stats">
-		<p><span style="font-weight:bold; font-size: 16px;">${profile.postCount}</span> posts</p>
-		<p><span style="font-weight:bold; font-size: 16px;">${profile.followerCount}</span> followers</p>
-		<p><span style="font-weight:bold; font-size: 16px;">${profile.followingCount}</span> following</p>
+		<p class="post-count"><span style="font-weight:bold; font-size: 16px;">${profile.postCount}</span> posts</p>
+		<p class="follower-count"><span style="font-weight:bold; font-size: 16px;">${profile.followerCount}</span> followers</p>
+		<p class="following-count"><span style="font-weight:bold; font-size: 16px;">${profile.followingCount}</span> following</p>
 </div>
 <div id="tweet-list">
 </div>
+
+<script>
+
+</script>
