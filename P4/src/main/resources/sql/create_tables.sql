@@ -3,10 +3,6 @@ CREATE DATABASE IF NOT EXISTS unitter
 CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 USE unitter;
 
-DROP TABLE IF EXISTS `user`;
-DROP TABLE IF EXISTS tweet;
-DROP TABLE IF EXISTS `follows`;
-
 CREATE TABLE `user` (
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	`name` VARCHAR(60) NOT NULl, 		
@@ -30,7 +26,7 @@ CREATE TABLE `user` (
 CREATE TABLE `follows` (
 	follower_id BIGINT,
     followed_id BIGINT,
-	create_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, 
+	creation_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, 
 	FOREIGN KEY(follower_id) REFERENCES `user`(id),
     FOREIGN KEY(followed_id) REFERENCES `user`(id),
     PRIMARY KEY(follower_id, followed_id)
@@ -42,12 +38,11 @@ CREATE TABLE tweet (
     parent_id BIGINT,
     user_id BIGINT NOT NULL,
     content VARCHAR(255) NOT NULL,
-	create_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, 
+	creation_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, 
 	FOREIGN KEY(parent_id) REFERENCES tweet(id),
     FOREIGN KEY(user_id) REFERENCES `user`(id)
 );
 
-DROP TRIGGER IF EXISTS update_follow;
 DELIMITER //
 CREATE TRIGGER update_follow AFTER INSERT ON `follows`
 	FOR EACH ROW
@@ -57,7 +52,6 @@ CREATE TRIGGER update_follow AFTER INSERT ON `follows`
     END //
     DELIMITER ;
 
-DROP TRIGGER IF EXISTS update_unfollow;
 DELIMITER //
 CREATE TRIGGER update_unfollow AFTER DELETE ON `follows`
 	FOR EACH ROW
@@ -67,7 +61,6 @@ CREATE TRIGGER update_unfollow AFTER DELETE ON `follows`
     END //
     DELIMITER ;
 
-DROP TRIGGER IF EXISTS counter_post_added;
 DELIMITER //
 CREATE TRIGGER counter_post_added AFTER INSERT ON tweet
 	FOR EACH ROW
@@ -76,7 +69,6 @@ CREATE TRIGGER counter_post_added AFTER INSERT ON tweet
     END //
     DELIMITER ;
     
-DROP TRIGGER IF EXISTS counter_post_del;
 DELIMITER //
 CREATE TRIGGER counter_post_del AFTER DELETE ON tweet
 	FOR EACH ROW

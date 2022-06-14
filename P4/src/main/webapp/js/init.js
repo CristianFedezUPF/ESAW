@@ -15,8 +15,9 @@ window.addEventListener('DOMContentLoaded', () => {
 			});
 			/* Add tweet */
 			$(document).on("click","#post-button",function(event){
-				$.post( "AddTweet", { content: $("#typing-input").val()}, function(event) {
-					$('#tweet-list').load("GetCustomTweets");
+				let that = event;
+				$.post( "AddTweet", { content: $("#typing-input").val()}, (e) => {
+					$('#tweet-list').load(that.target.getAttribute("data-controller"));
 				});
 				event.preventDefault();
 			});
