@@ -234,33 +234,6 @@ public class UserService {
 		return  l;
 	}
 	
-	// TODO LO DE START Y END ES MEGA CUTRE
-	public List<User> getNotFollowedUsers(Long long1, Integer start, Integer end) {
-		 // TODO UPDATE QUERY 
-		 String query = "SELECT id,name FROM users WHERE id NOT IN (SELECT id FROM users,follows WHERE id = fid AND uid = ?) AND id <> ? ORDER BY name LIMIT ?,?;";
-		 PreparedStatement statement = null;
-		 List<User> l = new ArrayList<User>();
-		 try {
-			 statement = db.prepareStatement(query);
-			 statement.setLong(1,long1);
-			 statement.setLong(2, long1);
-			 statement.setInt(3,start);
-			 statement.setInt(4,end);
-			 ResultSet rs = statement.executeQuery();
-			 while (rs.next()) {
-				 User user = new User();
-				 user.setId(rs.getLong("id"));
-				 user.setName(rs.getString("name"));
-				 l.add(user);
-			 }
-			 rs.close();
-			 statement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} 
-		return  l;
-	}
-	
 	public List<User> getWhoToFollow(Long userId, Integer amount){
 		 String query = "SELECT user.id, user.username, user.name, user.university, user.degree\r\n"
 		 		+ "FROM user\r\n"
@@ -297,29 +270,35 @@ public class UserService {
 	}
 	
 	// TODO LO DE START & END ES MEGA CUTRE
-	public List<User> getFollowedUsers(Long long1, Integer start, Integer end) {
+	public List<User> getFollowedUsers(Long userId, Integer count) {
 		 // TODO UPDATE QUERY
-		 String query = "SELECT id,name FROM users,follows WHERE id = fid AND uid = ? ORDER BY name LIMIT ?,?;";
+		 String query = "SELECT user.id, user.username, user.name, user.university, user.degree\r\n"
+		 		+ "FROM user WHERE user.id IN (\r\n"
+		 		+ "SELECT followed_id FROM follows WHERE follower_id = ?)\r\n"
+		 		+ "ORDER BY user.username\r\n"
+		 		+ "LIMIT ?;";
 		 PreparedStatement statement = null;
-		 List<User> l = new ArrayList<User>();
+		 List<User> users = new ArrayList<User>();
 		 try {
 			 statement = db.prepareStatement(query);
-			 statement.setLong(1,long1);
-			 statement.setInt(2,start);
-			 statement.setInt(3,end);
+			 statement.setLong(1, userId);
+			 statement.setInt(2, count);
 			 ResultSet rs = statement.executeQuery();
 			 while (rs.next()) {
 				 User user = new User();
 				 user.setId(rs.getLong("id"));
+				 user.setUsername(rs.getString("username"));
 				 user.setName(rs.getString("name"));
-				 l.add(user);
+				 user.setUniversity(rs.getString("university"));
+				 user.setDegree(rs.getString("degree"));
+				 users.add(user);
 			 }
 			 rs.close();
 			 statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} 
-		return  l;
+		return users;
 	}
 	
 	public boolean isUserFollowingUser(Long followerId, Long followedId) {

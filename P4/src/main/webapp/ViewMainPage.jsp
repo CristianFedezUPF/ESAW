@@ -15,7 +15,7 @@
 			<p id="logo">Unitter</p>
 			<p id="GetCustomTimeline" class="timeline-menu lcolumn-menu-item" style="margin-top: 50px;">Home</p>
 			<p id="GetGlobalTimeline" class="timeline-menu lcolumn-menu-item">Explore</p>
-			<p class="lcolumn-menu-item">Following</p>
+			<p id="GetFollowedUsers" class="timeline-menu lcolumn-menu-item">Following</p>
 			<p id="GetProfileInfo/${user.id}" class="timeline-menu lcolumn-menu-item">Profile</p>
 		</div>
 		<div id="lcolumn-profile">
