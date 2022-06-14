@@ -67,7 +67,7 @@ window.addEventListener('DOMContentLoaded', () => {
 					let who_to_follow_tab = document.getElementById("who-to-follow");
 					let children = who_to_follow_tab.getElementsByClassName("who-to-follow-user");
 					if(children.length > 1){
-						who_to_follow_tab.removeChild(children[children.length -1]);
+						who_to_follow_tab.removeChild(event.target.parentElement);
 						setBottomWhoToFollowUserToRoundBorders();
 					}
 					else{
