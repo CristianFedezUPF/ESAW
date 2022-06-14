@@ -26,11 +26,16 @@
 </div>
 
 <script type="text/javascript">
-	let users_wrapper = document.getElementById("followed-users-wrapper");
-	let child_count = users_wrapper.childElementCount;
-	for(var i = 0; i < child_count; ++i){
-		if(i % 2 == 0){ //if element is in left column
-			users_wrapper.children[i].style.borderRight = "1px solid #1b222e"
+	function setLeftColumnRightBorder(){
+		let users_wrapper = document.getElementById("followed-users-wrapper");
+		let child_count = users_wrapper.childElementCount;
+		for(var i = 0; i < child_count; ++i){
+			if(i % 2 == 0){ //if element is in left column
+				users_wrapper.children[i].style.borderRight = "1px solid #1b222e";
+			}
 		}
 	}
+	
+	setLeftColumnRightBorder();
+	
 </script>
