@@ -12,15 +12,15 @@
 }
 
 #followed-users-wrapper{
-	display: grid;
-	width: 100%;
-  	grid-template-columns: 1fr 1fr;
-	grid-auto-flow: row;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: left;
 }
 
 .followed-user{
-	display: flex;
-	flex-direction: column;
+	width: 50%;
+	height: auto;
 	border-bottom: 1px solid #1b222e;
 }
 

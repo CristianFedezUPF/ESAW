@@ -49,7 +49,7 @@ input:invalid {
 }
 
 .login-form{
-	height: max(35%, 200px);
+	height: max(45%, 200px);
 }
 
 .form-wrapper > form {
