@@ -19,13 +19,13 @@ import services.UserService;
  * Servlet implementation class FollowUser
  */
 @WebServlet("/UnfollowUser/*")
-public class UnfollowUser extends HttpServlet {
+public class UnFollowUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UnfollowUser() {
+    public UnFollowUser() {
         super();
     }
 
