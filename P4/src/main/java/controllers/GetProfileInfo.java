@@ -54,6 +54,8 @@ public class GetProfileInfo extends HttpServlet {
 		if(user != null) {
 			boolean isUserFollowing = userService.isUserFollowingUser(user.getId(), profileId);
 			request.setAttribute("is_user_following", isUserFollowing);
+		} else {
+			request.setAttribute("is_anonymous_user", true);
 		}
 
 		User profile = userService.getUser(profileId);

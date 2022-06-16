@@ -11,10 +11,10 @@
 	<div class="profile-avatar-wrapper">
 		<img class="profile-avatar" src="imgs/avatar5.png">
 		<c:if test="${profile.id != user.id}">
-			<c:if test="${!is_user_following}">
+			<c:if test="${!is_user_following && !is_anonymous_user}">
 				<button class="profile-follow-button">Follow</button>
 			</c:if>
-			<c:if test="${is_user_following}">
+			<c:if test="${is_user_following && !is_anonymous_user}">
 				<button class="profile-unfollow-button">Unfollow</button>
 			</c:if>
 		</c:if>
