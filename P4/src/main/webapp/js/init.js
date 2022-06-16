@@ -18,6 +18,7 @@ window.addEventListener('DOMContentLoaded', () => {
 				let that = event;
 				$.post( "AddTweet", { content: $("#typing-input").val()}, (e) => {
 					$('#tweet-list').load(that.target.getAttribute("data-controller"));
+					document.getElementById("typing-input").value = "";
 				});
 				event.preventDefault();
 			});
