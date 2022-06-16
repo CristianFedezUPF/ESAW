@@ -30,24 +30,6 @@ window.addEventListener('DOMContentLoaded', () => {
 				});
 				event.preventDefault();
 			});
-			/* Follow user */
-			$(document).on("click",".followUser",function(event){
-				var user = $(this).parent();
-				$.post( "FollowUser", { id: $(this).parent().attr("id") }, function(event) { 
-					$("#content").load("GetFollowedUsers");
-					$("#lcolumn").load("GetNotFollowedUsers");
-				});
-				event.preventDefault();
-			});
-			/* UnFollow user */
-			$(document).on("click",".unfollowUser",function(event) {
-				var user = $(this).parent();
-				$.post( "UnFollowUser", { id: $(this).parent().attr("id") }, function(event) {
-					$("#content").load("GetFollowedUsers");
-					$("#lcolumn").load("GetNotFollowedUsers");
-				});
-				event.preventDefault();
-			});
 			/* Load profile */
 			$(document).on("click",".who-to-follow-user", function(event){
 				$("#mcolumn").load("GetProfileInfo/"+$(this).attr("data-userid"));
