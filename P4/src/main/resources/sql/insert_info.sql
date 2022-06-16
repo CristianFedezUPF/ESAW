@@ -68,5 +68,5 @@ INSERT INTO tweet(parent_id, user_id, content) VALUES(NULL, 3, "jose juan");
 INSERT INTO tweet(parent_id, user_id, content) VALUES(NULL, 4, 'Computer science is superior');
 
 
-SELECT tweet.id,tweet.user_id,tweet.date,tweet.content,user.username,user.name FROM tweet INNER JOIN user ON user.id = tweet.user_id;
+SELECT tweet.id,tweet.user_id,tweet.creation_timestamp,tweet.content,user.username,user.name FROM tweet INNER JOIN user ON user.id = tweet.user_id;
 

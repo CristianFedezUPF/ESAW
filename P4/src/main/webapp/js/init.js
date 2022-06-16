@@ -52,6 +52,11 @@ window.addEventListener('DOMContentLoaded', () => {
 				$("#mcolumn").load("GetProfileInfo/"+$(this).attr("data-userid"));
 				event.preventDefault();
 			});
+			/* Load profile on following page */
+			$(document).on("click",".followed-user", function(event){
+				$("#mcolumn").load("GetProfileInfo/"+$(this).attr("data-userid"));
+				event.preventDefault();
+			});
 			/* Load profile on tweet avatar click */
 			$(document).on("click",".tweet-avatar", (event) => {
 				$("#mcolumn").load("GetProfileInfo/"+event.target.parentElement.parentElement.getAttribute("data-posterid"));
