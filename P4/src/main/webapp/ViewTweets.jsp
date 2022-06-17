@@ -12,6 +12,10 @@
  				<p class="tweet-username">@${t.username}</p>
  				<p class="tweet-datetime-separator">·</p>
  				<p class="tweet-datetime">${t.timeSince}</p>
+ 				<c:if test="${t.userId == user.id && is_profile}">
+					<i id="tweet-edit-button" class="tweet-icon w3-hide-small fa fa-edit"></i>					
+ 					<i id="tweet-delete-button" class="tweet-icon w3-hide-small fa fa-trash"></i>					
+	 			</c:if>
  			</div>
    			<p>${t.content}</p>
  		</div>
