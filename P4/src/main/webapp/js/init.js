@@ -23,10 +23,10 @@ window.addEventListener('DOMContentLoaded', () => {
 				event.preventDefault();
 			});
 			/* Delete tweet */
-			$(document).on("click",".delTweet",function(event){
-				var tweet = $(this).parent();
-				$.post( "DelTweet", { id: $(this).parent().attr("id") } , function(event) {
-					$("#content").load("GetCustomTimeline");				
+			$(document).on("click","#tweet-delete-button",function(event){
+				var tweet = event.target.closest(".tweet")
+				$.post( "DelTweet", { id: tweet.getAttribute("data-tweetid") } , function(e) {
+					$("#mcolumn").load("GetProfileInfo/"+ tweet.getAttribute("data-posterid"));
 				});
 				event.preventDefault();
 			});
