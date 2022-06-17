@@ -121,19 +121,27 @@ p{
 
 .tweet-content-wrapper{
 	display: flex;
+	width: 100%;
 	flex-direction: column;
 	margin-top: 10px;
 	margin-left: 15px;
 	margin-right: 10px;
 }
 
+.tweet-content-header-wrapper{
+	display: flex;
+	width: 100%;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.tweet-content-header-wrapper:hover{
+	cursor: pointer;
+}
+
 .tweet-content-header{
 	display: flex;
 	flex-direction: row;
-}
-
-.tweet-content-header:hover{
-	cursor: pointer;
 }
 
 .tweet-username{
@@ -152,10 +160,30 @@ p{
 	color: #888;
 }
 
+.tweet-buttons{
+	display: flex;
+	flex-direction: row;
+}
+
 .tweet-icon{
 	color: #888;
 	margin-top: 3px;
 	padding-left: 15px;
+}
+
+.tweet-edit-textarea{
+	border-radius: 8px;
+	color: #fff;
+	background-color: #131c2a;
+	outline: none;
+	padding-left: 2px;
+	border: none;
+	padding-left: 6px;
+	margin-left: -6px;
+	margin-top: -1px;
+	padding-top: 1px;
+	resize: vertical;
+	max-height: 100px;
 }
 
 

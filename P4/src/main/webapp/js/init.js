@@ -24,10 +24,22 @@ window.addEventListener('DOMContentLoaded', () => {
 			});
 			/* Delete tweet */
 			$(document).on("click","#tweet-delete-button",function(event){
-				var tweet = event.target.closest(".tweet")
+				let tweet = event.target.closest(".tweet")
 				$.post( "DelTweet", { id: tweet.getAttribute("data-tweetid") } , function(e) {
-					$("#mcolumn").load("GetProfileInfo/"+ tweet.getAttribute("data-posterid"));
+					tweet.parentElement.removeChild(tweet);
 				});
+				event.preventDefault();
+			});
+			// Edit tweet
+			$(document).on("click","#tweet-edit-button",function(event){
+				let content_element = event.target.closest(".tweet-content-wrapper").querySelector(".tweet-content");
+				let content = content_element.innerText;
+				let content_parent = content_element.parentElement;
+				content_parent.removeChild(content_element);
+				let text_area = document.createElement('textarea');
+				text_area.classList.add("tweet-edit-textarea");
+				content_parent.appendChild(text_area);
+				text_area.value = content;
 				event.preventDefault();
 			});
 			/* Load profile */
@@ -105,4 +117,5 @@ window.addEventListener('DOMContentLoaded', () => {
 					profile_stats.querySelector(".follower-count span").innerText = --follower_count
 				});
 			});
+			
 });
