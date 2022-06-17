@@ -42,7 +42,7 @@ input:invalid {
     max-width: 600px;
     /* offset-x | offset-y | blur-radius | spread-radius | color */
 	box-shadow: 0px 4px 2px 1px rgba(0, 0, 0, 0.2);
-	overflow: scroll;
+	overflow: auto;
 }
 
 .registration-form{
