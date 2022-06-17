@@ -22,7 +22,7 @@ p{
 	display: flex;
 	height: 100%;
 	flex-direction: column;
-	overflow: scroll;
+	overflow: auto;
 }
 
 #rcolumn{
@@ -214,7 +214,7 @@ p{
 	height: 100%;
 	flex-direction: column;
 	align-items: center;
-	overflow: scroll;
+	overflow: auto;
 }
 
 #lcolumn-profile{
