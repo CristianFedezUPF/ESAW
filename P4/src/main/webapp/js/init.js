@@ -31,11 +31,11 @@ window.addEventListener('DOMContentLoaded', () => {
 				event.preventDefault();
 			});
 			// Edit tweet
-			$(document).on("click","#tweet-edit-button",function(event){
+			$(document).on("click","#tweet-edit-button", (event) => {
 				let content_element = event.target.closest(".tweet-content-wrapper").querySelector(".tweet-content");
 				let content = content_element.innerText;
 				let content_parent = content_element.parentElement;
-				content_parent.removeChild(content_element);
+				content_element.style.display = "none";
 				let text_area = document.createElement('textarea');
 				text_area.classList.add("tweet-edit-textarea");
 				content_parent.appendChild(text_area);

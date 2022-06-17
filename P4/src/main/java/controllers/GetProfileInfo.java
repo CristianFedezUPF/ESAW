@@ -39,11 +39,6 @@ public class GetProfileInfo extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		User user = (User) session.getAttribute("user");
-		System.out.println(session.getAttributeNames().toString());
-		Iterator<String> it = session.getAttributeNames().asIterator();
-		while(it.hasNext()) {
-			System.out.println(it.next());
-		}
 
 		String pathInfo = request.getPathInfo();
 		Long profileId = Long.valueOf(pathInfo.substring(1));

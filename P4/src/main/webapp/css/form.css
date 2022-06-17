@@ -52,12 +52,12 @@ input:invalid {
 }
 
 .login-form{
-	height: max(35%, 256px);
-	max-height: 256px;
+	height: max(35%, 290px);
+	max-height: 290px;
 }
 
 .form-wrapper > form {
-	overflow: scroll;
+	overflow: auto;
 	display: flex;
 	flex-direction: column;
 }

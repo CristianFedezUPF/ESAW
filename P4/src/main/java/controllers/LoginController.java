@@ -37,8 +37,6 @@ public class LoginController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		System.out.print("LoginController: ");
 		
 		User user = new User();
 		UserService userService = new UserService();
@@ -53,26 +51,22 @@ public class LoginController extends HttpServlet {
 	    		
 	    		pair = userService.getUserByUsername(user); //will always find the user as we have checked it is correct
 	    		
-	    		System.out.println("login OK, forwarding to ViewCustomTimeline ");
     			HttpSession session = request.getSession();
     			session.setAttribute("user",pair.getRight());
     			view = "ViewCustomTimeline.jsp";
 	    		
 	    		if (pair.getLeft()) {
-		    		System.out.println("login OK, forwarding to ViewMainPage ");
 	    			session.setAttribute("user",pair.getRight());
 	    			view = "ViewMainPage.jsp";
 	    			
 	    		}
 	    		else {
-	    			System.out.println("user is not logged (user not found), forwarding to ViewLoginForm ");
 	    			request.setAttribute("error", true);
 					request.setAttribute("user",user);
 				}
 
 		    } 
 	    	else {
-			    System.out.println("user is not logged (first time) or incorrect, forwarding to ViewLoginForm ");
 				request.setAttribute("user",user);
 	    	}
 	    	
