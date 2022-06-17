@@ -28,20 +28,14 @@ public class MenuController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		System.out.print("MenuController: ");
-		
+				
 		HttpSession session = request.getSession(false);
 		
 		if (session.getAttribute("user")!=null) {
-		
-			System.out.println("forwarding to ViewMenuLogged.");
 			RequestDispatcher dispatcher = request.getRequestDispatcher("ViewMenuLogged.jsp");
 			dispatcher.forward(request, response);
 		}
 		else {
-			
-			System.out.println("forwarding to ViewMenuNotLogged.");
 			RequestDispatcher dispatcher = request.getRequestDispatcher("ViewMenuNotLogged.jsp");
 			dispatcher.forward(request, response);
 		}

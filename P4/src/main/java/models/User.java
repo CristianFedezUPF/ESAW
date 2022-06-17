@@ -37,14 +37,12 @@ private static final long serialVersionUID = 1L;
 	
 	//to store the unhashed password so we can verify it matches when login
 	private String loginPassword;
-	// TODO change errors to integer codes.
 	
 	//[0] = Name missing [1] = Username missing [2] = Username length invalid [3] = Username not valid
 	//[4] = Username in use. [5] = Email not valid. [6] = Password too short. [7] = Password must be alphanumeric.
 	//[8] = Degree must contain only text characters. [9] = Email in use. [10] = Passwords do not match (login)
 	//[11] = User does not exist (login).
 	
-	//private boolean[] error  = {false,false,false,false,false,false,false,false,false,false,false,false};
 	private HashMap<String,Boolean> error = null;
 	
 	public User() {
@@ -71,7 +69,6 @@ private static final long serialVersionUID = 1L;
 		}
 		else {
 			this.name = name;
-			System.out.println(name);
 		}
 	}
 	
@@ -93,7 +90,6 @@ private static final long serialVersionUID = 1L;
 		Matcher matcher = pattern.matcher(username);
 		if(matcher.matches()) {
 			this.username = username;
-			System.out.println(username);
 		}
 		else {
 			error.put("3", true);
@@ -111,10 +107,8 @@ private static final long serialVersionUID = 1L;
 		Matcher matcher = pattern.matcher(email);
 		if (matcher.matches()) {
 			this.email = email;
-			System.out.println(email);
 		} else {
 			error.put("5", true);
-			System.out.println(email);
 		}
 	}
 	
@@ -132,7 +126,6 @@ private static final long serialVersionUID = 1L;
 		Matcher matcher = pattern.matcher(password);
 		if (!matcher.matches()) {
 			error.put("7", true);
-			System.out.println(password);
 			return;
 		}
 		
@@ -155,7 +148,6 @@ private static final long serialVersionUID = 1L;
 		String hashedPassword = new String(md.digest(password.getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.ISO_8859_1); //hash and store as String
 		
 		this.password = hashedPassword;
-		System.out.println(hashedPassword);
 	}
 	
 	public String getPasswordCheck() {
@@ -165,7 +157,6 @@ private static final long serialVersionUID = 1L;
 	public void setPasswordCheck(String password) {
 		password = password.trim();
 		this.passwordCheck = password;
-		System.out.println(password);
 	}
 	
 	public String getGender() {
@@ -175,7 +166,6 @@ private static final long serialVersionUID = 1L;
 	public void setGender(String gender) {
 		gender = gender.trim();
 		this.gender = gender;
-		System.out.println(gender);
 	}
 	
 	public String getUniversity() {
@@ -185,7 +175,6 @@ private static final long serialVersionUID = 1L;
 	public void setUniversity(String university) {
 		university = university.trim();
 		this.university = university;
-		System.out.println(university);
 	}
 	
 	public String getDegree() {
@@ -203,10 +192,8 @@ private static final long serialVersionUID = 1L;
 		Matcher matcher = pattern.matcher(degree);
 		if (matcher.matches()) {
 			this.degree = degree;
-			System.out.println(degree);
 		} else {
 			error.put("8", true);
-			System.out.println(degree);
 		}
 	}
 
@@ -217,7 +204,6 @@ private static final long serialVersionUID = 1L;
 	public void setCountry(String country) {
 		country = country.trim();
 		this.country = country;
-		System.out.println(country);
 	}
 	
 	public Date getBirthday() {
@@ -226,8 +212,6 @@ private static final long serialVersionUID = 1L;
 	
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
-			      
-		System.out.println(birthday);
 	}
 	
 	public Integer getPostCount() {
@@ -236,7 +220,6 @@ private static final long serialVersionUID = 1L;
 	
 	public void setPostCount(Integer count) {
 		this.postCount = count;
-		System.out.println(postCount);
 	}
 	
 	public Integer getFollowingCount() {
@@ -245,8 +228,6 @@ private static final long serialVersionUID = 1L;
 	
 	public void setFollowingCount(Integer count) {
 		this.followingCount = count;
-		System.out.println(followingCount);
-
 	}
 	
 	public Integer getFollowerCount() {
@@ -256,8 +237,6 @@ private static final long serialVersionUID = 1L;
 	
 	public void setFollowerCount(Integer count) {
 		this.followerCount = count;
-		System.out.println(followerCount);
-
 	}
 	
 	public String getPosition() {
@@ -267,7 +246,6 @@ private static final long serialVersionUID = 1L;
 	public void setPosition(String position) {
 		position = position.trim();
 		this.position = position;
-		System.out.println(position);
 	}
 	
 	public boolean isAdmin() {
@@ -289,7 +267,6 @@ private static final long serialVersionUID = 1L;
 		if (imagePath == null) return;
 		imagePath = imagePath.trim();
 		this.imagePath = imagePath;
-		System.out.println(imagePath);
 	}
 	
 	public HashMap<String,Boolean> getError() {

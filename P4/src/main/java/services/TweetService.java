@@ -34,7 +34,6 @@ public class TweetService {
 	
 	/* Add a tweet */
 	public void addTweet(Tweet tweet) {
-		// TODO update query
 		String query = "INSERT INTO tweet (user_id, content) VALUES (?,?)";
 		PreparedStatement statement = null;
 		try {
@@ -50,7 +49,6 @@ public class TweetService {
 	
 	/* Delete existing tweet */
 	public void deleteTweet(Long tweetId,Long userId) {
-		// TODO update query
 		String query = "DELETE FROM tweet WHERE id = ? AND user_id = ?";
 		PreparedStatement statement = null;
 		try {

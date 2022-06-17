@@ -211,7 +211,6 @@ public class UserService {
 	
 	// Get all the users
 	public List<User> getUsers(Integer start, Integer end) {
-		 // TODO UPDATE QUERY
 		 String query = "SELECT id,name FROM users ORDER BY name ASC LIMIT ?,?;";
 		 PreparedStatement statement = null;
 		 List<User> l = new ArrayList<User>();
@@ -269,9 +268,7 @@ public class UserService {
 		return  users;
 	}
 	
-	// TODO LO DE START & END ES MEGA CUTRE
 	public List<User> getFollowedUsers(Long userId, Integer count) {
-		 // TODO UPDATE QUERY
 		 String query = "SELECT user.id, user.username, user.name, user.university, user.degree\r\n"
 		 		+ "FROM user WHERE user.id IN (\r\n"
 		 		+ "SELECT followed_id FROM follows WHERE follower_id = ?)\r\n"
@@ -318,7 +315,6 @@ public class UserService {
 	}
 	
 	public Pair<Boolean,User> getUserByUsername(User user) {
-		// TODO update this
 		String query = "SELECT id, email, name, degree, country, birthday, position from user where username=?";
 		PreparedStatement statement = null;
 		boolean output = false;

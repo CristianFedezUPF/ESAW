@@ -39,7 +39,6 @@ public class RegisterController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-	   System.out.print("RegisterController: ");
 	   User user = new User();
 	   UserService userService = new UserService();
 	   String view = "ViewRegisterForm.jsp";
@@ -56,16 +55,12 @@ public class RegisterController extends HttpServlet {
 		   if (user.isComplete() && !userService.isUserRegistered(user)) {
 			   userService.addUser(user);
 			   userService.finalize();
-			   System.out.println(" user ok, forwarding to ViewLoginForm.");
 			   view = "ViewLoginForm.jsp";
 			   
 			   user.destroyLoginPassword();
-			   //user.resetError();
 		   } 
 		   
 		   else  {
-		
-			   System.out.println(" forwarding to ViewRegisterForm.");
 			   request.setAttribute("user",user);
 			   view = "ViewRegisterForm.jsp";
 		   }
@@ -83,7 +78,6 @@ public class RegisterController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 	
