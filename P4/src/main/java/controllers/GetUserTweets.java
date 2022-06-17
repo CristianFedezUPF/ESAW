@@ -43,7 +43,7 @@ public class GetUserTweets extends HttpServlet {
 		tweets = tweetManager.getUserTweets(userId,0,10);
 		tweetManager.finalize();
 		
-
+		request.setAttribute("is_profile",true);
 		request.setAttribute("tweets",tweets);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/ViewTweets.jsp"); 
 		dispatcher.forward(request,response);
