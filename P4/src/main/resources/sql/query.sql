@@ -27,5 +27,15 @@ ORDER BY tweet.creation_timestamp DESC;
 SELECT user.id, user.username, user.name, user.university, user.degree;
 
 
-SELECT * from follows
-WHERE follower_id = 1 AND followed_id = 2;
+SELECT user.id, user.username, user.name, user.university, user.degree
+FROM user WHERE user.id IN (
+SELECT followed_id FROM follows WHERE follower_id = ?)
+ORDER BY rand()
+LIMIT ?;
+
+UPDATE tweet
+SET 
+content = "hola",
+edit_timestamp = NOW()
+WHERE id = 1;
+

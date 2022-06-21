@@ -18,7 +18,7 @@ CREATE TABLE `user` (
     following_count INT DEFAULT 0,
     follower_count INT DEFAULT 0,
     `position` ENUM('S', 'T'),
-    admin BOOLEAN DEFAULT false,
+    is_admin BOOLEAN DEFAULT false,
     image_path VARCHAR(255), 
     salt VARCHAR(255)
     
@@ -38,7 +38,8 @@ CREATE TABLE tweet (
     parent_id BIGINT,
     user_id BIGINT NOT NULL,
     content VARCHAR(255) NOT NULL,
-	creation_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, 
+	creation_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    edit_timestamp DATETIME DEFAULT NULL,
 	FOREIGN KEY(parent_id) REFERENCES tweet(id),
     FOREIGN KEY(user_id) REFERENCES `user`(id)
 );
