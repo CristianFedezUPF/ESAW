@@ -13,6 +13,7 @@ public class Tweet implements java.io.Serializable {
 	 private String timeSince;
 	 private String editTimeSince;
 	 private String content;
+	 private Integer likeCount;
 
 	 public Tweet() {
 	 }
@@ -71,5 +72,13 @@ public class Tweet implements java.io.Serializable {
 	 public void setContent(String content) {
 		 this.content = content;
 	 }
+	 
+	 public Integer getLikeCount() {
+		return this.likeCount;
+	}
+		
+	public void setLikeCount(Integer count) {
+		this.likeCount = count;
+	}
 
 }
