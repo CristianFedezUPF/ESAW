@@ -41,43 +41,6 @@ public class CountryService {
 		}
 	}
 	
-	/* Get a user given its PK*/
-
-	public User getUser(Long userId) {
-		String query = "SELECT user.id, user.username, user.name, user.university,\r\n"
-				+ "user.degree, user.country, user.position, \r\n"
-				+ "user.post_count, user.follower_count, user.following_count,\r\n"
-				+ "user.birthday\r\n"
-				+ "FROM user WHERE user.id = ?;";
-		PreparedStatement statement = null;
-		ResultSet rs = null;
-		User user = null;
-		try {
-			statement = db.prepareStatement(query);
-			statement.setLong(1, userId);
-			rs = statement.executeQuery();
-			if (rs.next()) {
-				user = new User();
-				user.setId(rs.getLong("id"));
-				user.setUsername(rs.getString("username"));
-				user.setName(rs.getString("name"));
-				user.setUniversity(rs.getString("university"));
-				user.setDegree(rs.getString("degree"));
-				user.setCountry(rs.getString("country"));
-				user.setPosition(rs.getString("position"));
-				user.setPostCount(rs.getInt("post_count"));
-				user.setFollowingCount(rs.getInt("following_count"));
-				user.setFollowerCount(rs.getInt("follower_count"));
-				user.setBirthday(rs.getDate("birthday"));
-			}
-			rs.close();
-			statement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return user;
-	}
 	
 	public List<Country> getCountries() {
 		String query = "SELECT * FROM country";
