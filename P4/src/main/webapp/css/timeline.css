@@ -161,6 +161,7 @@ p{
 }
 
 .tweet-buttons{
+	margin-right: 12px;
 	display: flex;
 	flex-direction: row;
 }

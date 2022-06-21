@@ -45,9 +45,10 @@ public class EditTweet extends HttpServlet {
 		try {
 			if (session != null || user != null)
 				BeanUtils.populate(tweet, request.getParameterMap());
-				tweetManager.editTweet(tweet);
-				tweetManager.finalize();
-
+				if((user.getId() == tweet.getUserId()) || user.getIsAdmin()) {
+					tweetManager.editTweet(tweet);
+					tweetManager.finalize();
+				}
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

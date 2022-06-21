@@ -19,7 +19,7 @@
  					</c:if>
  				</div>
  				<div class="tweet-buttons">
-	 				<c:if test="${t.userId == user.id && is_profile}">
+	 				<c:if test="${(t.userId == user.id) || user.isAdmin}">
 						<i class="tweet-icon tweet-edit-button fa fa-edit"></i>					
 	 					<i class="tweet-icon tweet-delete-button fa fa-trash"></i>					
 		 			</c:if>

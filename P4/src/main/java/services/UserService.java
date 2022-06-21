@@ -315,7 +315,7 @@ public class UserService {
 	}
 	
 	public Pair<Boolean,User> getUserByUsername(User user) {
-		String query = "SELECT id, email, name, degree, country, birthday, position from user where username=?";
+		String query = "SELECT id, email, name, degree, country, birthday, position, is_admin FROM user WHERE username = ?";
 		PreparedStatement statement = null;
 		boolean output = false;
 		try {
@@ -330,6 +330,7 @@ public class UserService {
 				user.setCountry(rs.getString("country"));
 				user.setBirthday(rs.getDate("birthday"));
 				user.setPosition(rs.getString("position"));
+				user.setIsAdmin(rs.getBoolean("is_admin"));
 				output = true;
 			} 
 			rs.close();

@@ -248,12 +248,12 @@ private static final long serialVersionUID = 1L;
 		this.position = position;
 	}
 	
-	public boolean isAdmin() {
+	public boolean getIsAdmin() {
 		return this.isAdmin;
 		
 	}
 	
-	public void setAdmin(boolean val) {
+	public void setIsAdmin(boolean val) {
 		this.isAdmin = val;
 		System.out.println(isAdmin);
 	}
