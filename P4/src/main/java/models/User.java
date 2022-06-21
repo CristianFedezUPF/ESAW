@@ -30,7 +30,7 @@ private static final long serialVersionUID = 1L;
 	private Integer followingCount;
 	private Integer followerCount;
 	private String position;	// student/teacher
-	private boolean admin;
+	private boolean isAdmin;
 	private String imagePath;
 	
 	private String salt;
@@ -249,14 +249,13 @@ private static final long serialVersionUID = 1L;
 	}
 	
 	public boolean isAdmin() {
-		return this.admin;
+		return this.isAdmin;
 		
 	}
 	
 	public void setAdmin(boolean val) {
-		this.admin = val;
-		System.out.println(admin);
-
+		this.isAdmin = val;
+		System.out.println(isAdmin);
 	}
 	
 	public String getImagePath() {

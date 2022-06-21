@@ -47,6 +47,27 @@ public class TweetService {
 		}
 	}
 	
+	// Edit tweet
+	public void editTweet(Tweet tweet) {
+		// TODO update query
+		String query = "UPDATE tweet\r\n"
+				+ "SET \r\n"
+				+ "content = ?,\r\n"
+				+ "edit_timestamp = NOW()\r\n"
+				+ "WHERE id = ?;\r\n"
+				+ "";
+		PreparedStatement statement = null;
+		try {
+			statement = db.prepareStatement(query);
+			statement.setString(1, tweet.getContent());
+			statement.setLong(2, tweet.getId());
+			statement.executeUpdate();
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/* Delete existing tweet */
 	public void deleteTweet(Long tweetId,Long userId) {
 		String query = "DELETE FROM tweet WHERE id = ? AND user_id = ?";
@@ -65,7 +86,7 @@ public class TweetService {
 	
 	/* Get tweets from a user given start and end*/
 	public List<Tweet> getUserTweets(Long userId,Integer start, Integer end) {
-		 String query = "SELECT tweet.id,tweet.user_id,tweet.creation_timestamp,tweet.content,user.username,user.name FROM tweet INNER JOIN user ON tweet.user_id = user.id where tweet.user_id = ? ORDER BY tweet.creation_timestamp DESC LIMIT ?,? ;";
+		 String query = "SELECT tweet.id,tweet.user_id,tweet.creation_timestamp,tweet.edit_timestamp,tweet.content,user.username,user.name FROM tweet INNER JOIN user ON tweet.user_id = user.id where tweet.user_id = ? ORDER BY tweet.creation_timestamp DESC LIMIT ?,? ;";
 		 PreparedStatement statement = null;
 		 List<Tweet> tweets = new ArrayList<Tweet>();
 		 try {
@@ -76,14 +97,18 @@ public class TweetService {
 			 ResultSet rs = statement.executeQuery();
 			 while (rs.next()) {
 				 Tweet tweet = new Tweet();
-       		     tweet.setId(rs.getLong("id"));
+      		     tweet.setId(rs.getLong("id"));
 				 tweet.setUserId(rs.getLong("user_id"));
 				 LocalDateTime then = rs.getObject("creation_timestamp", LocalDateTime.class);
 				 LocalDateTime now = LocalDateTime.now();
 				 tweet.setTimeSince(computeTimeSince(then, now));
+				 LocalDateTime thenEdit = rs.getObject("edit_timestamp", LocalDateTime.class);
+				 if (thenEdit != null) {
+					 tweet.setEditTimeSince(computeTimeSince(thenEdit, now));
+				 }
 				 tweet.setContent(rs.getString("content"));
 				 tweet.setUsername(rs.getString("username"));
-				 tweet.setName(rs.getString("name"));;
+				 tweet.setName(rs.getString("name"));
 				 tweets.add(tweet);
 			 }
 			 rs.close();
@@ -95,7 +120,7 @@ public class TweetService {
 	}
 	
 	public List<Tweet> getGlobalTweets(Integer start, Integer end){
-		String query = "SELECT tweet.id,tweet.user_id,tweet.creation_timestamp,tweet.content,user.username,user.name FROM tweet INNER JOIN user ON user.id = tweet.user_id ORDER BY tweet.creation_timestamp DESC LIMIT ?,?";
+		String query = "SELECT tweet.id,tweet.user_id,tweet.creation_timestamp,tweet.edit_timestamp,tweet.content,user.username,user.name FROM tweet INNER JOIN user ON user.id = tweet.user_id ORDER BY tweet.creation_timestamp DESC LIMIT ?,?";
 		PreparedStatement statement = null;
 		List<Tweet> tweets = new ArrayList<Tweet>();
 		try {
@@ -110,6 +135,10 @@ public class TweetService {
 				 LocalDateTime then = rs.getObject("creation_timestamp", LocalDateTime.class);
 				 LocalDateTime now = LocalDateTime.now();
 				 tweet.setTimeSince(computeTimeSince(then, now));
+				 LocalDateTime thenEdit = rs.getObject("edit_timestamp", LocalDateTime.class);
+				 if (thenEdit != null) {
+					 tweet.setEditTimeSince(computeTimeSince(thenEdit, now));
+				 }
 				 tweet.setContent(rs.getString("content"));
 				 tweet.setUsername(rs.getString("username"));
 				 tweet.setName(rs.getString("name"));
@@ -125,7 +154,7 @@ public class TweetService {
 	
 	public List<Tweet> getCustomTweets(Long userId, Integer start, Integer end){
 		
-		String query = "SELECT tweet.id, tweet.user_id, tweet.creation_timestamp, tweet.content, user.username, user.name\r\n"
+		String query = "SELECT tweet.id, tweet.user_id, tweet.creation_timestamp, tweet.edit_timestamp, tweet.content, user.username, user.name\r\n"
 				+ "FROM tweet JOIN user ON tweet.user_id = user.id\r\n"
 				+ "WHERE tweet.user_id IN \r\n"
 				+ "(SELECT followed_id FROM follows WHERE follower_id = ?)\r\n"
@@ -147,6 +176,10 @@ public class TweetService {
 				 LocalDateTime then = rs.getObject("creation_timestamp", LocalDateTime.class);
 				 LocalDateTime now = LocalDateTime.now();
 				 tweet.setTimeSince(computeTimeSince(then, now));
+				 LocalDateTime thenEdit = rs.getObject("edit_timestamp", LocalDateTime.class);
+				 if (thenEdit != null) {
+					 tweet.setEditTimeSince(computeTimeSince(thenEdit, now));
+				 }
 				 tweet.setContent(rs.getString("content"));
 				 tweet.setUsername(rs.getString("username"));
 				 tweet.setName(rs.getString("name"));

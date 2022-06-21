@@ -11,6 +11,7 @@ public class Tweet implements java.io.Serializable {
 	 private String username;
 	 private String name;
 	 private String timeSince;
+	 private String editTimeSince;
 	 private String content;
 
 	 public Tweet() {
@@ -50,12 +51,21 @@ public class Tweet implements java.io.Serializable {
 
 	public String getTimeSince() {
 		 return this.timeSince;
-	 }
-	 public void setTimeSince(String timeSince) {
+	}
+	
+	public void setTimeSince(String timeSince) {
 		 this.timeSince = timeSince;
-	 }
+	}
 	 
-	 public String getContent() {
+	public String getEditTimeSince() {
+		return editTimeSince;
+	}
+
+	public void setEditTimeSince(String editTimeSince) {
+		this.editTimeSince = editTimeSince;
+	}
+
+	public String getContent() {
 		 return this.content;
 	 }
 	 public void setContent(String content) {
