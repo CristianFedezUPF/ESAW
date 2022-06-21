@@ -47,7 +47,7 @@ public class EditProfile extends HttpServlet {
 		try {
 			if (session != null || user != null)
 				BeanUtils.populate(profileUser, request.getParameterMap());
-				if((user.getId() == profileUser.getId()) || user.getIsAdmin()) {
+				if((user.getId().equals(profileUser.getId())) || user.getIsAdmin()) {
 					userService.editUser(profileUser);
 					userService.finalize();
 				}

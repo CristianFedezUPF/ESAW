@@ -305,7 +305,8 @@ function replaceProfileContentByTextArea(){
 	p_element.before(text_area);
 	text_area.style.fontSize = font_size;
 	p_element.parentElement.removeChild(p_element);
-	text_area.id = "profile-edit-degree"
+	text_area.id = "profile-edit-degree";
+	text_area.setAttribute('placeholder', "Enter your degree here...")
 	text_area.classList.add("profile-edit-textarea");
 	text_area.setAttribute("rows", "1");
 	text_area.setAttribute("style", "font-size: " + font_size + "; height:" + (text_area.scrollHeight) + "px;overflow-y:hidden;");
