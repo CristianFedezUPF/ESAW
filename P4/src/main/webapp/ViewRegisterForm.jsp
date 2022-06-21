@@ -59,10 +59,6 @@
 	</form>
 </div>
 
-<script>
-
-</script>
-
 <c:if test = "${user.error['0']}">
 	<script> showError("Please enter a name.") </script>
 </c:if>
