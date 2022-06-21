@@ -1,23 +1,15 @@
 package models;
 
-public class Country implements java.io.Serializable {
+
+public class University implements java.io.Serializable {
 
 	 private static final long serialVersionUID = 1L;
 
-	 private String continent;
 	 private String code;
 	 private String name;
 
-	 public Country() {
+	 public University() {
 	 
-	 }
-
-	 public String getContinent() {
-		 return continent;
-	 }
-
-	 public void setContinent(String continent) {
-		 this.continent = continent;
 	 }
 
 	 public String getCode() {

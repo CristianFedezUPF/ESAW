@@ -5,17 +5,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
-import models.Country;
+import models.University;
 import utils.DB;
 
-public class CountryService {
+public class UniversityService {
 	
 	private DB db = null ;
 	
-	public CountryService() {
+	public UniversityService() {
 		try {
 			db = new DB();
 		} catch (Exception e) {
@@ -31,31 +29,29 @@ public class CountryService {
 		}
 	}
 	
-	public List<Country> getCountries() {
-		String query = "SELECT * FROM country";
+	public List<University> getUniversities() {
+		String query = "SELECT * FROM university";
 		PreparedStatement statement = null;
 		ResultSet rs = null;
-		List<Country> countries = new ArrayList<>();
+		List<University> universities = new ArrayList<>();
 		try {
 			statement = db.prepareStatement(query);
 			rs = statement.executeQuery();
 			while (rs.next()) {
-				Country country = new Country();
-				country.setName(rs.getString("name"));
-				country.setContinent(rs.getString("continent"));
-				country.setCode(rs.getString("code"));
-				countries.add(country);
+				University university = new University();
+				university.setName(rs.getString("name"));
+				university.setCode(rs.getString("code"));
+				universities.add(university);
 			}
 			rs.close();
 			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return countries;
+		return universities;
 	}
 	
-	public Map<String, List<Country>> getCountriesByContinent(){
-		List<Country> countries = getCountries(); 
-		return countries.stream().collect(Collectors.groupingBy(Country::getContinent));
-	}
+	
+	
+
 }

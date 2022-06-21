@@ -5,6 +5,7 @@
 <script type="text/javascript">
  $(document).ready(function(){
 	$('#country').load('GetCountries');
+	$('#university').load('GetUniversities');
  });
 </script>
 
@@ -30,22 +31,13 @@
 	  	</select>
 	  	<label for="university">University:</label>
 	  	<select name="university" id="university"> <!-- for now just from Catalunya! -->
-	    	<option value="UB">Universitat de Barcelona</option>
-	    	<option value="UPF">Universitat Pompeu Fabra</option>
-	    	<option value="UAB">Universitat Autònoma de Barcelona</option>
-	    	<option value="UdL">Universitat de Lleida</option>
-	    	<option value="UdG">Universitat de Girona</option>
-	    	<option value="URV">Universitat Rovira i Virgili</option>
-	    	<option value="UOC">Universitat Oberta de Catalunya</option>
-	    	<option value="URL">Universitat Ramon Llull</option>
-	    	<option value="Uvic">Universitat de Vic</option>
-	    	<option value="UIC">Universitat Internacional de Catalunya</option>
-	    	<option value="UAO-CEU">Universitat Abat Oliba</option>
+	  	
 	  	</select>
 	  	<label for="degree">Degree:</label>
 	  	<input type="text" id="degree" name="degree" placeholder="e.g: Computer Science" value="${user.degree}">
 	  	<label for="country">Country:</label>
 	  	<select name="country" id="country">
+	  	
 	    </select>
 	    <label for="birthday">Birthday:</label>
 	  	<input type="date" id="birthday" name="birthday" max="2008-01-01" value="${user.birthday}">

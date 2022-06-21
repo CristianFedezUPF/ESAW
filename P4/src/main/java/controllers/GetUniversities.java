@@ -15,21 +15,23 @@ import javax.servlet.http.HttpSession;
 
 import models.Country;
 import models.Tweet;
+import models.University;
 import models.User;
 import services.CountryService;
 import services.TweetService;
+import services.UniversityService;
 
 /**
  * Servlet implementation class dTcontroller
  */
-@WebServlet("/GetCountries")
-public class GetCountries extends HttpServlet {
+@WebServlet("/GetUniversities")
+public class GetUniversities extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetCountries() {
+    public GetUniversities() {
         super();
     }
 
@@ -37,12 +39,12 @@ public class GetCountries extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		CountryService countryService = new CountryService();
-		Map<String, List<Country>> countries = countryService.getCountriesByContinent();
-		countryService.finalize();
+		UniversityService universityService = new UniversityService();
+		List<University> universities = universityService.getUniversities();
+		universityService.finalize();
 		
-		request.setAttribute("countries",countries);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/ViewCountries.jsp"); 
+		request.setAttribute("universities", universities);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/ViewUniversities.jsp"); 
 		dispatcher.forward(request,response);
 		
 	}
