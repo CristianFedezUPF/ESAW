@@ -36,7 +36,9 @@
 		<c:if test="${profile.id == user.id || user.isAdmin}">
 			<div class="profile-options">
 				<i id="profile-edit" class="profile-button fa fa-edit"></i>
-				<i id="profile-ban" class="profile-button fa fa-ban"></i>
+				<c:if test="${user.isAdmin}">
+					<i id="profile-ban" class="profile-button fa fa-ban"></i>
+				</c:if>
 			</div>
 		</c:if>
 	</div>

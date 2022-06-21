@@ -39,3 +39,13 @@ content = "hola",
 edit_timestamp = NOW()
 WHERE id = 1;
 
+UPDATE user
+SET
+name = ?,
+username = ?,
+country = ?,
+university = ?,
+position = ?,
+degree = ?
+WHERE id = ?;
+

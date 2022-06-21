@@ -259,6 +259,18 @@ window.addEventListener('DOMContentLoaded', () => {
 				);
 				event.preventDefault();
 			});
+			$(document).on("click","#profile-ban", function(event){
+				let profile_id = parseInt(event.target.closest(".profile-wrapper").getAttribute('data-profileid'));
+				$.post("DelProfile", 
+					{ 
+						id: profile_id,
+					},
+					() => {
+						$('#mcolumn').load('GetCustomTimeline');
+					}
+				);
+				event.preventDefault();
+			});
 });
 
 function replaceProfileContentByTextArea(){
