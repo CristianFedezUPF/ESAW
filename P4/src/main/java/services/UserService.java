@@ -9,7 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,6 +105,38 @@ public class UserService {
 			e.printStackTrace();
 		}
 	}
+	
+	// Add new user
+	public void editUser(User user) {
+		String query = "UPDATE user\r\n"
+				+ "SET\r\n"
+				+ "name = ?,\r\n"
+				+ "username = ?,\r\n"
+				+ "country = ?,\r\n"
+				+ "university = ?,\r\n"
+				+ "position = ?,\r\n"
+				+ "degree = ?\r\n"
+				+ "WHERE id = ?;";
+		PreparedStatement statement = null;
+		try {
+			statement = db.prepareStatement(query);
+			statement.setString(1, user.getName());
+			statement.setString(2, user.getUsername());
+			statement.setString(3, user.getCountry());
+			statement.setString(4, user.getUniversity());
+			statement.setString(5, user.getPosition());
+			statement.setString(6, user.getDegree());
+			statement.setLong(7, user.getId());
+			statement.executeUpdate();
+			statement.close();
+		} catch (SQLIntegrityConstraintViolationException e) {
+			System.out.println(e.getMessage());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}	
+	
+	
 	
 	public boolean isUserRegistered(User user) throws SQLException {
 		ResultSet rs;

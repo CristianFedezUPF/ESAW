@@ -47,6 +47,7 @@ window.addEventListener('DOMContentLoaded', () => {
 						this.style.height = "0px";
   						this.style.height = (this.scrollHeight) + "px";
 					}, false);	
+				text_area.setAttribute("data-previouscontent", text_area.value)
 				// replace edit button with confirm button
 				let tweet_buttons = tweet_content_wrapper.
 					querySelector(".tweet-content-header-wrapper").
@@ -64,6 +65,7 @@ window.addEventListener('DOMContentLoaded', () => {
 				let tweet_content_wrapper = event.target.closest(".tweet-content-wrapper");
 				let text_area = tweet_content_wrapper.querySelector("textarea");
 				let content = text_area.value;
+				let previous_content = text_area.getAttribute("data-previouscontent")
 				$.post("EditTweet", 
 					{ 
 						id: tweet.getAttribute("data-tweetid"),
@@ -162,6 +164,7 @@ window.addEventListener('DOMContentLoaded', () => {
 					profile_stats.querySelector(".follower-count span").innerText = ++follower_count
 					
 				});
+				event.preventDefault();
 			});
 			// Unfollow user from profile
 			$(document).on("click",".profile-unfollow-button", (event) => {
@@ -181,6 +184,176 @@ window.addEventListener('DOMContentLoaded', () => {
 					let follower_count = profile_stats.querySelector(".follower-count span").innerText;
 					profile_stats.querySelector(".follower-count span").innerText = --follower_count
 				});
+				event.preventDefault();
 			});
-			
+			// Edit profile
+			$(document).on("click","#profile-edit",function(){
+				replaceProfileContentByTextArea();	
+				let edit_button = document.getElementById("profile-edit");
+				let parent = edit_button.parentElement;
+				parent.removeChild(edit_button);
+				let confirm_button = document.createElement('i');
+				confirm_button.id = "profile-edit-confirm"
+				confirm_button.classList.add("profile-button", "fa", "fa-check");
+				confirm_button.style.color = "#888";	
+				parent.insertBefore(confirm_button, parent.firstChild);
+				event.preventDefault();
+			});
+			// Confirm edit profile
+			$(document).on("click","#profile-edit-confirm",function(event){
+				let profile_info = document.getElementsByClassName("profile-info")[0];
+				let profile_text_wrapper = profile_info.querySelector(".profile-text-wrapper");
+				let text_areas = profile_info.querySelectorAll("textarea");
+				let selects = profile_info.querySelectorAll("select");
+  				// front validation
+  				let name, username, country, university, position, degree; 
+  				for(let text_area of text_areas){
+					let value = text_area.value;
+					switch(text_area.id){
+						case "profile-edit-name":
+							if(value === "") return;
+							name = value;
+							break;
+						case "profile-edit-username":
+							if(value === "" || value.length < 4 || value.length > 15 || !validateUsername(value)) return;
+							username = value
+							break;
+						case "profile-edit-degree":
+							if(value === ""){
+								value = null;
+							}
+							else if(!validateDegree(value)){
+								return;
+							}
+							degree = value;
+							break;
+					}
+				}
+				for(let select of selects){
+					let value = select.value;
+					switch(select.id){
+						case "profile-country":
+							country = value;
+							break;
+						case "profile-university":
+							university = value;
+							break;
+						case "profile-position":
+							position = value;		
+					}
+				}
+				let profile_id = parseInt(event.target.closest(".profile-wrapper").getAttribute('data-profileid'));
+				$.post("EditProfile", 
+					{ 
+						id: profile_id,
+						name: name,
+						username: username,
+						country: country,
+						university: university,
+						position: position,
+						degree: degree
+					},
+					() => {
+						$("#mcolumn").load("GetProfileInfo/" + profile_id);
+					}
+				);
+				event.preventDefault();
+			});
 });
+
+function replaceProfileContentByTextArea(){
+	let profile_info = document.getElementsByClassName("profile-info")[0];
+	
+	let p_element = profile_info.querySelector(".profile-name")
+	let font_size = window.getComputedStyle(p_element).fontSize;
+	p_element.style.display = "none";
+	let text_area = document.createElement('textarea');
+	text_area.value = p_element.innerText.trim();
+	p_element.before(text_area);
+	text_area.style.fontSize = font_size;
+	p_element.parentElement.removeChild(p_element)
+	text_area.id = "profile-edit-name"
+	text_area.classList.add("profile-edit-textarea");
+	text_area.setAttribute("rows", "1");
+	text_area.setAttribute("style", "border-top-left-radius: 6px; border-top-right-radius: 6px;" + 
+	"font-size: " + font_size + "; height:" + (text_area.scrollHeight) + "px;overflow-y:hidden;");
+	text_area.addEventListener("input", function(){
+		this.style.height = "0px";
+  		this.style.height = (this.scrollHeight) + "px";
+	}, false);	
+	
+	p_element = profile_info.querySelector(".profile-username")
+	font_size = window.getComputedStyle(p_element).fontSize;
+	p_element.style.display = "none";
+	text_area = document.createElement('textarea');
+	text_area.value = p_element.innerText.trim().substring(1);
+	p_element.before(text_area);
+	text_area.style.fontSize = font_size;
+	p_element.parentElement.removeChild(p_element)
+	text_area.id = "profile-edit-username"
+	text_area.classList.add("profile-edit-textarea");
+	text_area.setAttribute("rows", "1");
+	text_area.setAttribute("style", "font-weight: bold; line-height: 1;font-size: " + font_size + "; height:" + (text_area.scrollHeight) + "px;overflow-y:hidden;");
+	
+	let profile_text = document.getElementsByClassName("profile-text");
+	
+	p_element = profile_text[3];
+	font_size = window.getComputedStyle(p_element).fontSize;
+	p_element.style.display = "none";
+	text_area = document.createElement('textarea');
+	text_area.value = p_element.innerText.trim();
+	p_element.before(text_area);
+	text_area.style.fontSize = font_size;
+	p_element.parentElement.removeChild(p_element);
+	text_area.id = "profile-edit-degree"
+	text_area.classList.add("profile-edit-textarea");
+	text_area.setAttribute("rows", "1");
+	text_area.setAttribute("style", "font-size: " + font_size + "; height:" + (text_area.scrollHeight) + "px;overflow-y:hidden;");
+	text_area.addEventListener("input", function(){
+		this.style.height = "0px";
+  		this.style.height = (this.scrollHeight) + "px";
+	}, false);	
+	
+	let profile_text_wrapper = profile_info.querySelector(".profile-text-wrapper");
+	p_element = profile_text[2];
+	let content = p_element.innerText;
+	p_element.parentElement.removeChild(p_element);
+	let select_element = document.createElement("select");
+	select_element.setAttribute('name', 'profile-position');
+	select_element.setAttribute('id', 'profile-position');
+	select_element.classList.add('profile-edit-select')
+	let student_option = document.createElement("option");
+	student_option.setAttribute('value', 'S');
+	student_option.innerText = "Student";
+	let teacher_option = document.createElement("option");
+	teacher_option.setAttribute('value', 'T');
+	teacher_option.innerText = "Teacher";
+	select_element.appendChild(student_option);
+	select_element.appendChild(teacher_option);
+	profile_text_wrapper.appendChild(select_element)
+	
+	p_element = profile_text[1];
+	content = p_element.innerText;
+	p_element.parentElement.removeChild(p_element);
+	select_element = document.createElement("select");
+	select_element.setAttribute('name', 'profile-university');
+	select_element.setAttribute('id', 'profile-university');
+	select_element.classList.add('profile-edit-select')
+	profile_text_wrapper.insertBefore(select_element, profile_text_wrapper.firstElementChild);
+	$(select_element).load('GetUniversities');
+
+	p_element = profile_text[0];
+	content = p_element.innerText;
+	p_element.parentElement.removeChild(p_element);
+	select_element = document.createElement("select");
+	select_element.setAttribute('name', 'profile-country');
+	select_element.setAttribute('id', 'profile-country');
+	select_element.classList.add('profile-edit-select')
+	profile_info.insertBefore(select_element, profile_info.querySelector(".profile-text-wrapper"));
+	$(select_element).load('GetCountries');
+	
+	profile_info.style.backgroundColor = "#131c2a";
+
+}
+
+
