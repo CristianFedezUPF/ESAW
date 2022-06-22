@@ -29,6 +29,7 @@ private static final long serialVersionUID = 1L;
 	private Integer postCount;
 	private Integer followingCount;
 	private Integer followerCount;
+	private Integer likeCount;
 	private String position;	// student/teacher
 	private boolean isAdmin;
 	private String imagePath;
@@ -239,6 +240,14 @@ private static final long serialVersionUID = 1L;
 		this.followerCount = count;
 	}
 	
+	public Integer getLikeCount() {
+		return this.likeCount;
+	}
+	
+	public void setLikeCount(Integer count) {
+		this.likeCount = count;
+	}
+	
 	public String getPosition() {
 		return this.position;
 	}
@@ -255,7 +264,6 @@ private static final long serialVersionUID = 1L;
 	
 	public void setIsAdmin(boolean val) {
 		this.isAdmin = val;
-		System.out.println(isAdmin);
 	}
 	
 	public String getImagePath() {

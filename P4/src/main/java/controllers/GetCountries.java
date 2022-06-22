@@ -1,9 +1,11 @@
 package controllers;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.sql.Timestamp;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,48 +13,37 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.beanutils.BeanUtils;
-
+import models.Country;
 import models.Tweet;
 import models.User;
+import services.CountryService;
 import services.TweetService;
 
 /**
- * Servlet implementation class AddTweetFromUser
+ * Servlet implementation class dTcontroller
  */
-@WebServlet("/EditTweet")
-public class EditTweet extends HttpServlet {
+@WebServlet("/GetCountries")
+public class GetCountries extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EditTweet() {
+    public GetCountries() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		CountryService countryService = new CountryService();
+		Map<String, List<Country>> countries = countryService.getCountriesByContinent();
+		countryService.finalize();
 		
-		Tweet tweet = new Tweet();
-		TweetService tweetManager = new TweetService();
-		HttpSession session = request.getSession(false);
-		User user = (User) session.getAttribute("user");
-		
-		try {
-			if (session != null || user != null)
-				BeanUtils.populate(tweet, request.getParameterMap());
-				if((user.getId().equals(tweet.getId())) || user.getIsAdmin()) {
-					tweetManager.editTweet(tweet);
-					tweetManager.finalize();
-				}
-		} catch (IllegalAccessException | InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		request.setAttribute("countries",countries);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/ViewCountries.jsp"); 
+		dispatcher.forward(request,response);
 		
 	}
 
@@ -60,8 +51,8 @@ public class EditTweet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
 }
+

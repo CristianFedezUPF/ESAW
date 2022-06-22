@@ -23,17 +23,24 @@
 		<p class="profile-name">${profile.name}</p>
 		<p class="profile-username">@${profile.username}</p>
 		<p class="profile-text" style="margin-top: 10px;">${profile.country}</p>
-		<p class="profile-text">
-			${profile.university} ·
-			<c:if test="${profile.position == 'S'}">
-			Student
-			</c:if>
-			<c:if test="${profile.position == 'T'}">
-			Teacher
-			</c:if>
-		</p>
+		<div class="profile-text-wrapper">
+			<p class="profile-text">${profile.university}</p>
+			<p class="profile-text-separator">·</p>
+			<p class="profile-text">
+				<c:if test="${profile.position == 'S'}">Student</c:if>
+				<c:if test="${profile.position == 'T'}">Teacher</c:if>
+			</p>
+		</div>
 		<p class="profile-text">${profile.degree}</p>
 		<p class="profile-text">${profile.birthday}</p>
+		<c:if test="${profile.id == user.id || user.isAdmin}">
+			<div class="profile-options">
+				<i id="profile-edit" class="profile-button fa fa-edit"></i>
+				<c:if test="${user.isAdmin}">
+					<i id="profile-ban" class="profile-button fa fa-ban"></i>
+				</c:if>
+			</div>
+		</c:if>
 	</div>
 </div>
 <div class="profile-stats">

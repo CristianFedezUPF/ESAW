@@ -67,6 +67,14 @@ INSERT INTO tweet(parent_id, user_id, content) VALUES(NULL, 3, "Lorem Ipsum is s
 INSERT INTO tweet(parent_id, user_id, content) VALUES(NULL, 3, "jose juan");
 INSERT INTO tweet(parent_id, user_id, content) VALUES(NULL, 4, 'Computer science is superior');
 
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('2', '2');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('4', '2');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('3', '4');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('4', '5');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('1', '1');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('7', '1');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('8', '1');
+
 
 SELECT tweet.id,tweet.user_id,tweet.creation_timestamp,tweet.content,user.username,user.name FROM tweet INNER JOIN user ON user.id = tweet.user_id;
 
