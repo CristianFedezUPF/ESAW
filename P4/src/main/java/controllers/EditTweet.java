@@ -45,7 +45,7 @@ public class EditTweet extends HttpServlet {
 		try {
 			if (session != null || user != null)
 				BeanUtils.populate(tweet, request.getParameterMap());
-				if((user.getId().equals(tweet.getUserId())) || user.getIsAdmin()) {
+				if((user.getId().equals(tweet.getId())) || user.getIsAdmin()) {
 					tweetManager.editTweet(tweet);
 					tweetManager.finalize();
 				}
