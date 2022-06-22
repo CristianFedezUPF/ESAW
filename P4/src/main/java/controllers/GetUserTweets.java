@@ -44,8 +44,10 @@ public class GetUserTweets extends HttpServlet {
 		
 		TweetService tweetService = new TweetService();
 		tweets = tweetService.getUserTweets(userId,0,10);
-		for(Tweet tweet : tweets) {
-			tweet.setIsLiked(tweetService.checkIfLikeExists(tweet.getId(), sessionUser.getId()));
+		if (session != null && sessionUser != null) {
+			for(Tweet tweet : tweets) {
+				tweet.setIsLiked(tweetService.checkIfLikeExists(tweet.getId(), sessionUser.getId()));
+			}
 		}
 		tweetService.finalize();
 		

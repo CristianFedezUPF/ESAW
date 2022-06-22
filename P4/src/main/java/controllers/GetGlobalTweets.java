@@ -40,8 +40,10 @@ public class GetGlobalTweets extends HttpServlet {
 		List<Tweet> tweets = Collections.emptyList();
 		TweetService tweetService = new TweetService();
 		tweets = tweetService.getGlobalTweets(0, 20);
-		for(Tweet tweet : tweets) {
-			tweet.setIsLiked(tweetService.checkIfLikeExists(tweet.getId(), user.getId()));
+		if (session != null && user != null) {
+			for(Tweet tweet : tweets) {
+				tweet.setIsLiked(tweetService.checkIfLikeExists(tweet.getId(), user.getId()));
+			}
 		}
 		tweetService.finalize();
 

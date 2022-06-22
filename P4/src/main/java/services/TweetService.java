@@ -133,7 +133,7 @@ public class TweetService {
 	
 	/* Get tweets from a user given start and end*/
 	public List<Tweet> getUserTweets(Long userId,Integer start, Integer end) {
-		 String query = "SELECT tweet.id,tweet.user_id,tweet.creation_timestamp,tweet.edit_timestamp,tweet.content"
+		 String query = "SELECT tweet.id,tweet.user_id,tweet.creation_timestamp,tweet.edit_timestamp,tweet.content,"
 		 		+ "tweet.like_count,user.username,user.name FROM tweet INNER JOIN user ON tweet.user_id = user.id where tweet.user_id = ? "
 		 		+ "ORDER BY tweet.creation_timestamp DESC LIMIT ?,? ;";
 		 PreparedStatement statement = null;

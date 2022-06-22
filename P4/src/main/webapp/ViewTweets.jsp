@@ -26,6 +26,7 @@
 	 			</div>
  			</div>
    			<p class="tweet-content">${t.content}</p>
+   			<c:if test = "${user != null}">
    			<div class="tweet-options">
 	   			<div class="tweet-option-wrapper tweet-retweet">
 	   				<i class="tweet-retweet-button tweet-option fa fa-retweet"></i>
@@ -45,6 +46,7 @@
 		 		</c:if>
 	 			
  			</div>
+ 			</c:if>
  		</div>
  	</div>
 </c:forEach>
