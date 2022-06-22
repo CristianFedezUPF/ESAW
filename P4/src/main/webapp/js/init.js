@@ -133,7 +133,12 @@ window.addEventListener('DOMContentLoaded', () => {
 			});
 			/* Load profile on tweet avatar click */
 			$(document).on("click",".tweet-avatar", (event) => {
-				$("#mcolumn").load("GetProfileInfo/"+event.target.parentElement.parentElement.getAttribute("data-posterid"));
+				$("#mcolumn").load("GetProfileInfo/"+event.target.closest(".tweet").getAttribute("data-posterid"));
+				event.preventDefault();
+			});
+			// Load profile on retweet info click
+			$(document).on("click",".retweet-info", (event) => {
+				$("#mcolumn").load("GetProfileInfo/"+event.target.closest(".retweet-info-wrapper").getAttribute("data-retweetuserid"));
 				event.preventDefault();
 			});
 			/* Load profile on tweet content header click */
@@ -377,6 +382,7 @@ function replaceProfileContentByTextArea(){
 	p_element.parentElement.removeChild(p_element)
 	text_area.id = "profile-edit-name"
 	text_area.classList.add("profile-edit-textarea");
+	text_area.setAttribute("maxlength", "60");
 	text_area.setAttribute("rows", "1");
 	text_area.setAttribute("style", "border-top-left-radius: 6px; border-top-right-radius: 6px;" + 
 	"font-size: " + font_size + "; height:" + (text_area.scrollHeight) + "px;overflow-y:hidden;");
@@ -395,6 +401,7 @@ function replaceProfileContentByTextArea(){
 	p_element.parentElement.removeChild(p_element)
 	text_area.id = "profile-edit-username"
 	text_area.classList.add("profile-edit-textarea");
+	text_area.setAttribute("maxlength", "15");
 	text_area.setAttribute("rows", "1");
 	text_area.setAttribute("style", "font-weight: bold; line-height: 1;font-size: " + font_size + "; height:" + (text_area.scrollHeight) + "px;overflow-y:hidden;");
 	
@@ -411,6 +418,7 @@ function replaceProfileContentByTextArea(){
 	text_area.id = "profile-edit-degree";
 	text_area.setAttribute('placeholder', "Enter your degree here...")
 	text_area.classList.add("profile-edit-textarea");
+	text_area.setAttribute("maxlength", "255");
 	text_area.setAttribute("rows", "1");
 	text_area.setAttribute("style", "font-size: " + font_size + "; height:" + (text_area.scrollHeight) + "px;overflow-y:hidden;");
 	text_area.addEventListener("input", function(){
