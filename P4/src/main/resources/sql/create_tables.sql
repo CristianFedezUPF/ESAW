@@ -51,8 +51,8 @@ CREATE TABLE `like`(
 	tweet_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
 	creation_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-	FOREIGN KEY(tweet_id) REFERENCES tweet(id),
-    FOREIGN KEY(user_id) REFERENCES `user`(id),
+	FOREIGN KEY(tweet_id) REFERENCES tweet(id) ON UPDATE CASCADE,
+    FOREIGN KEY(user_id) REFERENCES `user`(id) ON UPDATE CASCADE,
     PRIMARY KEY(tweet_id, user_id)
 );
 

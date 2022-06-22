@@ -84,7 +84,7 @@ public class TweetService {
 	}
 	
 	/* like a tweet*/
-	public void likeTweet(Long tweetId, Long userId) {
+	public void addLike(Long tweetId, Long userId) {
 		String query = "INSERT INTO `like` ( tweet_id, user_id) VALUES (?,?)";
 		PreparedStatement statement = null;
 		try {
@@ -98,7 +98,7 @@ public class TweetService {
 		}
 	}
 	/* like a tweet*/
-	public void dislikeTweet(Long tweetId, Long userId) {
+	public void removeLike(Long tweetId, Long userId) {
 		String query = "DELETE FROM `like` WHERE tweet_id = ? AND user_id = ?";
 		PreparedStatement statement = null;
 		try {
