@@ -51,7 +51,6 @@ public class GetUserTweets extends HttpServlet {
 		}
 		tweetService.finalize();
 		
-		request.setAttribute("is_profile",true);
 		request.setAttribute("tweets",tweets);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/ViewTweets.jsp"); 
 		dispatcher.forward(request,response);
