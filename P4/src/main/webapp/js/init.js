@@ -76,6 +76,7 @@ window.addEventListener('DOMContentLoaded', () => {
 				let tweet_content_wrapper = event.target.closest(".tweet-content-wrapper");
 				let text_area = tweet_content_wrapper.querySelector("textarea");
 				let content = text_area.value;
+				if(content.trim() === "") return;
 				let previous_content = text_area.getAttribute("data-previouscontent")
 				$.post("EditTweet", 
 					{ 

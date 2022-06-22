@@ -34,37 +34,41 @@ public class TweetService {
 	
 	/* Add a tweet */
 	public void addTweet(Tweet tweet) {
-		String query = "INSERT INTO tweet (user_id, content) VALUES (?,?)";
-		PreparedStatement statement = null;
-		try {
-			statement = db.prepareStatement(query);
-			statement.setLong(1,tweet.getUserId());
-			statement.setString(2,tweet.getContent());
-			statement.executeUpdate();
-			statement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if(!tweet.getContent().isBlank()) {
+			String query = "INSERT INTO tweet (user_id, content) VALUES (?,?)";
+			PreparedStatement statement = null;
+			try {
+				statement = db.prepareStatement(query);
+				statement.setLong(1,tweet.getUserId());
+				statement.setString(2,tweet.getContent());
+				statement.executeUpdate();
+				statement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	// Edit tweet
 	public void editTweet(Tweet tweet) {
 		// TODO update query
-		String query = "UPDATE tweet\r\n"
-				+ "SET \r\n"
-				+ "content = ?,\r\n"
-				+ "edit_timestamp = NOW()\r\n"
-				+ "WHERE id = ?;\r\n"
-				+ "";
-		PreparedStatement statement = null;
-		try {
-			statement = db.prepareStatement(query);
-			statement.setString(1, tweet.getContent());
-			statement.setLong(2, tweet.getId());
-			statement.executeUpdate();
-			statement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if(!tweet.getContent().isBlank()) {
+
+			String query = "UPDATE tweet SET \r\n"
+					+ "content = ?,\r\n"
+					+ "edit_timestamp = NOW()\r\n"
+					+ "WHERE id = ?;\r\n"
+					+ "";
+			PreparedStatement statement = null;
+			try {
+				statement = db.prepareStatement(query);
+				statement.setString(1, tweet.getContent());
+				statement.setLong(2, tweet.getId());
+				statement.executeUpdate();
+				statement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
