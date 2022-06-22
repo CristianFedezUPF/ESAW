@@ -9,12 +9,15 @@ public class Tweet implements java.io.Serializable {
 	 private String username;
 	 private String name;
 	 private String timeSince;
-	 private String editTimeSince;
+	 private String timeSinceEdit;
 	 private String content;
 	 private Integer likeCount;
 	 private Integer retweetCount;
 	 private Boolean isLiked;
 	 private Boolean isRetweeted;
+	 private Long retweetUserId;
+	 private String retweetUserName;
+	 private String timeSinceRetweet;
 
 	 public Tweet() {
 	 }
@@ -59,12 +62,12 @@ public class Tweet implements java.io.Serializable {
 		 this.timeSince = timeSince;
 	}
 	 
-	public String getEditTimeSince() {
-		return editTimeSince;
+	public String getTimeSinceEdit() {
+		return timeSinceEdit;
 	}
 
-	public void setEditTimeSince(String editTimeSince) {
-		this.editTimeSince = editTimeSince;
+	public void setTimeSinceEdit(String timeSinceEdit) {
+		this.timeSinceEdit = timeSinceEdit;
 	}
 
 	public String getContent() {
@@ -105,6 +108,30 @@ public class Tweet implements java.io.Serializable {
 
 	public void setIsRetweeted(Boolean isRetweeted) {
 		this.isRetweeted = isRetweeted;
+	}
+
+	public Long getRetweetUserId() {
+		return retweetUserId;
+	}
+
+	public void setRetweetUserId(Long retweetUserId) {
+		this.retweetUserId = retweetUserId;
+	}
+
+	public String getRetweetUserName() {
+		return retweetUserName;
+	}
+
+	public void setRetweetUserName(String retweetUserName) {
+		this.retweetUserName = retweetUserName;
+	}
+
+	public String getTimeSinceRetweet() {
+		return timeSinceRetweet;
+	}
+
+	public void setTimeSinceRetweet(String timeSinceRetweet) {
+		this.timeSinceRetweet = timeSinceRetweet;
 	}
 
 }

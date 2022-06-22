@@ -183,9 +183,29 @@ public class TweetService {
 	
 	/* Get tweets from a user given start and end*/
 	public List<Tweet> getUserTweets(Long userId,Integer start, Integer end) {
-		 String query = "SELECT tweet.id,tweet.user_id,tweet.creation_timestamp,tweet.edit_timestamp,tweet.content,"
-		 		+ "tweet.like_count, tweet.retweet_count, user.username,user.name FROM tweet INNER JOIN user ON tweet.user_id = user.id where tweet.user_id = ? "
-		 		+ "ORDER BY tweet.creation_timestamp DESC LIMIT ?,? ;";
+		 String query = "SELECT * FROM (\r\n"
+		 		+ "SELECT tweet.id, tweet.user_id, tweet.content, tweet.creation_timestamp AS tweet_creation_timestamp, tweet.edit_timestamp,\r\n"
+		 		+ "tweet.like_count, tweet.retweet_count, \r\n"
+		 		+ "user.username, user.name,\r\n"
+		 		+ "retweet.user_id AS retweet_user_id, \r\n"
+		 		+ "(SELECT name FROM user WHERE id = retweet.user_id) AS retweet_user_name,\r\n"
+		 		+ "retweet.creation_timestamp AS retweet_timestamp\r\n"
+		 		+ "FROM tweet LEFT JOIN retweet ON retweet.tweet_id = id\r\n"
+		 		+ "INNER JOIN user ON user.id = tweet.user_id\r\n"
+		 		+ "UNION \r\n"
+		 		+ "SELECT tweet.id, tweet.user_id, tweet.content,  tweet.creation_timestamp AS tweet_creation_timestamp, tweet.edit_timestamp,\r\n"
+		 		+ "tweet.like_count, tweet.retweet_count, \r\n"
+		 		+ "user.username, user.name,\r\n"
+		 		+ "NULL AS retweet_user_id, NULL AS retweet_user_name, NULL as retweet_timestamp\r\n"
+		 		+ "FROM tweet\r\n"
+		 		+ "INNER JOIN user ON user.id = tweet.user_id\r\n"
+		 		+ "ORDER BY\r\n"
+		 		+ "    CASE \r\n"
+		 		+ "		WHEN retweet_timestamp IS NULL THEN tweet_creation_timestamp\r\n"
+		 		+ "        WHEN retweet_timestamp > tweet_creation_timestamp THEN retweet_timestamp\r\n"
+		 		+ "        WHEN tweet_creation_timestamp > retweet_timestamp THEN tweet_creation_timestamp\r\n"
+		 		+ "    END DESC\r\n"
+		 		+ ") AS T1 WHERE (user_id = 1 AND (retweet_user_id = 1 OR retweet_user_id IS NULL)) OR retweet_user_id = 1;";
 		 PreparedStatement statement = null;
 		 List<Tweet> tweets = new ArrayList<Tweet>();
 		 try {
@@ -203,7 +223,7 @@ public class TweetService {
 				 tweet.setTimeSince(computeTimeSince(then, now));
 				 LocalDateTime thenEdit = rs.getObject("edit_timestamp", LocalDateTime.class);
 				 if (thenEdit != null) {
-					 tweet.setEditTimeSince(computeTimeSince(thenEdit, now));
+					 tweet.setTimeSinceEdit(computeTimeSince(thenEdit, now));
 				 }
 				 tweet.setContent(rs.getString("content"));
 				 tweet.setUsername(rs.getString("username"));
@@ -221,9 +241,27 @@ public class TweetService {
 	}
 	
 	public List<Tweet> getGlobalTweets(Integer start, Integer end){
-		String query = "SELECT tweet.id,tweet.user_id,tweet.creation_timestamp,tweet.edit_timestamp,tweet.content,"
-				+ "tweet.like_count, tweet.retweet_count, user.username,user.name FROM tweet INNER JOIN user ON user.id = tweet.user_id"
-				+ " ORDER BY tweet.creation_timestamp DESC LIMIT ?,?";
+		String query = "SELECT tweet.id, tweet.user_id, tweet.content, tweet.creation_timestamp AS tweet_creation_timestamp, tweet.edit_timestamp,\r\n"
+				+ "tweet.like_count, tweet.retweet_count, \r\n"
+				+ "user.username, user.name,\r\n"
+				+ "retweet.user_id AS retweet_user_id, \r\n"
+				+ "(SELECT name FROM user WHERE id = retweet.user_id) AS retweet_user_name,\r\n"
+				+ "retweet.creation_timestamp AS retweet_timestamp\r\n"
+				+ "FROM tweet LEFT  JOIN retweet ON retweet.tweet_id = id\r\n"
+				+ "INNER JOIN user ON user.id = tweet.user_id\r\n"
+				+ "UNION \r\n"
+				+ "SELECT tweet.id, tweet.user_id, tweet.content,  tweet.creation_timestamp AS tweet_creation_timestamp, tweet.edit_timestamp,\r\n"
+				+ "tweet.like_count, tweet.retweet_count, \r\n"
+				+ "user.username, user.name,\r\n"
+				+ "NULL AS retweet_user_id, NULL AS retweet_user_name, NULL as retweet_timestamp\r\n"
+				+ "FROM tweet\r\n"
+				+ "INNER JOIN user ON user.id = tweet.user_id\r\n"
+				+ "ORDER BY\r\n"
+				+ "    CASE \r\n"
+				+ "		WHEN retweet_timestamp IS NULL THEN tweet_creation_timestamp\r\n"
+				+ "        WHEN retweet_timestamp > tweet_creation_timestamp THEN retweet_timestamp\r\n"
+				+ "        WHEN tweet_creation_timestamp > retweet_timestamp THEN tweet_creation_timestamp\r\n"
+				+ "    END DESC LIMIT ?,?;";
 		PreparedStatement statement = null;
 		List<Tweet> tweets = new ArrayList<Tweet>();
 		try {
@@ -235,18 +273,25 @@ public class TweetService {
 				 Tweet tweet = new Tweet();
       		     tweet.setId(rs.getLong("id"));
 				 tweet.setUserId(rs.getLong("user_id"));
-				 LocalDateTime then = rs.getObject("creation_timestamp", LocalDateTime.class);
+				 tweet.setContent(rs.getString("content"));
+				 LocalDateTime then = rs.getObject("tweet_creation_timestamp", LocalDateTime.class);
 				 LocalDateTime now = LocalDateTime.now();
 				 tweet.setTimeSince(computeTimeSince(then, now));
 				 LocalDateTime thenEdit = rs.getObject("edit_timestamp", LocalDateTime.class);
 				 if (thenEdit != null) {
-					 tweet.setEditTimeSince(computeTimeSince(thenEdit, now));
-				 }
-				 tweet.setContent(rs.getString("content"));
-				 tweet.setUsername(rs.getString("username"));
-				 tweet.setName(rs.getString("name"));
+					 tweet.setTimeSinceEdit(computeTimeSince(thenEdit, now));
+				 }		
 				 tweet.setLikeCount(rs.getInt("like_count"));
 				 tweet.setRetweetCount(rs.getInt("retweet_count"));
+				 tweet.setUsername(rs.getString("username"));
+				 tweet.setName(rs.getString("name"));
+				 Long retweetUserId = rs.getLong("retweet_user_id");
+				 tweet.setRetweetUserId(retweetUserId > 0 ? retweetUserId : null);
+				 tweet.setRetweetUserName(rs.getString("retweet_user_name"));
+				 LocalDateTime thenRetweet = rs.getObject("retweet_timestamp", LocalDateTime.class);
+				 if (thenRetweet != null) {
+					 tweet.setTimeSinceRetweet(computeTimeSince(thenRetweet, now));
+				 }
 				 tweets.add(tweet);
 			 }
 			 rs.close();
@@ -285,7 +330,7 @@ public class TweetService {
 				 tweet.setTimeSince(computeTimeSince(then, now));
 				 LocalDateTime thenEdit = rs.getObject("edit_timestamp", LocalDateTime.class);
 				 if (thenEdit != null) {
-					 tweet.setEditTimeSince(computeTimeSince(thenEdit, now));
+					 tweet.setTimeSinceEdit(computeTimeSince(thenEdit, now));
 				 }
 				 tweet.setContent(rs.getString("content"));
 				 tweet.setUsername(rs.getString("username"));

@@ -37,6 +37,52 @@ SELECT followed_id FROM follows WHERE follower_id = ?)
 ORDER BY rand()
 LIMIT ?;
 
+SELECT tweet.id, tweet.user_id, tweet.content, tweet.creation_timestamp AS tweet_creation_timestamp, tweet.edit_timestamp,
+tweet.like_count, tweet.retweet_count, 
+user.username, user.name,
+retweet.user_id AS retweet_user_id, 
+(SELECT name FROM user WHERE id = retweet.user_id) AS retweet_user_name,
+retweet.creation_timestamp AS retweet_timestamp
+FROM tweet LEFT JOIN retweet ON retweet.tweet_id = id
+INNER JOIN user ON user.id = tweet.user_id
+UNION 
+SELECT tweet.id, tweet.user_id, tweet.content,  tweet.creation_timestamp AS tweet_creation_timestamp, tweet.edit_timestamp,
+tweet.like_count, tweet.retweet_count, 
+user.username, user.name,
+NULL AS retweet_user_id, NULL AS retweet_user_name, NULL as retweet_timestamp
+FROM tweet
+INNER JOIN user ON user.id = tweet.user_id
+ORDER BY
+    CASE 
+		WHEN retweet_timestamp IS NULL THEN tweet_creation_timestamp
+        WHEN retweet_timestamp > tweet_creation_timestamp THEN retweet_timestamp
+        WHEN tweet_creation_timestamp > retweet_timestamp THEN tweet_creation_timestamp
+    END DESC;
+
+SELECT * FROM (
+SELECT tweet.id, tweet.user_id, tweet.content, tweet.creation_timestamp AS tweet_creation_timestamp, tweet.edit_timestamp,
+tweet.like_count, tweet.retweet_count, 
+user.username, user.name,
+retweet.user_id AS retweet_user_id, 
+(SELECT name FROM user WHERE id = retweet.user_id) AS retweet_user_name,
+retweet.creation_timestamp AS retweet_timestamp
+FROM tweet LEFT JOIN retweet ON retweet.tweet_id = id
+INNER JOIN user ON user.id = tweet.user_id
+UNION 
+SELECT tweet.id, tweet.user_id, tweet.content,  tweet.creation_timestamp AS tweet_creation_timestamp, tweet.edit_timestamp,
+tweet.like_count, tweet.retweet_count, 
+user.username, user.name,
+NULL AS retweet_user_id, NULL AS retweet_user_name, NULL as retweet_timestamp
+FROM tweet
+INNER JOIN user ON user.id = tweet.user_id
+ORDER BY
+    CASE 
+		WHEN retweet_timestamp IS NULL THEN tweet_creation_timestamp
+        WHEN retweet_timestamp > tweet_creation_timestamp THEN retweet_timestamp
+        WHEN tweet_creation_timestamp > retweet_timestamp THEN tweet_creation_timestamp
+    END DESC
+) AS T1 WHERE (user_id = 1 AND (retweet_user_id = 1 OR retweet_user_id IS NULL)) OR retweet_user_id = 1;
+
 UPDATE tweet
 SET 
 content = "hola",
