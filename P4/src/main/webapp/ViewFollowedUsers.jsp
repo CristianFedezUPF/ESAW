@@ -17,9 +17,8 @@
 					<p>${u.university}</p>
 					<p>${u.degree}</p>
 				</div>
-				
 			</div>
-
+			<button class="unfollow-button">Unfollow</button>
 		</div>
  		
 	</c:forEach>
