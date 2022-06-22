@@ -5,6 +5,11 @@ window.addEventListener('DOMContentLoaded', () => {
 				$('#content').load($(this).attr('id'));
 				event.preventDefault();
 			});
+			$(document).on("click",".logout",function(event) {
+				$('#content').load($(this).attr('id'));
+				$('#navigation').load('MenuController')
+				event.preventDefault();
+			});
 			$(document).on("click",".timeline-menu",function(event) {
 				$('#mcolumn').load($(this).attr('id'));
 				event.preventDefault();
