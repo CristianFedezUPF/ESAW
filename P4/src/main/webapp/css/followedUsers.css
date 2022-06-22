@@ -46,3 +46,23 @@
 .followed-user-content-wrapper{
 	margin-left: 10px;
 }
+
+.unfollow-button{
+	width: fit-content;
+	height: fit-content;
+	padding: 5px;
+	padding-left: 12px;
+	padding-right: 12px;
+	align-self: flex-end;
+	margin-right: 15%;
+	margin-bottom: 10px;
+	border: none;
+	border-radius: 18px;
+	color: #131c2a;
+	background-color: #fff;
+}
+
+.unfollow-button:hover{
+	background-color: #3e4e66;
+	color: #fff;
+}

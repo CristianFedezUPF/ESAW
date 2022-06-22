@@ -145,6 +145,15 @@ window.addEventListener('DOMContentLoaded', () => {
 				event.stopPropagation();
 				event.preventDefault();
 			});
+			// Unfollow user from followers
+			$(document).on("click",".unfollow-button", (event) => {
+				let followed_user = event.target.closest(".followed-user")
+				$.post( "UnfollowUser/" + event.target.parentElement.getAttribute("data-userid"), {}, () => {
+					followed_user.parentElement.removeChild(followed_user);
+				});
+				event.stopPropagation();
+				event.preventDefault();
+			});
 			// Follow user from profile
 			$(document).on("click",".profile-follow-button", (event) => {
 				$.post( "FollowUser/" + event.target.closest(".profile-wrapper").getAttribute("data-profileid"), {}, () => {
