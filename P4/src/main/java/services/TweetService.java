@@ -74,8 +74,8 @@ public class TweetService {
 		PreparedStatement statement = null;
 		try {
 			statement = db.prepareStatement(query);
-			statement.setLong(1,tweetId);
-			statement.setLong(2,userId);
+			statement.setLong(1, tweetId);
+			statement.setLong(2, userId);
 			statement.executeUpdate();
 			statement.close();
 		} catch (SQLException e) {
@@ -90,7 +90,7 @@ public class TweetService {
 		try {
 			statement = db.prepareStatement(query);
 			statement.setLong(1, tweetId);
-			statement.setLong(2,userId);
+			statement.setLong(2, userId);
 			statement.executeUpdate();
 			statement.close();
 		} catch (SQLException e) {
@@ -104,7 +104,7 @@ public class TweetService {
 		try {
 			statement = db.prepareStatement(query);
 			statement.setLong(1, tweetId);
-			statement.setLong(2,userId);
+			statement.setLong(2, userId);
 			statement.executeUpdate();
 			statement.close();
 		} catch (SQLException e) {

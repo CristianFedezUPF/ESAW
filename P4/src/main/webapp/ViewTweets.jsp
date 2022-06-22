@@ -26,6 +26,17 @@
 	 			</div>
  			</div>
    			<p class="tweet-content">${t.content}</p>
+   			<div class="tweet-options">
+	   			<div class="tweet-option-wrapper tweet-retweet">
+	   				<i class="tweet-retweet-button tweet-option fa fa-retweet"></i>
+	   				<p class="tweet-option-number">14</p>
+	   			</div>
+	 			<div class="tweet-option-wrapper tweet-like">
+	 				<i class="tweet-like-button tweet-option fa fa-heart"></i>
+	 				<p class="tweet-option-number">67</p>
+	 			</div>
+	 			
+ 			</div>
  		</div>
  	</div>
 </c:forEach>

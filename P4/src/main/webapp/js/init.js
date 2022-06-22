@@ -38,7 +38,7 @@ window.addEventListener('DOMContentLoaded', () => {
 				p_element.style.display = "none";
 				let text_area = document.createElement('textarea');
 				text_area.value = p_element.innerText;
-				p_element.parentElement.appendChild(text_area);
+				p_element.parentElement.querySelector(".tweet-options").before(text_area);
 				p_element.parentElement.removeChild(p_element)
 				text_area.classList.add("tweet-edit-textarea");
 				text_area.setAttribute("rows", "1");
@@ -78,7 +78,7 @@ window.addEventListener('DOMContentLoaded', () => {
 						let p_element = document.createElement('p');
 						p_element.classList.add("tweet-content");
 						p_element.innerText = content;
-						tweet_content_wrapper.appendChild(p_element)
+						tweet_content_wrapper.querySelector(".tweet-options").before(p_element)
 						// replace confirm button with edit button
 						let tweet_buttons = tweet_content_wrapper.
 							querySelector(".tweet-content-header-wrapper").
@@ -270,6 +270,38 @@ window.addEventListener('DOMContentLoaded', () => {
 					}
 				);
 				event.preventDefault();
+			});
+			$(document).on("click",".tweet-like", function(event){
+				let tweet_option_wrapper = event.currentTarget;
+				let tweet = tweet_option_wrapper.closest(".tweet");
+				$.post("AddLike", 
+					{ 
+						id: tweet.getAttribute("data-tweetid"),
+					},
+					() => {
+						let p = tweet_option_wrapper.querySelector("p");
+						let like_number = parseInt(p.innerText);
+						p.innerText = ++like_number;
+						tweet_option_wrapper.classList.remove("tweet-like");
+						tweet_option_wrapper.classList.add("tweet-dislike");
+					} 
+				);
+			});
+			$(document).on("click",".tweet-dislike", function(event){
+				let tweet_option_wrapper = event.currentTarget;
+				let tweet = tweet_option_wrapper.closest(".tweet");
+				$.post("RemoveLike", 
+					{ 
+						id: tweet.getAttribute("data-tweetid"),
+					},
+					() => {
+						let p = tweet_option_wrapper.querySelector("p");
+						let like_number = parseInt(p.innerText);
+						p.innerText = --like_number;
+						tweet_option_wrapper.classList.remove("tweet-dislike");
+						tweet_option_wrapper.classList.add("tweet-like");
+					} 
+				);
 			});
 });
 
