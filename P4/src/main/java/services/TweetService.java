@@ -69,13 +69,12 @@ public class TweetService {
 	}
 	
 	/* Delete existing tweet */
-	public void deleteTweet(Long tweetId,Long userId) {
-		String query = "DELETE FROM tweet WHERE id = ? AND user_id = ?";
+	public void deleteTweet(Long tweetId) {
+		String query = "DELETE FROM tweet WHERE id = ?;";
 		PreparedStatement statement = null;
 		try {
 			statement = db.prepareStatement(query);
 			statement.setLong(1, tweetId);
-			statement.setLong(2, userId);
 			statement.executeUpdate();
 			statement.close();
 		} catch (SQLException e) {

@@ -52,8 +52,8 @@ CREATE TABLE `like`(
 	tweet_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
 	creation_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-	FOREIGN KEY(tweet_id) REFERENCES tweet(id) ON UPDATE CASCADE,
-    FOREIGN KEY(user_id) REFERENCES `user`(id) ON UPDATE CASCADE,
+	FOREIGN KEY(tweet_id) REFERENCES tweet(id) ON DELETE CASCADE,
+    FOREIGN KEY(user_id) REFERENCES `user`(id) ON DELETE CASCADE,
     PRIMARY KEY(tweet_id, user_id)
 );
 
@@ -61,8 +61,8 @@ CREATE TABLE retweet(
 	tweet_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
 	creation_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-	FOREIGN KEY(tweet_id) REFERENCES tweet(id) ON UPDATE CASCADE,
-    FOREIGN KEY(user_id) REFERENCES `user`(id) ON UPDATE CASCADE,
+	FOREIGN KEY(tweet_id) REFERENCES tweet(id) ON DELETE CASCADE,
+    FOREIGN KEY(user_id) REFERENCES `user`(id) ON DELETE CASCADE,
     PRIMARY KEY(tweet_id, user_id)
 );
 

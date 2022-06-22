@@ -31,9 +31,14 @@ window.addEventListener('DOMContentLoaded', () => {
 			/* Delete tweet */
 			$(document).on("click",".tweet-delete-button",function(event){
 				let tweet = event.target.closest(".tweet")
-				$.post( "DelTweet", { id: tweet.getAttribute("data-tweetid") } , function(e) {
-					tweet.parentElement.removeChild(tweet);
-				});
+				$.post( "DelTweet", 
+					{ 
+						id: tweet.getAttribute("data-tweetid"),
+						userId: tweet.getAttribute("data-posterid")
+					},
+					() => {
+						tweet.parentElement.removeChild(tweet);
+					});
 				event.preventDefault();
 			});
 			// Edit tweet

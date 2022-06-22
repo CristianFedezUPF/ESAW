@@ -49,8 +49,8 @@ public class EditProfile extends HttpServlet {
 				BeanUtils.populate(profileUser, request.getParameterMap());
 				if((user.getId().equals(profileUser.getId())) || user.getIsAdmin()) {
 					userService.editUser(profileUser);
-					userService.finalize();
 				}
+			userService.finalize();
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
