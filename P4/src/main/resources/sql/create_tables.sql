@@ -42,13 +42,22 @@ CREATE TABLE tweet (
 	creation_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
     edit_timestamp DATETIME DEFAULT NULL,
     like_count INT DEFAULT 0,
-	is_retweet BOOLEAN DEFAULT false,
+	retweet_count INT DEFAULT 0,
 	FOREIGN KEY(parent_id) REFERENCES tweet(id) ON DELETE CASCADE,
     FOREIGN KEY(user_id) REFERENCES `user`(id)ON DELETE CASCADE
 
 );
 
 CREATE TABLE `like`(
+	tweet_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+	creation_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY(tweet_id) REFERENCES tweet(id) ON UPDATE CASCADE,
+    FOREIGN KEY(user_id) REFERENCES `user`(id) ON UPDATE CASCADE,
+    PRIMARY KEY(tweet_id, user_id)
+);
+
+CREATE TABLE retweet(
 	tweet_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
 	creation_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -92,7 +101,7 @@ CREATE TRIGGER counter_post_del AFTER DELETE ON tweet
     DELIMITER ;
 
 DELIMITER //
-CREATE TRIGGER liked AFTER INSERT ON `like`
+CREATE TRIGGER on_add_like AFTER INSERT ON `like`
 	FOR EACH ROW
     BEGIN 
     UPDATE `user` SET `user`.like_count = (`user`.like_count + 1) WHERE `user`.id =
@@ -102,11 +111,27 @@ CREATE TRIGGER liked AFTER INSERT ON `like`
     DELIMITER ;
     
 DELIMITER //
-CREATE TRIGGER disliked AFTER DELETE ON `like`
+CREATE TRIGGER on_remove_like AFTER DELETE ON `like`
 	FOR EACH ROW
     BEGIN 
     UPDATE `user` SET `user`.like_count = (`user`.like_count - 1) WHERE `user`.id = 
 		(SELECT user_id FROM tweet WHERE id = OLD.tweet_id);
     UPDATE tweet SET tweet.like_count = (tweet.like_count - 1) WHERE tweet.id = OLD.tweet_id;
+    END //
+    DELIMITER ;
+    
+DELIMITER //
+CREATE TRIGGER on_add_retweet AFTER INSERT ON retweet
+	FOR EACH ROW
+    BEGIN 
+    UPDATE tweet SET tweet.retweet_count = (tweet.retweet_count + 1) WHERE tweet.id = NEW.tweet_id;
+    END //
+    DELIMITER ;
+    
+DELIMITER //
+CREATE TRIGGER on_remove_retweet AFTER DELETE ON retweet
+	FOR EACH ROW
+    BEGIN 
+    UPDATE tweet SET tweet.retweet_count = (tweet.retweet_count - 1) WHERE tweet.id = OLD.tweet_id;
     END //
     DELIMITER ;

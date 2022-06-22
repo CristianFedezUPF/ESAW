@@ -4,8 +4,9 @@ SELECT * FROM `user`;
 SELECT * FROM `follows`;
 SELECT * FROM tweet;
 SELECT * FROM `like`;
+SELECT * FROM retweet;
 
-
+DELETE FROM retweet WHERE tweet_id = 5 AND user_id = 4;
 #currently the user that follows more people is cristian (with id = 3) so let's search 
 #	for the tweets these people have posted
 

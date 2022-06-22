@@ -76,5 +76,13 @@ INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('7', '1');
 INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('8', '1');
 
 
+INSERT INTO retweet (tweet_id, user_id) VALUES ('5', '1');
+INSERT INTO retweet (tweet_id, user_id) VALUES ('6', '2');
+INSERT INTO retweet (tweet_id, user_id) VALUES ('7', '1');
+INSERT INTO retweet (tweet_id, user_id) VALUES ('5', '2');
+INSERT INTO retweet (tweet_id, user_id) VALUES ('5', '4');
+
+
+
 SELECT tweet.id,tweet.user_id,tweet.creation_timestamp,tweet.content,user.username,user.name FROM tweet INNER JOIN user ON user.id = tweet.user_id;
 
