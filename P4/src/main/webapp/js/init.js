@@ -6,8 +6,9 @@ window.addEventListener('DOMContentLoaded', () => {
 				event.preventDefault();
 			});
 			$(document).on("click",".logout",function(event) {
-				$('#content').load($(this).attr('id'));
-				$('#navigation').load('MenuController')
+				$('#content').load($(this).attr('id'), () => {
+					$('#navigation').load('MenuController')	
+				});				
 				event.preventDefault();
 			});
 			$(document).on("click",".timeline-menu",function(event) {
