@@ -281,6 +281,8 @@ window.addEventListener('DOMContentLoaded', () => {
 					},
 					() => {
 						$("#mcolumn").load("GetProfileInfo/" + profile_id);
+						document.getElementById("user-profile-name").innerText = name;
+						document.getElementById("user-profile-username").innerText = username;
 					}
 				);
 				event.preventDefault();

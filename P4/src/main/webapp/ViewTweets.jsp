@@ -5,7 +5,12 @@
  	<div data-tweetid="${t.id}" data-posterid="${t.userId}" class="tweet">
  		<c:if test="${t.retweetUserId != null}">
 	 		<div data-retweetuserid="${t.retweetUserId}" class="retweet-info-wrapper">
-	 			<p class="retweet-info">${t.retweetUserName} reposted ${t.timeSinceRetweet} ago</p>
+	 			<c:if test="${t.retweetUserId != user.id}">
+	 				<p class="retweet-info">${t.retweetUserName} reposted ${t.timeSinceRetweet} ago</p>
+	 			</c:if>
+	 			<c:if test="${t.retweetUserId == user.id}">
+	 				<p class="retweet-info">You reposted ${t.timeSinceRetweet} ago</p>
+	 			</c:if>
 	 		</div> 		
  		</c:if>
  		<div class="tweet-wrapper">
