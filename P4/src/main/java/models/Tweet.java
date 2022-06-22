@@ -1,6 +1,4 @@
 package models;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 public class Tweet implements java.io.Serializable {
 
@@ -14,6 +12,7 @@ public class Tweet implements java.io.Serializable {
 	 private String editTimeSince;
 	 private String content;
 	 private Integer likeCount;
+	 private Boolean isLiked;
 
 	 public Tweet() {
 	 }
@@ -79,6 +78,14 @@ public class Tweet implements java.io.Serializable {
 		
 	public void setLikeCount(Integer count) {
 		this.likeCount = count;
+	}
+
+	public Boolean getIsLiked() {
+		return isLiked;
+	}
+
+	public void setIsLiked(Boolean isLiked) {
+		this.isLiked = isLiked;
 	}
 
 }

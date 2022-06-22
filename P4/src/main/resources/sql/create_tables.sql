@@ -95,7 +95,7 @@ DELIMITER //
 CREATE TRIGGER liked AFTER INSERT ON `like`
 	FOR EACH ROW
     BEGIN 
-    UPDATE `user` SET `user`.like_count = (`user`.post_count + 1) WHERE `user`.id =
+    UPDATE `user` SET `user`.like_count = (`user`.like_count + 1) WHERE `user`.id =
 		(SELECT user_id FROM tweet WHERE id = NEW.tweet_id);
     UPDATE tweet SET tweet.like_count = (tweet.like_count + 1) WHERE tweet.id = NEW.tweet_id;
     END //
@@ -105,8 +105,8 @@ DELIMITER //
 CREATE TRIGGER disliked AFTER DELETE ON `like`
 	FOR EACH ROW
     BEGIN 
-    UPDATE `user` SET `user`.like_count = (`user`.post_count -1) WHERE `user`.id = 
+    UPDATE `user` SET `user`.like_count = (`user`.like_count - 1) WHERE `user`.id = 
 		(SELECT user_id FROM tweet WHERE id = OLD.tweet_id);
-    UPDATE tweet SET tweet.like_count = (tweet.like_count + 1) WHERE tweet.id = OLD.tweet_id;
+    UPDATE tweet SET tweet.like_count = (tweet.like_count - 1) WHERE tweet.id = OLD.tweet_id;
     END //
     DELIMITER ;
