@@ -83,6 +83,35 @@ public class TweetService {
 		}
 	}
 	
+	/* like a tweet*/
+	public void likeTweet(Long tweetId, Long userId) {
+		String query = "INSERT INTO `like` ( tweet_id, user_id) VALUES (?,?)";
+		PreparedStatement statement = null;
+		try {
+			statement = db.prepareStatement(query);
+			statement.setLong(1, tweetId);
+			statement.setLong(2,userId);
+			statement.executeUpdate();
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	/* like a tweet*/
+	public void dislikeTweet(Long tweetId, Long userId) {
+		String query = "DELETE FROM `like` WHERE tweet_id = ? AND user_id = ?";
+		PreparedStatement statement = null;
+		try {
+			statement = db.prepareStatement(query);
+			statement.setLong(1, tweetId);
+			statement.setLong(2,userId);
+			statement.executeUpdate();
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 	/* Get tweets from a user given start and end*/
 	public List<Tweet> getUserTweets(Long userId,Integer start, Integer end) {

@@ -17,6 +17,7 @@ CREATE TABLE `user` (
     post_count INT DEFAULT 0,
     following_count INT DEFAULT 0,
     follower_count INT DEFAULT 0,
+    like_count INT DEFAULT 0,
     `position` ENUM('S', 'T'),
     is_admin BOOLEAN DEFAULT false,
     image_path VARCHAR(255), 
@@ -40,8 +41,19 @@ CREATE TABLE tweet (
     content VARCHAR(255) NOT NULL,
 	creation_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
     edit_timestamp DATETIME DEFAULT NULL,
+    like_count INT DEFAULT 0,
 	FOREIGN KEY(parent_id) REFERENCES tweet(id) ON DELETE CASCADE,
-    FOREIGN KEY(user_id) REFERENCES `user`(id) ON DELETE CASCADE
+    FOREIGN KEY(user_id) REFERENCES `user`(id)ON DELETE CASCADE
+
+);
+
+CREATE TABLE `like`(
+	tweet_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+	creation_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY(tweet_id) REFERENCES tweet(id),
+    FOREIGN KEY(user_id) REFERENCES `user`(id),
+    PRIMARY KEY(tweet_id, user_id)
 );
 
 DELIMITER //
@@ -75,5 +87,25 @@ CREATE TRIGGER counter_post_del AFTER DELETE ON tweet
 	FOR EACH ROW
     BEGIN 
     UPDATE `user` SET `user`.post_count = (`user`.post_count - 1) WHERE `user`.id = OLD.user_id;
+    END //
+    DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER liked AFTER INSERT ON `like`
+	FOR EACH ROW
+    BEGIN 
+    UPDATE `user` SET `user`.like_count = (`user`.post_count + 1) WHERE `user`.id =
+		(SELECT user_id FROM tweet WHERE id = NEW.tweet_id);
+    UPDATE tweet SET tweet.like_count = (tweet.like_count + 1) WHERE tweet.id = NEW.tweet_id;
+    END //
+    DELIMITER ;
+    
+DELIMITER //
+CREATE TRIGGER disliked AFTER DELETE ON `like`
+	FOR EACH ROW
+    BEGIN 
+    UPDATE `user` SET `user`.like_count = (`user`.post_count -1) WHERE `user`.id = 
+		(SELECT user_id FROM tweet WHERE id = OLD.tweet_id);
+    UPDATE tweet SET tweet.like_count = (tweet.like_count + 1) WHERE tweet.id = OLD.tweet_id;
     END //
     DELIMITER ;

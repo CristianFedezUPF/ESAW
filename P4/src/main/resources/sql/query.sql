@@ -3,6 +3,8 @@ USE unitter;
 SELECT * FROM `user`;
 SELECT * FROM `follows`;
 SELECT * FROM tweet;
+SELECT * FROM `like`;
+
 
 #currently the user that follows more people is cristian (with id = 3) so let's search 
 #	for the tweets these people have posted
@@ -25,6 +27,7 @@ WHERE tweet.user_id IN
 ORDER BY tweet.creation_timestamp DESC;
 
 SELECT user.id, user.username, user.name, user.university, user.degree;
+
 
 
 SELECT user.id, user.username, user.name, user.university, user.degree
