@@ -210,12 +210,12 @@ p{
 	color: #9ceae4;
 }
 
-.tweet-like:hover .tweet-option-number{
-	color: #ff757a;
+.tweet-remove-retweet > p{
+	color: #5de7de !important; 
 }
 
-.tweet-dislike:hover .tweet-option-number{
-	color: #ff757a;
+.tweet-remove-retweet > i{
+	color: #5de7de !important; 
 }
 
 .tweet-like:hover .tweet-option{
@@ -233,7 +233,6 @@ p{
 .tweet-dislike > i{
 	color: #ed5051 !important; 
 }
-
 
 .tweet-option-wrapper{
 	display: flex;

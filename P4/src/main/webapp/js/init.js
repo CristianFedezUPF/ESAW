@@ -280,6 +280,7 @@ window.addEventListener('DOMContentLoaded', () => {
 				);
 				event.preventDefault();
 			});
+			// Delete user
 			$(document).on("click","#profile-ban", function(event){
 				let profile_id = parseInt(event.target.closest(".profile-wrapper").getAttribute('data-profileid'));
 				$.post("DelProfile", 
@@ -292,6 +293,7 @@ window.addEventListener('DOMContentLoaded', () => {
 				);
 				event.preventDefault();
 			});
+			// Add like tweet
 			$(document).on("click",".tweet-like", function(event){
 				let tweet_option_wrapper = event.currentTarget;
 				let tweet = tweet_option_wrapper.closest(".tweet");
@@ -308,6 +310,7 @@ window.addEventListener('DOMContentLoaded', () => {
 					} 
 				);
 			});
+			// Remove like tweet
 			$(document).on("click",".tweet-dislike", function(event){
 				let tweet_option_wrapper = event.currentTarget;
 				let tweet = tweet_option_wrapper.closest(".tweet");
@@ -324,6 +327,41 @@ window.addEventListener('DOMContentLoaded', () => {
 					} 
 				);
 			});
+			// Add retweet
+			$(document).on("click",".tweet-retweet", function(event){
+				let tweet_option_wrapper = event.currentTarget;
+				let tweet = tweet_option_wrapper.closest(".tweet");
+				$.post("AddRetweet", 
+					{ 
+						id: tweet.getAttribute("data-tweetid"),
+					},
+					() => {
+						let p = tweet_option_wrapper.querySelector("p");
+						let retweet_number = parseInt(p.innerText);
+						p.innerText = ++retweet_number;
+						tweet_option_wrapper.classList.remove("tweet-retweet");
+						tweet_option_wrapper.classList.add("tweet-remove-retweet");
+					} 
+				);
+			});
+			// Remove retweet
+			$(document).on("click",".tweet-remove-retweet", function(event){
+				let tweet_option_wrapper = event.currentTarget;
+				let tweet = tweet_option_wrapper.closest(".tweet");
+				$.post("RemoveRetweet", 
+					{ 
+						id: tweet.getAttribute("data-tweetid"),
+					},
+					() => {
+						let p = tweet_option_wrapper.querySelector("p");
+						let retweet_number = parseInt(p.innerText);
+						p.innerText = --retweet_number;
+						tweet_option_wrapper.classList.remove("tweet-remove-retweet");
+						tweet_option_wrapper.classList.add("tweet-retweet");
+					} 
+				);
+			});
+			
 });
 
 function replaceProfileContentByTextArea(){

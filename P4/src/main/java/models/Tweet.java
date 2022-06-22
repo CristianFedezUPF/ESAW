@@ -14,6 +14,7 @@ public class Tweet implements java.io.Serializable {
 	 private Integer likeCount;
 	 private Integer retweetCount;
 	 private Boolean isLiked;
+	 private Boolean isRetweeted;
 
 	 public Tweet() {
 	 }
@@ -96,6 +97,14 @@ public class Tweet implements java.io.Serializable {
 
 	public void setIsLiked(Boolean isLiked) {
 		this.isLiked = isLiked;
+	}
+
+	public Boolean getIsRetweeted() {
+		return isRetweeted;
+	}
+
+	public void setIsRetweeted(Boolean isRetweeted) {
+		this.isRetweeted = isRetweeted;
 	}
 
 }

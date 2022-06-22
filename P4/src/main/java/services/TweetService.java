@@ -86,6 +86,52 @@ public class TweetService {
 		}
 	}
 	
+	public boolean checkIfRetweetExists(Long tweetId, Long userId) {
+		String query = "SELECT * FROM retweet WHERE tweet_id = ? AND user_id = ?;";
+		PreparedStatement statement = null;
+		boolean output = true;
+		try {
+			statement = db.prepareStatement(query);
+			statement.setLong(1, tweetId);
+			statement.setLong(2, userId);
+			ResultSet rs = statement.executeQuery();
+			output = rs.next();
+			rs.close();
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+	
+	public void addRetweet(Long tweetId, Long userId) {
+		String query = "INSERT INTO retweet (tweet_id, user_id) VALUES (?,?)";
+		PreparedStatement statement = null;
+		try {
+			statement = db.prepareStatement(query);
+			statement.setLong(1, tweetId);
+			statement.setLong(2, userId);
+			statement.executeUpdate();
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void removeRetweet(Long tweetId, Long userId) {
+		String query = "DELETE FROM retweet WHERE tweet_id = ? AND user_id = ?";
+		PreparedStatement statement = null;
+		try {
+			statement = db.prepareStatement(query);
+			statement.setLong(1, tweetId);
+			statement.setLong(2, userId);
+			statement.executeUpdate();
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public boolean checkIfLikeExists(Long tweetId, Long userId) {
 		String query = "SELECT * FROM `like` WHERE tweet_id = ? AND user_id = ?;";
 		PreparedStatement statement = null;
@@ -118,6 +164,7 @@ public class TweetService {
 			e.printStackTrace();
 		}
 	}
+	
 	/* like a tweet*/
 	public void removeLike(Long tweetId, Long userId) {
 		String query = "DELETE FROM `like` WHERE tweet_id = ? AND user_id = ?";
@@ -137,7 +184,7 @@ public class TweetService {
 	/* Get tweets from a user given start and end*/
 	public List<Tweet> getUserTweets(Long userId,Integer start, Integer end) {
 		 String query = "SELECT tweet.id,tweet.user_id,tweet.creation_timestamp,tweet.edit_timestamp,tweet.content,"
-		 		+ "tweet.like_count,user.username,user.name FROM tweet INNER JOIN user ON tweet.user_id = user.id where tweet.user_id = ? "
+		 		+ "tweet.like_count, tweet.retweet_count, user.username,user.name FROM tweet INNER JOIN user ON tweet.user_id = user.id where tweet.user_id = ? "
 		 		+ "ORDER BY tweet.creation_timestamp DESC LIMIT ?,? ;";
 		 PreparedStatement statement = null;
 		 List<Tweet> tweets = new ArrayList<Tweet>();
@@ -162,6 +209,7 @@ public class TweetService {
 				 tweet.setUsername(rs.getString("username"));
 				 tweet.setName(rs.getString("name"));
 				 tweet.setLikeCount(rs.getInt("like_count"));
+				 tweet.setRetweetCount(rs.getInt("retweet_count"));
 				 tweets.add(tweet);
 			 }
 			 rs.close();
@@ -174,7 +222,7 @@ public class TweetService {
 	
 	public List<Tweet> getGlobalTweets(Integer start, Integer end){
 		String query = "SELECT tweet.id,tweet.user_id,tweet.creation_timestamp,tweet.edit_timestamp,tweet.content,"
-				+ "tweet.like_count, user.username,user.name FROM tweet INNER JOIN user ON user.id = tweet.user_id"
+				+ "tweet.like_count, tweet.retweet_count, user.username,user.name FROM tweet INNER JOIN user ON user.id = tweet.user_id"
 				+ " ORDER BY tweet.creation_timestamp DESC LIMIT ?,?";
 		PreparedStatement statement = null;
 		List<Tweet> tweets = new ArrayList<Tweet>();
@@ -198,6 +246,7 @@ public class TweetService {
 				 tweet.setUsername(rs.getString("username"));
 				 tweet.setName(rs.getString("name"));
 				 tweet.setLikeCount(rs.getInt("like_count"));
+				 tweet.setRetweetCount(rs.getInt("retweet_count"));
 				 tweets.add(tweet);
 			 }
 			 rs.close();
@@ -210,7 +259,9 @@ public class TweetService {
 	
 	public List<Tweet> getCustomTweets(Long userId, Integer start, Integer end){
 		
-		String query = "SELECT tweet.id, tweet.user_id, tweet.creation_timestamp, tweet.edit_timestamp, tweet.content, tweet.like_count, user.username, user.name\r\n"
+		String query = "SELECT tweet.id, tweet.user_id, tweet.creation_timestamp, tweet.edit_timestamp, "
+				+ "tweet.content, tweet.like_count,  tweet.retweet_count,"
+				+ "user.username, user.name\r\n"
 				+ "FROM tweet JOIN user ON tweet.user_id = user.id\r\n"
 				+ "WHERE tweet.user_id IN \r\n"
 				+ "(SELECT followed_id FROM follows WHERE follower_id = ?)\r\n"
@@ -240,6 +291,7 @@ public class TweetService {
 				 tweet.setUsername(rs.getString("username"));
 				 tweet.setName(rs.getString("name"));
 				 tweet.setLikeCount(rs.getInt("like_count"));
+				 tweet.setRetweetCount(rs.getInt("retweet_count"));
 				 tweets.add(tweet);
 			 }
 			 rs.close();

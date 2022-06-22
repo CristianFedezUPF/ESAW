@@ -28,10 +28,18 @@
    			<p class="tweet-content">${t.content}</p>
    			<c:if test = "${user != null}">
    			<div class="tweet-options">
-	   			<div class="tweet-option-wrapper tweet-retweet">
-	   				<i class="tweet-retweet-button tweet-option fa fa-retweet"></i>
-	   				<p class="tweet-option-number">14</p>
-	   			</div>
+   				<c:if test="${!t.isRetweeted}">
+		   			<div class="tweet-option-wrapper tweet-retweet">
+		   				<i class="tweet-retweet-button tweet-option fa fa-retweet"></i>
+		   				<p class="tweet-option-number">${t.retweetCount}</p>
+		   			</div>
+		   		</c:if>
+		   		<c:if test="${t.isRetweeted}">
+		   			<div class="tweet-option-wrapper tweet-remove-retweet">
+		   				<i class="tweet-retweet-button tweet-option fa fa-retweet"></i>
+		   				<p class="tweet-option-number">${t.retweetCount}</p>
+		   			</div>
+		   		</c:if>
 	   			<c:if test="${!t.isLiked}">
 		 			<div class="tweet-option-wrapper tweet-like">
 		 				<i class="tweet-like-button tweet-option fa fa-heart"></i>
