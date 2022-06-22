@@ -31,10 +31,18 @@
 	   				<i class="tweet-retweet-button tweet-option fa fa-retweet"></i>
 	   				<p class="tweet-option-number">14</p>
 	   			</div>
-	 			<div class="tweet-option-wrapper tweet-like">
-	 				<i class="tweet-like-button tweet-option fa fa-heart"></i>
-	 				<p class="tweet-option-number">67</p>
-	 			</div>
+	   			<c:if test="${!t.isLiked}">
+		 			<div class="tweet-option-wrapper tweet-like">
+		 				<i class="tweet-like-button tweet-option fa fa-heart"></i>
+		 				<p class="tweet-option-number">${t.likeCount}</p>
+		 			</div>
+		 		</c:if>
+		 		<c:if test="${t.isLiked}">
+		 			<div class="tweet-option-wrapper tweet-dislike">
+		 				<i class="tweet-like-button tweet-option fa fa-heart"></i>
+		 				<p class="tweet-option-number">${t.likeCount}</p>
+		 			</div>
+		 		</c:if>
 	 			
  			</div>
  		</div>
