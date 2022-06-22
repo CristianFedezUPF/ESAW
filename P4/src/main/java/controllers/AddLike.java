@@ -46,12 +46,11 @@ public class AddLike extends HttpServlet {
 			if (session != null || user != null)
 				BeanUtils.populate(tweet, request.getParameterMap());
 				tweetManager.addLike(tweet.getId(), user.getId());
-				tweetManager.finalize();
 
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
-		
+		tweetManager.finalize();
 	}
 
 	/**

@@ -43,6 +43,7 @@ public class GetGlobalTweets extends HttpServlet {
 		if (session != null && user != null) {
 			for(Tweet tweet : tweets) {
 				tweet.setIsLiked(tweetService.checkIfLikeExists(tweet.getId(), user.getId()));
+				tweet.setIsRetweeted(tweetService.checkIfRetweetExists(tweet.getId(), user.getId()));
 			}
 		}
 		tweetService.finalize();
