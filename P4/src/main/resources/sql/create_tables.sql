@@ -5,7 +5,7 @@ USE unitter;
 
 CREATE TABLE `user` (
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	`name` VARCHAR(60) NOT NULl, 		
+	`name` VARCHAR(50) NOT NULl, 		
     username VARCHAR(20) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
     `password` VARCHAR(255) NOT NULL,
@@ -36,9 +36,8 @@ CREATE TABLE `follows` (
 
 CREATE TABLE tweet (
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    parent_id BIGINT,
     user_id BIGINT NOT NULL,
-    content VARCHAR(255) NOT NULL,
+    content VARCHAR(200) NOT NULL,
 	creation_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
     edit_timestamp DATETIME DEFAULT NULL,
     like_count INT DEFAULT 0,

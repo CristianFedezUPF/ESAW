@@ -51,7 +51,7 @@ p{
 	width: 95%;
 	height: 80px;
 	min-height: 50px;
-	max-height: 200px;
+	max-height: 160px;
 	resize: vertical;
 	border-radius: 8px;
 	background-color: #131c2a;  
@@ -103,9 +103,33 @@ p{
 
 .tweet{
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	padding-bottom: 10px;
 	border-bottom: 1px solid #1b222e;
+}
+
+.tweet-wrapper{
+	display: flex;
+	flex-direction: row;	
+}
+
+.retweet-info-wrapper{
+	display: flex;
+	width: 100%;
+	height: fit-content;
+	flex-direction: row;
+	margin-bottom: -8px;
+}
+
+.retweet-info{
+	color: #888;
+	font-style: italic;
+	padding-left: 20px;
+	margin-top: 5px;
+}
+
+.retweet-info:hover{
+	cursor: pointer;
 }
 
 .tweet-avatar-wrapper{
@@ -125,7 +149,7 @@ p{
 	flex-direction: column;
 	margin-top: 10px;
 	margin-left: 15px;
-	margin-right: 10px;
+	margin-right: 14px;
 }
 
 .tweet-content-header-wrapper{
@@ -142,6 +166,10 @@ p{
 
 .tweet-content-header:hover{
 	cursor: pointer;
+}
+
+.tweet-content{
+  	overflow-wrap: anywhere;
 }
 
 .tweet-username{
