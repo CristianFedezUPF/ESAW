@@ -16,18 +16,19 @@ import org.apache.commons.beanutils.BeanUtils;
 import models.Tweet;
 import models.User;
 import services.TweetService;
+import services.UserService;
 
 /**
  * Servlet implementation class AddTweetFromUser
  */
-@WebServlet("/EditTweet")
-public class EditTweet extends HttpServlet {
+@WebServlet("/EditProfile")
+public class EditProfile extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EditTweet() {
+    public EditProfile() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -36,18 +37,19 @@ public class EditTweet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		User profileUser = new User();
+		UserService userService = new UserService();
 		
-		Tweet tweet = new Tweet();
-		TweetService tweetManager = new TweetService();
 		HttpSession session = request.getSession(false);
 		User user = (User) session.getAttribute("user");
 		
 		try {
 			if (session != null || user != null)
-				BeanUtils.populate(tweet, request.getParameterMap());
-				if((user.getId().equals(tweet.getId())) || user.getIsAdmin()) {
-					tweetManager.editTweet(tweet);
-					tweetManager.finalize();
+				BeanUtils.populate(profileUser, request.getParameterMap());
+				if((user.getId().equals(profileUser.getId())) || user.getIsAdmin()) {
+					userService.editUser(profileUser);
+					userService.finalize();
 				}
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			// TODO Auto-generated catch block

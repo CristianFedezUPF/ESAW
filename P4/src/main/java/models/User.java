@@ -264,7 +264,6 @@ private static final long serialVersionUID = 1L;
 	
 	public void setIsAdmin(boolean val) {
 		this.isAdmin = val;
-		System.out.println(isAdmin);
 	}
 	
 	public String getImagePath() {

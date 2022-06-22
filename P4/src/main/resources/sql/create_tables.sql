@@ -28,8 +28,8 @@ CREATE TABLE `follows` (
 	follower_id BIGINT,
     followed_id BIGINT,
 	creation_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, 
-	FOREIGN KEY(follower_id) REFERENCES `user`(id),
-    FOREIGN KEY(followed_id) REFERENCES `user`(id),
+	FOREIGN KEY(follower_id) REFERENCES `user`(id) ON DELETE CASCADE,
+    FOREIGN KEY(followed_id) REFERENCES `user`(id) ON DELETE CASCADE,
     PRIMARY KEY(follower_id, followed_id)
 );
 
@@ -42,8 +42,9 @@ CREATE TABLE tweet (
 	creation_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
     edit_timestamp DATETIME DEFAULT NULL,
     like_count INT DEFAULT 0,
-	FOREIGN KEY(parent_id) REFERENCES tweet(id),
-    FOREIGN KEY(user_id) REFERENCES `user`(id)
+	FOREIGN KEY(parent_id) REFERENCES tweet(id) ON DELETE CASCADE,
+    FOREIGN KEY(user_id) REFERENCES `user`(id)ON DELETE CASCADE
+
 );
 
 CREATE TABLE `like`(
