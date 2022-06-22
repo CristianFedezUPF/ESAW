@@ -42,6 +42,7 @@ CREATE TABLE tweet (
 	creation_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
     edit_timestamp DATETIME DEFAULT NULL,
     like_count INT DEFAULT 0,
+	is_retweet BOOLEAN DEFAULT false,
 	FOREIGN KEY(parent_id) REFERENCES tweet(id) ON DELETE CASCADE,
     FOREIGN KEY(user_id) REFERENCES `user`(id)ON DELETE CASCADE
 
