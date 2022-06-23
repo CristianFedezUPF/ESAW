@@ -282,4 +282,4 @@ INSERT INTO university( code, name) VALUES ('Uvic', 'Universitat de Vic');
 INSERT INTO university( code, name) VALUES ('UIC', 'Universitat Internacional de Catalunya');
 INSERT INTO university( code, name) VALUES ('UAO-CEU', 'Universitat Abat Oliba');
 
-
+SELECT * FROM university;

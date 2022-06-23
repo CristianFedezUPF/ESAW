@@ -6,7 +6,7 @@ SELECT * FROM tweet;
 SELECT * FROM `like`;
 SELECT * FROM retweet;
 
-DELETE FROM retweet WHERE tweet_id = 5 AND user_id = 4;
+DELETE FROM retweet WHERE tweet_id = 2 AND user_id = 2;
 #currently the user that follows more people is cristian (with id = 3) so let's search 
 #	for the tweets these people have posted
 
@@ -20,6 +20,7 @@ FROM tweet
 JOIN user ON user.id = tweet.user_id
 JOIN follows ON follows.follower_id = user.id
 WHERE user.id = 1;
+SELECT tweet.id,tweet.user_id,tweet.creation_timestamp,tweet.content,user.username,user.name FROM tweet INNER JOIN user ON user.id = tweet.user_id;
 
 SELECT tweet.id, tweet.user_id, tweet.creation_timestamp, tweet.content, user.username, user.name
 FROM tweet JOIN user ON tweet.user_id = user.id

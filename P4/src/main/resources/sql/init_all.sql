@@ -5,7 +5,7 @@ USE unitter;
 
 CREATE TABLE `user` (
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	`name` VARCHAR(60) NOT NULl, 		
+	`name` VARCHAR(50) NOT NULl, 		
     username VARCHAR(20) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
     `password` VARCHAR(255) NOT NULL,
@@ -36,14 +36,12 @@ CREATE TABLE `follows` (
 
 CREATE TABLE tweet (
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    parent_id BIGINT,
     user_id BIGINT NOT NULL,
-    content VARCHAR(255) NOT NULL,
+    content VARCHAR(200) NOT NULL,
 	creation_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
     edit_timestamp DATETIME DEFAULT NULL,
     like_count INT DEFAULT 0,
-	is_retweet BOOLEAN DEFAULT false,
-	FOREIGN KEY(parent_id) REFERENCES tweet(id) ON DELETE CASCADE,
+	retweet_count INT DEFAULT 0,
     FOREIGN KEY(user_id) REFERENCES `user`(id)ON DELETE CASCADE
 
 );
@@ -52,8 +50,17 @@ CREATE TABLE `like`(
 	tweet_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
 	creation_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-	FOREIGN KEY(tweet_id) REFERENCES tweet(id) ON UPDATE CASCADE,
-    FOREIGN KEY(user_id) REFERENCES `user`(id) ON UPDATE CASCADE,
+	FOREIGN KEY(tweet_id) REFERENCES tweet(id) ON DELETE CASCADE,
+    FOREIGN KEY(user_id) REFERENCES `user`(id) ON DELETE CASCADE,
+    PRIMARY KEY(tweet_id, user_id)
+);
+
+CREATE TABLE retweet(
+	tweet_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+	creation_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY(tweet_id) REFERENCES tweet(id) ON DELETE CASCADE,
+    FOREIGN KEY(user_id) REFERENCES `user`(id) ON DELETE CASCADE,
     PRIMARY KEY(tweet_id, user_id)
 );
 
@@ -92,99 +99,45 @@ CREATE TRIGGER counter_post_del AFTER DELETE ON tweet
     DELIMITER ;
 
 DELIMITER //
-CREATE TRIGGER liked AFTER INSERT ON `like`
+CREATE TRIGGER on_add_like AFTER INSERT ON `like`
 	FOR EACH ROW
     BEGIN 
-    UPDATE `user` SET `user`.like_count = (`user`.post_count + 1) WHERE `user`.id =
+    UPDATE `user` SET `user`.like_count = (`user`.like_count + 1) WHERE `user`.id =
 		(SELECT user_id FROM tweet WHERE id = NEW.tweet_id);
     UPDATE tweet SET tweet.like_count = (tweet.like_count + 1) WHERE tweet.id = NEW.tweet_id;
     END //
     DELIMITER ;
     
 DELIMITER //
-CREATE TRIGGER disliked AFTER DELETE ON `like`
+CREATE TRIGGER on_remove_like AFTER DELETE ON `like`
 	FOR EACH ROW
     BEGIN 
-    UPDATE `user` SET `user`.like_count = (`user`.post_count -1) WHERE `user`.id = 
+    UPDATE `user` SET `user`.like_count = (`user`.like_count - 1) WHERE `user`.id = 
 		(SELECT user_id FROM tweet WHERE id = OLD.tweet_id);
-    UPDATE tweet SET tweet.like_count = (tweet.like_count + 1) WHERE tweet.id = OLD.tweet_id;
+    UPDATE tweet SET tweet.like_count = (tweet.like_count - 1) WHERE tweet.id = OLD.tweet_id;
     END //
     DELIMITER ;
     
-ALTER TABLE `user` AUTO_INCREMENT = 1;
-ALTER TABLE tweet AUTO_INCREMENT = 1;
-
-
-#pwd: ssssss
-INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
-	image_path, salt, is_admin) VALUES ('Anna Pruna Craus','AnnaPruna','anna.pruna@gmail.com', 'Y4à=Ó3*ÉRcñqy6j`Ácæ³­ÔÞ=', 'NB', 'Universitat Pompeu Fabra', NULL, 'Spain','1997-1-1', 
-    'T', NULL, "ÝZ)lmVÁtã´Ú", false);
-INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
-	image_path, salt, is_admin) VALUES ('Helena Pruna Craus','HelenaPruna','helena.pruna@gmail.com', '¼³PÌáI±³NÎ¼EÀÑÚÐæ8^Jp¬¶á', 'F', 'UPF', 'Computer Science', 'Spain','2001-03-23',
-    'S', NULL, '(hS5rmçg àòÉ', true); 
-INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
-	image_path, salt, is_admin) VALUES ('Cristian Fernández Moreno','CristianFedez','cristianfedez@gmail.com', 'Ü|xªGTûßÕ_¼-Ì®-Vg¢wSPÇgöÔFÊ8', 'M', 'Universitat Pompeu Fabra', 'Enginyeria de Sistemes Audiovisuals', 'Spain',
-    '2001-07-30', 'S', NULL, 'uXpÐÚïÓI½SÄR0f%', true);
-INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
-	image_path, salt, is_admin) VALUES ('Lucas Damián Chindemi Santa Cruz','PatoLucas','lucas.chindemi@gmail.com', 'nR²¶êLðùR
-Êø³üÏ¹¯¥ûlHÁS®', 'M', 'UPF', 'Computer', 
-    'Argentina', '1999-3-1', 'S', NULL, '9û>íue ©.²;[=', true);
-INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
-	image_path, salt, is_admin) VALUES ('Moni','moni','moni01@gmail.com', 'xUh·Z7âU³¢2yù$öäg¶åáhéþì', 'F', 'Universitat Pompeu Fabra', 'Computer Science', 'Spain',
-    '2001-02-20', 'S', NULL, '?ïÛ¨:6±¥­p', true);
-    INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
-	image_path, salt, is_admin) VALUES ('Moni','moni2','moni02@gmail.com', 'xUh·Z7âU³¢2yù$öäg¶åáhéþì', 'F', 'Universitat Pompeu Fabra', 'Computer Science', 'Spain',
-    '2001-02-20', 'S', NULL, '?ïÛ¨:6±¥­p', true);
-    INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
-	image_path, salt, is_admin) VALUES ('Moni','moni3','moni03@gmail.com', 'xUh·Z7âU³¢2yù$öäg¶åáhéþì', 'F', 'Universitat Pompeu Fabra', 'Computer Science', 'Spain',
-    '2001-02-20', 'S', NULL, '?ïÛ¨:6±¥­p', true);
-    INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
-	image_path, salt, is_admin) VALUES ('Moni','moni4','moni04@gmail.com', 'xUh·Z7âU³¢2yù$öäg¶åáhéþì', 'F', 'Universitat Pompeu Fabra', 'Computer Science', 'Spain',
-    '2001-02-20', 'S', NULL, '?ïÛ¨:6±¥­p', true);
-    INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
-	image_path, salt, is_admin) VALUES ('Moni','moni5','moni05@gmail.com', 'xUh·Z7âU³¢2yù$öäg¶åáhéþì', 'F', 'Universitat Pompeu Fabra', 'Computer Science', 'Spain',
-    '2001-02-20', 'S', NULL, '?ïÛ¨:6±¥­p', true);
-    INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
-	image_path, salt, is_admin) VALUES ('Moni','moni6','moni06@gmail.com', 'xUh·Z7âU³¢2yù$öäg¶åáhéþì', 'F', 'Universitat Pompeu Fabra', 'Computer Science', 'Spain',
-    '2001-02-20', 'S', NULL, '?ïÛ¨:6±¥­p', true);
-    INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
-	image_path, salt, is_admin) VALUES ('Moni','moni7','moni07@gmail.com', 'xUh·Z7âU³¢2yù$öäg¶åáhéþì', 'F', 'Universitat Pompeu Fabra', 'Computer Science', 'Spain',
-    '2001-02-20', 'S', NULL, '?ïÛ¨:6±¥­p', true);
-    INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
-	image_path, salt, is_admin) VALUES ('Moni','moni8','moni08@gmail.com', 'xUh·Z7âU³¢2yù$öäg¶åáhéþì', 'F', 'Universitat Pompeu Fabra', 'Computer Science', 'Spain',
-    '2001-02-20', 'S', NULL, '?ïÛ¨:6±¥­p', true);
-
-
-INSERT INTO `follows`(follower_id, followed_id) VALUES(3, 4);
-INSERT INTO `follows`(follower_id, followed_id) VALUES(1, 4);
-INSERT INTO `follows`(follower_id, followed_id) VALUES(3, 2);
-INSERT INTO `follows`(follower_id, followed_id) VALUES(4, 2);
-INSERT INTO `follows`(follower_id, followed_id) VALUES(1, 2);
-INSERT INTO `follows`(follower_id, followed_id) VALUES(3, 1);
-INSERT INTO `follows`(follower_id, followed_id) VALUES(3, 5);
-INSERT INTO `follows`(follower_id, followed_id) VALUES(2, 1);
-INSERT INTO `follows`(follower_id, followed_id) VALUES(4, 1);
-
-
-INSERT INTO tweet(parent_id, user_id, content) VALUES(NULL, 1, 'hello im Anna');
-INSERT INTO tweet(parent_id, user_id, content) VALUES(NULL, 3, 'hello im Cristian and Helena is my best friend');
-INSERT INTO tweet(parent_id, user_id, content) VALUES(NULL, 3, 'nah it\'s totally false lmao');
-INSERT INTO tweet(parent_id, user_id, content) VALUES(NULL, 3, 'jkjk ly Helena');
-INSERT INTO tweet(parent_id, user_id, content) VALUES(NULL, 3, "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.");
-INSERT INTO tweet(parent_id, user_id, content) VALUES(NULL, 3, "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.");
-INSERT INTO tweet(parent_id, user_id, content) VALUES(NULL, 3, "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.");
-INSERT INTO tweet(parent_id, user_id, content) VALUES(NULL, 3, "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.");
-INSERT INTO tweet(parent_id, user_id, content) VALUES(NULL, 3, "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.");
-INSERT INTO tweet(parent_id, user_id, content) VALUES(NULL, 3, "jose juan");
-INSERT INTO tweet(parent_id, user_id, content) VALUES(NULL, 4, 'Computer science is superior');
-
-INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('2', '2');
-INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('4', '2');
-INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('3', '4');
-INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('4', '5');
-INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('1', '1');
-INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('7', '1');
-INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('8', '1');
+DELIMITER //
+CREATE TRIGGER on_add_retweet AFTER INSERT ON retweet
+	FOR EACH ROW
+    BEGIN 
+    UPDATE tweet SET tweet.retweet_count = (tweet.retweet_count + 1) WHERE tweet.id = NEW.tweet_id;
+    UPDATE `user` SET `user`.post_count = (`user`.post_count + 1) WHERE `user`.id = NEW.user_id;
+    END //
+    DELIMITER ;
+    
+DELIMITER //
+CREATE TRIGGER on_remove_retweet AFTER DELETE ON retweet
+	FOR EACH ROW
+    BEGIN 
+    UPDATE tweet SET tweet.retweet_count = (tweet.retweet_count - 1) WHERE tweet.id = OLD.tweet_id;
+	UPDATE `user` SET `user`.post_count = (`user`.post_count - 1) WHERE `user`.id = OLD.user_id;
+    END //
+    DELIMITER ;
+    
+USE unitter; 
+DROP TABLE IF EXISTS country;
 
 CREATE TABLE country(
 	continent VARCHAR(12),
@@ -446,6 +399,10 @@ INSERT INTO country(continent, code, name) VALUES ('Oceania',            "UM" , 
 INSERT INTO country(continent, code, name) VALUES ('Oceania',            "VU" , 'Vanuatu');
 INSERT INTO country(continent, code, name) VALUES ('Oceania',            "WF" , 'Wallis and Futuna');
 
+SELECT * FROM country;
+
+DROP TABLE IF EXISTS university;
+
 CREATE TABLE university(
 	code VARCHAR(10) PRIMARY KEY,
     name VARCHAR(60)
@@ -462,3 +419,248 @@ INSERT INTO university( code, name) VALUES ('URL', 'Universitat Ramon Llull');
 INSERT INTO university( code, name) VALUES ('Uvic', 'Universitat de Vic');
 INSERT INTO university( code, name) VALUES ('UIC', 'Universitat Internacional de Catalunya');
 INSERT INTO university( code, name) VALUES ('UAO-CEU', 'Universitat Abat Oliba');
+
+SELECT * FROM university;
+
+
+USE unitter; 
+
+ALTER TABLE `user` AUTO_INCREMENT = 1;
+ALTER TABLE tweet AUTO_INCREMENT = 1;
+
+
+#pwd: ssssss
+INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
+	image_path, salt, is_admin) VALUES ('Helena Pruna Craus','HelenaPruna','helena.pruna@estudiant.upf.edu', '_£»I%ÒiueÍ×@ØÝ8Úz[ÎÊÜ^±lÌianú', 
+    'F', 'Universitat Pompeu Fabra', 'Computer Science', 'Spain','2001-03-23', 'S', NULL, '@ÝÎ-iÿ©öüÅÇVÆw', true); 
+INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
+	image_path, salt, is_admin) VALUES ('Cristian Fernández Moreno','CristianFedez','cristianfedez03@estudiant.upf.edu', '_£»I%ÒiueÍ×@ØÝ8Úz[ÎÊÜ^±lÌianú', 
+    'M', 'Universitat Pompeu Fabra', 'Enginyeria de Sistemes Audiovisuals', 'Spain', '2001-07-30', 'S', NULL, '@ÝÎ-iÿ©öüÅÇVÆw', true);
+INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
+	image_path, salt, is_admin) VALUES ('Lucas Damián Chindemi Santa Cruz','PatoLucas','lucasdamian.chindemi01@estudiant.upf.edu', '_£»I%ÒiueÍ×@ØÝ8Úz[ÎÊÜ^±lÌianú', 
+    'M', 'Universitat Pompeu Fabra', 'Computer', 'Argentina', '1999-3-1', 'S', NULL, '@ÝÎ-iÿ©öüÅÇVÆw', true);
+INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
+	image_path, salt, is_admin) VALUES ('Monica Grau','moni','monica.grau02@estudiant.upf.edu', '_£»I%ÒiueÍ×@ØÝ8Úz[ÎÊÜ^±lÌianú', 
+    'F', 'Universitat Pompeu Fabra', 'Computer Science', 'Spain', '2001-02-20', 'S', NULL, '@ÝÎ-iÿ©öüÅÇVÆw', true);
+INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
+	image_path, salt, is_admin) VALUES ('Maria Torres','meri','maria.torres04@estudiant.url.edu', '_£»I%ÒiueÍ×@ØÝ8Úz[ÎÊÜ^±lÌianú', 
+    'F', 'Universitat Ramon Llull', 'Marqueting i relacions públiques', 'Spain', '2001-05-12', 'S', NULL, '@ÝÎ-iÿ©öüÅÇVÆw', false);
+INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
+	image_path, salt, is_admin) VALUES ('Queralt Poch','poch','queralt.poch01@estudiant.url.edu', '_£»I%ÒiueÍ×@ØÝ8Úz[ÎÊÜ^±lÌianú', 
+    'F', 'Universitat Ramon Llull', 'Farmàcia i Nutrició', 'Spain', '2001-11-13', 'S', NULL, '@ÝÎ-iÿ©öüÅÇVÆw', false);
+INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
+	image_path, salt, is_admin) VALUES ('Laia Rodriguez','Laia','laia.rodriguez02@estudiant.uab.edu', '_£»I%ÒiueÍ×@ØÝ8Úz[ÎÊÜ^±lÌianú', 
+    'F', 'Universitat Autònoma de Barcelona', 'Filologia anglesa i catalana', 'Spain', '2001-10-14', 'S', NULL, '@ÝÎ-iÿ©öüÅÇVÆw', false);
+INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
+	image_path, salt, is_admin) VALUES ('Eulalia Craus Vidal','eulaCraus','eulalia.craus01@estudiant.url.edu', '_£»I%ÒiueÍ×@ØÝ8Úz[ÎÊÜ^±lÌianú', 
+    'F', 'Universitat Ramon Llull', 'Relacions internacionals', 'Spain', '2001-03-21', 'S', NULL, '@ÝÎ-iÿ©öüÅÇVÆw', false);
+INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
+	image_path, salt, is_admin) VALUES ('Miquel Vázquez Rius','MiquelViR','miquel.vazquez02@estudiant.upf.edu', '_£»I%ÒiueÍ×@ØÝ8Úz[ÎÊÜ^±lÌianú', 
+    'M', 'Universitat Pompeu Fabra', 'Enginyeria de Sistemes Audiovisuals', 'Spain', '2001-01-31', 'S', NULL, '@ÝÎ-iÿ©öüÅÇVÆw', false);
+INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
+	image_path, salt, is_admin) VALUES ('Carlota Julià','Charlotte','carlota.julia01@estudiant.upf.edu', '_£»I%ÒiueÍ×@ØÝ8Úz[ÎÊÜ^±lÌianú',
+    'F', 'Universitat Pompeu Fabra', 'Mathematical Engineering in Data Science', 'Spain','2002-11-24', 'S', NULL, '@ÝÎ-iÿ©öüÅÇVÆw', false);
+INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
+	image_path, salt, is_admin) VALUES ('Klaus Ditterich Martín','Klaus','Klaus.ditterich01@estudiant.upf.edu', '_£»I%ÒiueÍ×@ØÝ8Úz[ÎÊÜ^±lÌianú', 
+    'M', 'Universitat Pompeu Fabra', 'Telecommunications Network Engineering', 'Spain', '2001-11-05', 'S', NULL, '@ÝÎ-iÿ©öüÅÇVÆw', false);
+INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
+	image_path, salt, is_admin) VALUES ('Alex Pruna Craus','AlexPruCra','alex.pruna01@estudiant.uoc.edu', '_£»I%ÒiueÍ×@ØÝ8Úz[ÎÊÜ^±lÌianú', 
+    'M', 'Universitat Oberta de Catalunya', 'ADE', 'Spain', '1994-08-25', 'S', NULL, '@ÝÎ-iÿ©öüÅÇVÆw', false);
+INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
+	image_path, salt, is_admin) VALUES ('Jordi Taixes','Taixes','jordi.taixes@upf.edu', '_£»I%ÒiueÍ×@ØÝ8Úz[ÎÊÜ^±lÌianú', 
+    'M', 'Universitat Pompeu Fabra', NULL, 'Spain', NULL, 'T', NULL, '@ÝÎ-iÿ©öüÅÇVÆw', false);  
+INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
+	image_path, salt, is_admin) VALUES ('Patricia Santos Rodriguez','PatriciaSR','Patricia.santos@upf.edu', '_£»I%ÒiueÍ×@ØÝ8Úz[ÎÊÜ^±lÌianú', 
+    'F', 'Universitat Pompeu Fabra', NULL, 'Spain', NULL, 'T', NULL, '@ÝÎ-iÿ©öüÅÇVÆw', false);  
+INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
+	image_path, salt, is_admin) VALUES ('Oriol Martinez Pujol','Oriol','oriol.martinez@upf.edu', '_£»I%ÒiueÍ×@ØÝ8Úz[ÎÊÜ^±lÌianú', 
+    'M', 'Universitat Pompeu Fabra', NULL, 'Spain', NULL, 'T', NULL, '@ÝÎ-iÿ©öüÅÇVÆw', false);  
+INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
+	image_path, salt, is_admin) VALUES ('Juan Antonio Rodríguez García','Joan','juanantonio.rodriguez@upf.edu', '_£»I%ÒiueÍ×@ØÝ8Úz[ÎÊÜ^±lÌianú', 
+    'M', 'Universitat Pompeu Fabra', NULL, 'Spain', '1992-03-15', 'T', NULL, '@ÝÎ-iÿ©öüÅÇVÆw', false);  
+
+
+INSERT INTO `follows`(follower_id, followed_id) VALUES(1, 2);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(1, 3);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(1, 4);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(1, 5);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(1, 6);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(1, 7);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(1, 8);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(1, 9);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(1, 10);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(1, 11);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(1, 15);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(1, 16);
+
+INSERT INTO `follows`(follower_id, followed_id) VALUES(2, 1);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(2, 3);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(2, 4);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(2, 9);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(2, 10);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(2, 11);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(2, 14);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(2, 15);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(2, 16);
+
+INSERT INTO `follows`(follower_id, followed_id) VALUES(3, 1);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(3, 2);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(3, 4);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(3, 9);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(3, 10);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(3, 11);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(3, 13);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(3, 14);
+
+INSERT INTO `follows`(follower_id, followed_id) VALUES(4, 1);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(4, 2);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(4, 3);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(4, 10);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(4, 11);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(4, 13);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(4, 14);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(4, 15);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(4, 16);
+
+INSERT INTO `follows`(follower_id, followed_id) VALUES(5, 1);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(5, 6);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(5, 7);
+
+INSERT INTO `follows`(follower_id, followed_id) VALUES(6, 1);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(6, 5);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(6, 7);
+
+INSERT INTO `follows`(follower_id, followed_id) VALUES(7, 1);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(7, 5);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(7, 6);
+
+INSERT INTO `follows`(follower_id, followed_id) VALUES(8, 1);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(8, 2);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(8, 12);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(8, 13);
+
+INSERT INTO `follows`(follower_id, followed_id) VALUES(9, 1);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(9, 2);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(9, 3);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(9, 4);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(9, 10);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(9, 11);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(9, 13);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(9, 14);
+
+INSERT INTO `follows`(follower_id, followed_id) VALUES(10, 1);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(10, 2);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(10, 3);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(10, 4);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(10, 9);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(10, 11);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(10, 13);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(10, 14);
+
+INSERT INTO `follows`(follower_id, followed_id) VALUES(11, 1);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(11, 2);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(11, 3);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(11, 4);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(11, 9);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(11, 10);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(11, 13);
+
+INSERT INTO `follows`(follower_id, followed_id) VALUES(12, 8);
+
+INSERT INTO `follows`(follower_id, followed_id) VALUES(13, 8);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(13, 9);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(13, 14);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(13, 15);
+
+INSERT INTO `follows`(follower_id, followed_id) VALUES(14, 1);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(14, 13);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(14, 16);
+
+INSERT INTO `follows`(follower_id, followed_id) VALUES(15, 1);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(15, 2);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(15, 3);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(15, 4);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(15, 13);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(15, 14);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(15, 16);
+
+INSERT INTO `follows`(follower_id, followed_id) VALUES(16, 1);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(16, 2);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(16, 3);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(16, 4);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(16, 13);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(16, 15);
+INSERT INTO `follows`(follower_id, followed_id) VALUES(16, 16);
+
+
+
+
+
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-01 15:01:53", 1, 'Hello im Helena!!');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2021-06-01 09:01:53", 4, 'Hello im Moni!!');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-01 15:01:43", 10, 'Hello im Carlota!!');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2021-12-15 20:01:23", 15, 'Hello im Oriol!!');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-01 15:01:33", 11, 'Hello im Klaus!!');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-03 15:03:53", 2, 'Hello im Cristian and Helena is my best friend');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-03 15:23:53", 2, 'nah it\'s totally false lmao');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-03 15:26:07", 2, 'jkjk ly Helena');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-09 21:00:53", 13, "Avui han sortit les entrades per les representacions de nine per part del grup d'adults d'aules CORREU A COMPRAR-LES!!");
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-17 15:37:46", 13, "Les entrades per les sessions d'avui de NINE estan esgotades!! però encara teniu oportunitat d'aconseguir-ne per demà :) ");
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-19 21:00:53", 13, "L'obra ha sortit genial noies!! molt bon treball!!");
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-15 15:12:53", 2, "Today I saw Jurassic World: Dominion in IMAX 3D at Diagonal Mar, it was great!");
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-15 15:14:53", 2, "My next stop at the cinema will be Lightyear after the exams, I'm excited for it!");
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-22 20:04:30", 11, "TICs exam of today was so unfairly hard :( they need to make the exams in line with the theory/exercises given by the teachers. ");
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-23 14:32:53", 1, "IN THIS UNIVERSITY WE LOVE KITTENS.");
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-18 14:02:53", 6, "IVE ACED MY EXAMS!!!");
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-20 20:29:53", 5, "this project is killing me :((");
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-21 20:02:53", 3, 'Computer science is superior');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-16 19:12:53", 15, 'Els meus alumnes estan creant uns Twitters increibles!!');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-04 09:42:53", 4, 'La millor assignatura es algebra');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-20 18:54:53", 11, 'Telecos es lo mejor que he hecho en el mundo');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-20 18:55:53", 11, 'Quiero trabajar ya con antenas /s');
+
+
+
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('2', '1');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('2', '3');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('4', '1');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('6', '1');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('6', '1');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('8', '1');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('19', '1');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('16', '1');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('21', '1');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('22', '1');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('18', '1');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('21', '2');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('15', '2');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('22', '2');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('2', '3');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('17', '3');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('14', '3');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('19', '3');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('18', '4');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('14', '4');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('19', '4');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('16', '5');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('15', '5');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('1', '5');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('1', '6');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('1', '7');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('16', '7');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('1', '7');
+INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('19', '16');
+
+
+INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-06-04 15:22:53", '6', '1');
+INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-06-04 15:23:00", '8', '1');
+INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-06-10 15:15:03", '20', '1');
+INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-06-10 00:49:53", '9', '8');
+INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-06-17 16:13:53", '10', '8');
+INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-06-19 21:13:53", '11', '8');
+INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-06-21 00:49:53", '17', '3');
+INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-06-23 23:24:33", '15', '2');
+
+
+
+
