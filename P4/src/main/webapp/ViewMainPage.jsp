@@ -19,7 +19,7 @@
 			<p id="GetProfileInfo/${user.id}" class="timeline-menu lcolumn-menu-item">Profile</p>
 		</div>
 		<div id="lcolumn-profile">
-			<div id="GetProfileInfo/${user.id}" class="timeline-menu user-profile-wrapper">
+			<div id="GetProfileInfo/${user.id}" data-userid="${user.id}" class="timeline-menu user-profile-wrapper">
 				<img class="user-profile-avatar" src="imgs/avatar2.png">
 				<div id="user-profile-info">
 					<p id="user-profile-name">${user.name}</p>

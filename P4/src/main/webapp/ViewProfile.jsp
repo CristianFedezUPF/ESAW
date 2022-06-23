@@ -1,12 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="true" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
- <script type="text/javascript">
- $(document).ready(function(){
-	$('#tweet-list').load('GetUserTweets/'+'${profile.id}');
- });
-</script>
-
 <div data-profileid="${profile.id}" class="profile-wrapper">
 	<div class="profile-avatar-wrapper">
 		<img class="profile-avatar" src="imgs/avatar5.png">
@@ -51,6 +45,8 @@
 <div id="tweet-list">
 </div>
 
-<script>
-
+ <script type="text/javascript">
+ $(document).ready(function(){
+	$('#tweet-list').load('GetUserTweets/'+'${profile.id}');
+ });
 </script>

@@ -28,8 +28,11 @@
 		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		
-		<script src = js/init.js type="text/javascript" defer></script>
-		<script src = js/common.js type="text/javascript" async></script>
+		<script src = js/initMain.js type="text/javascript" defer></script>
+		<script src = js/initFollow.js type="text/javascript" defer></script>
+		<script src = js/initProfile.js type="text/javascript" defer></script>
+		<script src = js/initTweet.js type="text/javascript" defer></script>
+		<script src = js/forms.js type="text/javascript" async></script>
 		
 		<template>
 			<p class="error-message">error</p>
