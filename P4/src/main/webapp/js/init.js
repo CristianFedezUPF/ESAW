@@ -442,6 +442,11 @@ function replaceProfileContentByTextArea(){
 	let teacher_option = document.createElement("option");
 	teacher_option.setAttribute('value', 'T');
 	teacher_option.innerText = "Teacher";
+	if(content == "Student"){
+		student_option.setAttribute('selected','selected')
+	} else {
+		teacher_option.setAttribute('selected','selected')
+	}
 	select_element.appendChild(student_option);
 	select_element.appendChild(teacher_option);
 	profile_text_wrapper.appendChild(select_element)
