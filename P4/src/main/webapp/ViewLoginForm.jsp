@@ -22,4 +22,7 @@
 <c:if test = "${user.error['12']}">
 	<script>showError("There was a problem reaching the database.")</script>
 </c:if>
+<c:if test = "${user.error['13']}">
+	<script>showError("An unexpected error happened.")</script>
+</c:if>
 

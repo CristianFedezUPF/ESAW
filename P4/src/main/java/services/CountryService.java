@@ -58,4 +58,5 @@ public class CountryService {
 		List<Country> countries = getCountries(); 
 		return countries.stream().collect(Collectors.groupingBy(Country::getContinent));
 	}
+
 }

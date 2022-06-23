@@ -6,6 +6,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,7 +44,8 @@ private static final long serialVersionUID = 1L;
 	//[0] = Name missing [1] = Username missing [2] = Username length invalid [3] = Username not valid
 	//[4] = Username in use. [5] = Email not valid. [6] = Password too short. [7] = Password must be alphanumeric.
 	//[8] = Degree must contain only text characters. [9] = Email in use. [10] = Passwords do not match (login)
-	//[11] = User does not exist (login).
+	//[11] = User does not exist (login). [12] = DB error/internal server error
+	//[13] = Other, unexpected errors
 	
 	private HashMap<String,Boolean> error = null;
 	
@@ -55,6 +59,10 @@ private static final long serialVersionUID = 1L;
 	}
 
 	public void setId(Long id) {
+		if(id <= 0) {
+			error.put("13", true);
+			return;
+		}
 		this.id = id;
 	}
 	
@@ -66,10 +74,9 @@ private static final long serialVersionUID = 1L;
 		name = name.trim();
 		if(name.length() < 1) {
 			error.put("0", true);
+			return;
 		}
-		else {
-			this.name = name;
-		}
+		this.name = name;
 	}
 	
 	public String getUsername() {
@@ -153,6 +160,16 @@ private static final long serialVersionUID = 1L;
 	
 	public void setPasswordCheck(String password) {
 		password = password.trim();
+		if(password.length() < 6) {
+			error.put("6", true);
+		}
+		String regex = "^[a-zA-Z0-9]+$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(password);
+		if (!matcher.matches()) {
+			error.put("7", true);
+			return;
+		}
 		this.passwordCheck = password;
 	}
 	
@@ -162,6 +179,10 @@ private static final long serialVersionUID = 1L;
 	
 	public void setGender(String gender) {
 		gender = gender.trim();
+		if (!gender.matches("M|F|NB|NS") && gender != null) {
+			error.put("13", true);
+			return;
+		}
 		this.gender = gender;
 	}
 	
@@ -171,6 +192,10 @@ private static final long serialVersionUID = 1L;
 	
 	public void setUniversity(String university) {
 		university = university.trim();
+		if(university.length() > 255) {
+			error.put("13", true);
+			return;
+		}
 		this.university = university;
 	}
 	
@@ -199,8 +224,20 @@ private static final long serialVersionUID = 1L;
 	}
 	
 	public void setCountry(String country) {
-		country = country.trim();
-		this.country = country;
+		if(country != null && country.equals("0")){
+			this.country = null;
+		}
+		else if(country == null) {
+			this.country = country;
+		}
+		else {
+			country = country.trim();
+			if(country.length() > 64) {
+				error.put("13", true);
+				return;
+			}
+			this.country = country;
+		}
 	}
 	
 	public Date getBirthday() {
@@ -208,6 +245,10 @@ private static final long serialVersionUID = 1L;
 	}
 	
 	public void setBirthday(Date birthday) {
+		if (birthday != null && !isDateValid(birthday.toString())) {
+			error.put("13", true);
+			return;
+		}
 		this.birthday = birthday;
 	}
 	
@@ -216,6 +257,10 @@ private static final long serialVersionUID = 1L;
 	}
 	
 	public void setPostCount(Integer count) {
+		if(count < 0) {
+			error.put("13", true);
+			return;
+		}
 		this.postCount = count;
 	}
 	
@@ -224,6 +269,10 @@ private static final long serialVersionUID = 1L;
 	}
 	
 	public void setFollowingCount(Integer count) {
+		if(count < 0) {
+			error.put("13", true);
+			return;
+		}
 		this.followingCount = count;
 	}
 	
@@ -233,6 +282,10 @@ private static final long serialVersionUID = 1L;
 	}
 	
 	public void setFollowerCount(Integer count) {
+		if(count < 0) {
+			error.put("13", true);
+			return;
+		}
 		this.followerCount = count;
 	}
 	
@@ -241,6 +294,10 @@ private static final long serialVersionUID = 1L;
 	}
 	
 	public void setLikeCount(Integer count) {
+		if(count < 0) {
+			error.put("13", true);
+			return;
+		}
 		this.likeCount = count;
 	}
 	
@@ -250,6 +307,10 @@ private static final long serialVersionUID = 1L;
 	
 	public void setPosition(String position) {
 		position = position.trim();
+		if (!position.matches("S|T") && position != null) {
+			error.put("13", true);
+			return;
+		}
 		this.position = position;
 	}
 	
@@ -318,6 +379,18 @@ private static final long serialVersionUID = 1L;
 	
 	private boolean hasValue(String val) {
 		return((val != null) && (!val.equals("")));
+	}
+
+	private boolean isDateValid(String date) 
+	{
+	        try {
+	            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+	            df.setLenient(false);
+	            df.parse(date);
+	            return true;
+	        } catch (ParseException e) {
+	            return false;
+	        }
 	}
 	
 }
