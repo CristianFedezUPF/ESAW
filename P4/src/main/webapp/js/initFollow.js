@@ -18,8 +18,8 @@ window.addEventListener('DOMContentLoaded', () => {
 					}
 					// if we are in own profile, fake +1 to following
 					else if(current_column.classList.contains("profile-wrapper")){
-						let profile_id = current_column.getAttribute('data-profile-id');
-						let user_id = document.getElementsByClassName("user-profile-wrapper")[0].getAttribute('data-user-id');
+						let profile_id = current_column.getAttribute('data-profileid');
+						let user_id = document.getElementsByClassName("user-profile-wrapper")[0].getAttribute('data-userid');
 						if (user_id === profile_id){
 							let following_count = document.getElementsByClassName("following-count")[0].querySelector("span");
 							following_count.innerText = parseInt(following_count.innerText) + 1;
