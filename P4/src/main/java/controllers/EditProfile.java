@@ -2,8 +2,6 @@ package controllers;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.SQLException;
-import java.sql.Timestamp;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,9 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.beanutils.BeanUtils;
 
-import models.Tweet;
 import models.User;
-import services.TweetService;
 import services.UserService;
 
 /**

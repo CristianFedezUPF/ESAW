@@ -1,11 +1,6 @@
 package controllers;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.servlet.FilterChain;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,9 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import models.Tweet;
 import models.User;
-import services.TweetService;
 import services.UserService;
 
 /**
