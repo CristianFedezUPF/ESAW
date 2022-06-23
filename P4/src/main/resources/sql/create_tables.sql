@@ -42,7 +42,6 @@ CREATE TABLE tweet (
     edit_timestamp DATETIME DEFAULT NULL,
     like_count INT DEFAULT 0,
 	retweet_count INT DEFAULT 0,
-	FOREIGN KEY(parent_id) REFERENCES tweet(id) ON DELETE CASCADE,
     FOREIGN KEY(user_id) REFERENCES `user`(id)ON DELETE CASCADE
 
 );

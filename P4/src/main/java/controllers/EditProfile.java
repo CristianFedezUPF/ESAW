@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import javax.servlet.ServletException;
@@ -47,12 +48,24 @@ public class EditProfile extends HttpServlet {
 		try {
 			if (session != null || user != null)
 				BeanUtils.populate(profileUser, request.getParameterMap());
-				if((user.getId().equals(profileUser.getId())) || user.getIsAdmin()) {
+				if(!profileUser.isEditComplete()) {
+					response.sendError(400, "Invalid request");
+				}
+				else if(userService.isNewUsernameUsed(profileUser, profileUser.getUsername())) {
+					response.sendError(409, "Username is already in use");
+				}
+				else if((user.getId().equals(profileUser.getId())) || user.getIsAdmin()) {
 					userService.editUser(profileUser);
+					if(user.getId().equals(profileUser.getId())) {
+						user.setName(profileUser.getName());
+						user.setUsername(profileUser.getUsername());
+					}
 				}
 			userService.finalize();
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch(SQLException e) {
 			e.printStackTrace();
 		}
 		

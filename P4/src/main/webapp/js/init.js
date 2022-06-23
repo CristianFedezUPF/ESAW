@@ -13,6 +13,15 @@ window.addEventListener('DOMContentLoaded', () => {
 			});
 			$(document).on("click",".timeline-menu",function(event) {
 				$('#mcolumn').load($(this).attr('id'));
+				let menu_items = document.getElementsByClassName("lcolumn-menu-item");
+				// reset previous bold element
+				for(let element of menu_items){
+					element.style.fontWeight = "";
+				}
+				if(event.currentTarget.classList.contains("user-profile-wrapper")){
+					menu_items[3].style.fontWeight = "900";
+				}
+				event.currentTarget.style.fontWeight = "900";
 				event.preventDefault();
 			});
 			$(document).on("submit","form", function(event) {
@@ -228,63 +237,29 @@ window.addEventListener('DOMContentLoaded', () => {
 			// Confirm edit profile
 			$(document).on("click","#profile-edit-confirm",function(event){
 				let profile_info = document.getElementsByClassName("profile-info")[0];
-				let profile_text_wrapper = profile_info.querySelector(".profile-text-wrapper");
 				let text_areas = profile_info.querySelectorAll("textarea");
 				let selects = profile_info.querySelectorAll("select");
   				// front validation
-  				let name, username, country, university, position, degree; 
-  				for(let text_area of text_areas){
-					let value = text_area.value;
-					switch(text_area.id){
-						case "profile-edit-name":
-							if(value === "") return;
-							name = value;
-							break;
-						case "profile-edit-username":
-							if(value === "" || value.length < 4 || value.length > 15 || !validateUsername(value)) return;
-							username = value
-							break;
-						case "profile-edit-degree":
-							if(value === ""){
-								value = null;
-							}
-							else if(!validateDegree(value)){
-								return;
-							}
-							degree = value;
-							break;
-					}
-				}
-				for(let select of selects){
-					let value = select.value;
-					switch(select.id){
-						case "profile-country":
-							country = value;
-							break;
-						case "profile-university":
-							university = value;
-							break;
-						case "profile-position":
-							position = value;		
-					}
-				}
+  				let validation = validateProfileEdit(text_areas, selects);
 				let profile_id = parseInt(event.target.closest(".profile-wrapper").getAttribute('data-profileid'));
 				$.post("EditProfile", 
 					{ 
 						id: profile_id,
-						name: name,
-						username: username,
-						country: country,
-						university: university,
-						position: position,
-						degree: degree
+						name: validation.name,
+						username: validation.username,
+						country: validation.country,
+						university: validation.university,
+						position: validation.position,
+						degree: validation.degree
 					},
 					() => {
 						$("#mcolumn").load("GetProfileInfo/" + profile_id);
-						document.getElementById("user-profile-name").innerText = name;
-						document.getElementById("user-profile-username").innerText = username;
+						document.getElementById("user-profile-name").innerText = validation.name;
+						document.getElementById("user-profile-username").innerText = validation.username;
 					}
-				);
+				).fail((error) => {
+					showProfileEditError("An unexpected error has occurred with your request.")
+				});
 				event.preventDefault();
 			});
 			// Delete user
@@ -470,4 +445,71 @@ function replaceProfileContentByTextArea(){
 
 }
 
+function validateProfileEdit(text_areas, selects){
+	output = {}
+	for(let text_area of text_areas){
+		let value = text_area.value;
+		switch(text_area.id){
+			case "profile-edit-name":
+				if(value === ""){
+					showProfileEditError("Please input a name.");
+					throw "Error";
+				};
+				output.name = value;
+				break;
+			case "profile-edit-username":
+				if(value === "" || value.length < 4){
+					showProfileEditError("Username too short.");
+					throw "Error";
+				}
+				if(value.length > 15){
+					showProfileEditError("Username too long.");
+					throw "Error";
+				}
+				if(!validateUsername(value)){
+					showProfileEditError("Username format invalid.");
+					throw "Error";	
+				}
+				output.username = value
+				break;
+			case "profile-edit-degree":
+				if(value === ""){
+					value = null;
+				}
+				else if(!validateDegree(value)){
+					showProfileEditError("Degree format invalid.");
+					throw "Error";	
+				}
+				output.degree = value;
+				break;
+		}
+	}
+	for(let select of selects){
+		let value = select.value;
+		switch(select.id){
+			case "profile-country":
+				output.country = value;
+				break;
+			case "profile-university":
+				output.university = value;
+				break;
+			case "profile-position":
+				output.position = value;		
+		}
+	}
+	return output;
+}
+
+function showProfileEditError(message){
+	let profile_info = document.getElementsByClassName("profile-info")[0];
+	let error = profile_info.querySelector('.profile-edit-error');
+	if (error != null){
+		error.innerText = message;
+		return;
+	};
+	error = document.createElement("p");
+	error.innerText = message;
+	error.classList.add("profile-edit-error");
+	profile_info.appendChild(error);
+}
 

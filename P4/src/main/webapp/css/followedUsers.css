@@ -47,6 +47,14 @@
 	margin-left: 10px;
 }
 
+.unfollow-button-wrapper{
+	display: flex;
+	height: 100%;
+	width: 100%;
+	align-items: flex-end;
+	justify-content: flex-end;
+}
+
 .unfollow-button{
 	width: fit-content;
 	height: fit-content;
