@@ -1,0 +1,134 @@
+.profile-wrapper{
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	height: fit-content;
+}
+
+.profile-avatar-wrapper{
+	display: flex;
+	flex-direction: column;
+}
+
+.profile-avatar{
+	width: 120px;
+	border-radius: 50%;
+	flex-shrink: 0;
+	margin-left: 60px;
+	margin-top: 30px;
+}
+
+.profile-info{
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	margin-right: 20px;
+	margin-left: 24px;
+	margin-top: 15px;
+	padding-left: 6px;
+	border-radius: 6px;
+}
+
+.profile-name{
+	font-size: 30px;
+}
+
+.profile-username{
+	font-weight: bold;
+	font-size: 20px;
+	line-height: 1;
+	
+}
+
+.profile-text, .profile-text-separator{
+	color: #aaa;
+}
+
+.profile-text-separator{
+	margin-left: 6px;
+	margin-right: 6px;
+	
+}
+
+.profile-text-wrapper{
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	height: fit-content;
+}
+
+.profile-stats{
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	height: fit-content;
+	justify-content: space-evenly;
+	margin-top: 15px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #1b222e;
+}
+
+.profile-follow-button, .profile-unfollow-button{
+	width: fit-content;
+	height: fit-content;
+	padding: 5px;
+	padding-left: 12px;
+	padding-right: 12px;
+	margin-left: 60px;
+	margin-top: 10px;
+	align-self: center;
+	border: none;
+	border-radius: 18px;
+	color: #131c2a;
+	background-color: #fff;
+}
+
+.profile-follow-button:hover, .profile-unfollow-button:hover{
+	background-color: #3e4e66;
+	color: #fff;
+}
+
+.profile-options{
+	align-self: flex-end;
+	margin-top: -22px;
+	margin-right: 10px;
+}
+
+.profile-button{
+	font-size: 20px;
+}
+
+.profile-button:hover{
+	cursor: pointer;
+}
+
+#profile-edit{
+	color: #888;
+}
+
+#profile-ban{
+	color: rgb(210, 0, 0);;
+}
+
+.profile-edit-textarea{
+	color: #fff;
+	background-color: transparent;
+	outline: none;
+	border: none;
+	resize: none;
+	padding-left: 6px;
+	margin-left: -6px;
+	margin-top: -1px;
+	padding-top: 1px;
+}
+
+.profile-edit-select{
+	height: 20px;
+	margin-top: 1px;
+	margin-bottom: 1px;
+	font-size: 12px;
+	background-color: #131c2a;
+	border-radius: 6px;
+	color: white;
+	width: 44%;
+}
