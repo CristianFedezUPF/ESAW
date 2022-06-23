@@ -5,7 +5,7 @@
 <c:forEach var="countriesEntry" items="${countries}" >
    <optgroup id="country-optgroup-${countriesEntry.key}" label="${countriesEntry.key}">
     <c:forEach items="${countriesEntry.value}" var="country">
-      <option value="${country.code}" label="${country.name}">${country.name}</option>
+      <option value="${country.name}" label="${country.name}">${country.name}</option>
     </c:forEach>
     </optgroup>
 </c:forEach>

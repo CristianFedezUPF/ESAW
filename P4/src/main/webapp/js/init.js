@@ -232,7 +232,7 @@ window.addEventListener('DOMContentLoaded', () => {
 				confirm_button.classList.add("profile-button", "fa", "fa-check");
 				confirm_button.style.color = "#888";	
 				parent.insertBefore(confirm_button, parent.firstChild);
-				event.preventDefault();
+				event.preventDefault();	
 			});
 			// Confirm edit profile
 			$(document).on("click","#profile-edit-confirm",function(event){
@@ -417,19 +417,31 @@ function replaceProfileContentByTextArea(){
 	let teacher_option = document.createElement("option");
 	teacher_option.setAttribute('value', 'T');
 	teacher_option.innerText = "Teacher";
+	if(content == "Student"){
+		student_option.setAttribute('selected','selected')
+	} else {
+		teacher_option.setAttribute('selected','selected')
+	}
 	select_element.appendChild(student_option);
 	select_element.appendChild(teacher_option);
 	profile_text_wrapper.appendChild(select_element)
 	
-	p_element = profile_text[1];
-	content = p_element.innerText;
-	p_element.parentElement.removeChild(p_element);
-	select_element = document.createElement("select");
-	select_element.setAttribute('name', 'profile-university');
-	select_element.setAttribute('id', 'profile-university');
-	select_element.classList.add('profile-edit-select')
-	profile_text_wrapper.insertBefore(select_element, profile_text_wrapper.firstElementChild);
-	$(select_element).load('GetUniversities');
+	p_element_university = profile_text[1];
+	university = p_element_university.innerText;
+	p_element_university.parentElement.removeChild(p_element_university);
+	select_element_university = document.createElement("select");
+	select_element_university.setAttribute('name', 'profile-university');
+	select_element_university.setAttribute('id', 'profile-university');
+	select_element_university.classList.add('profile-edit-select')
+	profile_text_wrapper.insertBefore(select_element_university, profile_text_wrapper.firstElementChild);
+	$(select_element_university).load('GetUniversities', () => {
+		for(var i, j = 0; i = select_element_university.options[j]; j++) {
+		    if(i.value == university) {
+		        select_element_university.selectedIndex = j;
+		        break;
+		    }
+		}
+	});
 
 	p_element = profile_text[0];
 	content = p_element.innerText;
@@ -439,8 +451,15 @@ function replaceProfileContentByTextArea(){
 	select_element.setAttribute('id', 'profile-country');
 	select_element.classList.add('profile-edit-select')
 	profile_info.insertBefore(select_element, profile_info.querySelector(".profile-text-wrapper"));
-	$(select_element).load('GetCountries');
-	
+	$(select_element).load('GetCountries', () => {
+		for(var i, j = 0; i = select_element.options[j]; j++) {
+		    if(i.value == content) {
+		        select_element.selectedIndex = j;
+		        break;
+		    }
+		}
+	});
+		
 	profile_info.style.backgroundColor = "#131c2a";
 
 }
