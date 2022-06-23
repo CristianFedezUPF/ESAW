@@ -82,9 +82,11 @@ private static final long serialVersionUID = 1L;
 		int length = username.length();
 		if(length < 1) {
 			error.put("1", true);
+			return;
 		}
 		else if(length < 4 || length > 15) {
 			error.put("2", true);
+			return;
 		}
 		String regex = "^[a-zA-Z0-9]+$";
 		Pattern pattern = Pattern.compile(regex);
@@ -94,6 +96,7 @@ private static final long serialVersionUID = 1L;
 		}
 		else {
 			error.put("3", true);
+			return;
 		}
 	}
 	
@@ -135,15 +138,9 @@ private static final long serialVersionUID = 1L;
 		SecureRandom random = new SecureRandom();
 		byte[] salt = new byte[16]; 
 		random.nextBytes(salt); // create random 16-byte salt
-		byte[] secret = "ESAW".getBytes();
-		
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		outputStream.write(secret);
-		outputStream.write(salt); 
-		byte[] final_salt = outputStream.toByteArray(); // final salt is secret + salt
 		
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
-		md.update(final_salt);
+		md.update(salt);
 		
 		this.salt = new String(salt, StandardCharsets.ISO_8859_1); // store salt as String
 		String hashedPassword = new String(md.digest(password.getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.ISO_8859_1); //hash and store as String
@@ -312,6 +309,12 @@ private static final long serialVersionUID = 1L;
 	public boolean isLoginComplete() {
 	    return(hasValue(this.getUsername()) &&
 	           hasValue(this.getPassword()));
+	}
+	
+	public boolean isEditComplete() {
+		return(hasValue(this.getUsername()) &&
+				hasValue(this.getName()) && 
+				hasValue(this.getUniversity()));
 	}
 	
 	private boolean hasValue(String val) {

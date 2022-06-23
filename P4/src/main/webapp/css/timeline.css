@@ -296,6 +296,15 @@ p{
 	font-size: 40px;
 	margin-top: 10px;
 	font-family: Anek;
+	user-select: none;
+	-moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}
+
+#logo:hover{
+	cursor: default;
 }
 
 .lcolumn-menu-item{

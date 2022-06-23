@@ -18,9 +18,10 @@
 					<p>${u.degree}</p>
 				</div>
 			</div>
-			<button class="unfollow-button">Unfollow</button>
+			<div class="unfollow-button-wrapper">
+				<button class="unfollow-button">Unfollow</button>
+			</div>
 		</div>
- 		
 	</c:forEach>
 </div>
 

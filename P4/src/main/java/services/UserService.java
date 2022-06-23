@@ -182,6 +182,32 @@ public class UserService {
 		return false;
 	}
 	
+	public boolean isNewUsernameUsed(User user, String username) throws SQLException {
+		ResultSet rs;
+		PreparedStatement statement;
+		String query;
+		try {
+			// username
+			query = "SELECT * FROM user WHERE username LIKE ?";
+			statement = db.prepareStatement(query);
+			statement.setString(1, username);
+			rs = statement.executeQuery();
+			if(rs.next()) {  // if there's some value in the result set, it's registered
+				if (user.getId().equals(rs.getLong("id"))) {
+					return false;
+				}
+				user.setError("4", true);
+				return true;
+			}
+			return false;
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			return true;
+		}
+	
+	}
+	
 	public boolean isPasswordCorrect(User user) throws SQLException, NoSuchAlgorithmException, IOException {
 		ResultSet rs;
 		PreparedStatement statement;
@@ -201,15 +227,10 @@ public class UserService {
 		String dbPassword = rs.getString("password");		
 		String dbSalt = rs.getString("salt");
 				
-		byte[] secret = "ESAW".getBytes();
 		byte[] salt = dbSalt.getBytes(StandardCharsets.ISO_8859_1); 
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		outputStream.write(secret);
-		outputStream.write(salt); 
-		byte[] final_salt = outputStream.toByteArray();
 		
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
-		md.update(final_salt);
+		md.update(salt);
 		String hashedPassword = new String(md.digest(password.getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.ISO_8859_1);
 				
 		if(dbPassword.equals(hashedPassword)) {
