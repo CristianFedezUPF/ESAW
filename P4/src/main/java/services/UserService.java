@@ -161,7 +161,12 @@ public class UserService {
 		// username
 		String username = user.getUsername();
 		query = "SELECT * FROM user WHERE username LIKE ?";
-		statement = db.prepareStatement(query);
+		try {
+			statement = db.prepareStatement(query);
+		} catch(NullPointerException e) {
+			user.setError("12", true);
+			return true;
+		}
 		statement.setString(1, username);
 		rs = statement.executeQuery();
 		if(rs.next()) {  // if there's some value in the result set, it's registered
@@ -218,7 +223,12 @@ public class UserService {
 		user.destroyLoginPassword();
 
 		query = "SELECT * FROM user WHERE username LIKE ?";
-		statement = db.prepareStatement(query);
+		try {
+			statement = db.prepareStatement(query);
+		} catch (NullPointerException e){
+			user.setError("12", true);
+			return false;
+		}
 		statement.setString(1, username);
 		rs = statement.executeQuery();
 		

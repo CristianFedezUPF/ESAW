@@ -65,8 +65,13 @@ public class RegisterController extends HttpServlet {
 			   view = "ViewRegisterForm.jsp";
 		   }
 	   
-	   } catch (IllegalAccessException | InvocationTargetException | SQLException e) {
+	   } catch (IllegalAccessException | InvocationTargetException e) {
 			e.printStackTrace();
+	   } catch (SQLException e) {
+		   	user.setError("12", true);
+		   	request.setAttribute("user",user);
+		   	view = "ViewRegisterForm.jsp";
+		   	e.printStackTrace();
 	   }
 		
 	   RequestDispatcher dispatcher = request.getRequestDispatcher(view);

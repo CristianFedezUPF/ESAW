@@ -90,3 +90,7 @@
 <c:if test = "${user.error['9']}">
 	<script>showError("Email is already in use.")</script>
 </c:if>
+
+<c:if test = "${user.error['12']}">
+	<script>showError("There was a problem reaching the database.")</script>
+</c:if>

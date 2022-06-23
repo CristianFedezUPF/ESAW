@@ -73,9 +73,14 @@ public class LoginController extends HttpServlet {
 	    	RequestDispatcher dispatcher = request.getRequestDispatcher(view);
 			dispatcher.forward(request, response);
 		    
-		} catch (IllegalAccessException | InvocationTargetException | NoSuchAlgorithmException | SQLException e) {
+		} catch (IllegalAccessException | InvocationTargetException | NoSuchAlgorithmException e) {
 			e.printStackTrace();
-		}
+		} catch (SQLException e) {
+		   	user.setError("12", true);
+		   	request.setAttribute("user",user);
+		   	view = "ViewRegisterForm.jsp";
+		   	e.printStackTrace();
+	   }
 	    
 	}
 		
