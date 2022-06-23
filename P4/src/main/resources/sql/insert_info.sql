@@ -54,17 +54,17 @@ INSERT INTO `follows`(follower_id, followed_id) VALUES(2, 1);
 INSERT INTO `follows`(follower_id, followed_id) VALUES(4, 1);
 
 
-INSERT INTO tweet( user_id, content) VALUES( 1, 'hello im Anna');
-INSERT INTO tweet( user_id, content) VALUES( 3, 'hello im Cristian and Helena is my best friend');
-INSERT INTO tweet( user_id, content) VALUES( 3, 'nah it\'s totally false lmao');
-INSERT INTO tweet( user_id, content) VALUES( 3, 'jkjk ly Helena');
-INSERT INTO tweet( user_id, content) VALUES( 3, "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.");
-INSERT INTO tweet( user_id, content) VALUES( 3, "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.");
-INSERT INTO tweet( user_id, content) VALUES( 3, "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.");
-INSERT INTO tweet( user_id, content) VALUES( 3, "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.");
-INSERT INTO tweet( user_id, content) VALUES( 3, "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.");
-INSERT INTO tweet( user_id, content) VALUES( 3, "jose juan");
-INSERT INTO tweet( user_id, content) VALUES( 4, 'Computer science is superior');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-23 15:01:53", 1, 'hello im Anna');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-23 15:03:53", 3, 'hello im Cristian and Helena is my best friend');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-23 15:23:53", 3, 'nah it\'s totally false lmao');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-23 15:07:53", 3, 'jkjk ly Helena');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-23 15:09:53", 3, "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.");
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-23 15:12:53", 3, "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.");
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-23 12:04:53", 3, "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.");
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-23 14:32:53", 3, "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.");
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-23 14:02:53", 3, "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.");
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-20 13:02:53", 3, "jose juan");
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-21 20:02:53", 4, 'Computer science is superior');
 
 INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('2', '2');
 INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('4', '2');
@@ -75,11 +75,11 @@ INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('7', '1');
 INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('8', '1');
 
 
-INSERT INTO retweet (tweet_id, user_id) VALUES ('5', '1');
-INSERT INTO retweet (tweet_id, user_id) VALUES ('6', '2');
-INSERT INTO retweet (tweet_id, user_id) VALUES ('7', '1');
-INSERT INTO retweet (tweet_id, user_id) VALUES ('5', '2');
-INSERT INTO retweet (tweet_id, user_id) VALUES ('5', '4');
+INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-06-23 15:22:53", '11', '1');
+INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-06-23 15:15:03", '6', '2');
+INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-06-23 14:49:53", '7', '1');
+INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-06-23 15:24:33", '2', '2');
+INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-06-23 15:18:33", '11', '4');
 
 
 

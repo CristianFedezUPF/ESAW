@@ -65,7 +65,8 @@ public class EditProfile extends HttpServlet {
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch(SQLException e) {
+		} catch(Exception e) {
+			response.sendError(500, "There was an unexpected error with your request");
 			e.printStackTrace();
 		}
 		

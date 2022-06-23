@@ -39,7 +39,6 @@ LIMIT ?;
 
 SELECT tweet.id, tweet.user_id, tweet.content, tweet.creation_timestamp AS tweet_creation_timestamp, tweet.edit_timestamp,
 tweet.like_count, tweet.retweet_count, 
-user.username, user.name,
 retweet.user_id AS retweet_user_id, 
 (SELECT name FROM user WHERE id = retweet.user_id) AS retweet_user_name,
 retweet.creation_timestamp AS retweet_timestamp
@@ -48,7 +47,6 @@ INNER JOIN user ON user.id = tweet.user_id
 UNION 
 SELECT tweet.id, tweet.user_id, tweet.content,  tweet.creation_timestamp AS tweet_creation_timestamp, tweet.edit_timestamp,
 tweet.like_count, tweet.retweet_count, 
-user.username, user.name,
 NULL AS retweet_user_id, NULL AS retweet_user_name, NULL as retweet_timestamp
 FROM tweet
 INNER JOIN user ON user.id = tweet.user_id

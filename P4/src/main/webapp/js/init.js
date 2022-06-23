@@ -257,8 +257,20 @@ window.addEventListener('DOMContentLoaded', () => {
 						document.getElementById("user-profile-name").innerText = validation.name;
 						document.getElementById("user-profile-username").innerText = validation.username;
 					}
-				).fail((error) => {
-					showProfileEditError("An unexpected error has occurred with your request.")
+				).fail( (error) => {
+					let message;
+					switch(error.status){
+						case 400:
+							message = "Invalid request";
+							break;
+						case 409:
+							message = "Username already in use";
+							break;
+						case 500:
+							message = "There was an unexpected error with your request";
+							break;
+					}
+					showProfileEditError(message);
 				});
 				event.preventDefault();
 			});
@@ -485,10 +497,10 @@ function validateProfileEdit(text_areas, selects){
 					showProfileEditError("Username too long.");
 					throw "Error";
 				}
-				if(!validateUsername(value)){
+				/*if(!validateUsername(value)){
 					showProfileEditError("Username format invalid.");
 					throw "Error";	
-				}
+				}*/
 				output.username = value
 				break;
 			case "profile-edit-degree":

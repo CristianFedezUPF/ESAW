@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <c:forEach var="t" items="${tweets}">       
- 	<div data-tweetid="${t.id}" data-posterid="${t.userId}" class="tweet">
+ 	<div data-tweetid="${t.id}" data-posterid="${t.userId}" class="${t.isRetweeted ? 'tweet retweet' : 'tweet'}">
  		<c:if test="${t.retweetUserId != null}">
 	 		<div data-retweetuserid="${t.retweetUserId}" class="retweet-info-wrapper">
 	 			<c:if test="${t.retweetUserId != user.id}">

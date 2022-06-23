@@ -191,25 +191,19 @@ public class UserService {
 		ResultSet rs;
 		PreparedStatement statement;
 		String query;
-		try {
-			// username
-			query = "SELECT * FROM user WHERE username LIKE ?";
-			statement = db.prepareStatement(query);
-			statement.setString(1, username);
-			rs = statement.executeQuery();
-			if(rs.next()) {  // if there's some value in the result set, it's registered
-				if (user.getId().equals(rs.getLong("id"))) {
-					return false;
-				}
-				user.setError("4", true);
-				return true;
+	
+		// username
+		query = "SELECT * FROM user WHERE username LIKE ?";
+		statement = db.prepareStatement(query);
+		statement.setString(1, username);
+		rs = statement.executeQuery();
+		if(rs.next()) {  // if there's some value in the result set, it's registered
+			if (user.getId().equals(rs.getLong("id"))) {
+				return false;
 			}
-			return false;
-		}
-		catch(SQLException e) {
-			e.printStackTrace();
 			return true;
 		}
+		return false;
 	
 	}
 	
