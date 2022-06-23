@@ -1,4 +1,4 @@
-USE lab3; 
+USE unitter; 
 DROP TABLE IF EXISTS country;
 
 CREATE TABLE country(

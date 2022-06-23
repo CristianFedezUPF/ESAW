@@ -39,11 +39,19 @@ public class GetUserTweets extends HttpServlet {
 		Long userId = Long.valueOf(pathInfo.substring(1));
 		List<Tweet> tweets = Collections.emptyList();
 		
-		TweetService tweetManager = new TweetService();
-		tweets = tweetManager.getUserTweets(userId,0,10);
-		tweetManager.finalize();
+		HttpSession session = request.getSession(false);
+		User sessionUser = (User) session.getAttribute("user");
 		
-
+		TweetService tweetService = new TweetService();
+		tweets = tweetService.getUserTweets(userId,0,10);
+		if (session != null && sessionUser != null) {
+			for(Tweet tweet : tweets) {
+				tweet.setIsLiked(tweetService.checkIfLikeExists(tweet.getId(), sessionUser.getId()));
+				tweet.setIsRetweeted(tweetService.checkIfRetweetExists(tweet.getId(), sessionUser.getId()));
+			}
+		}
+		tweetService.finalize();
+		
 		request.setAttribute("tweets",tweets);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/ViewTweets.jsp"); 
 		dispatcher.forward(request,response);

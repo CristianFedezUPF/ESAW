@@ -5,8 +5,23 @@ window.addEventListener('DOMContentLoaded', () => {
 				$('#content').load($(this).attr('id'));
 				event.preventDefault();
 			});
+			$(document).on("click",".logout",function(event) {
+				$('#content').load($(this).attr('id'), () => {
+					$('#navigation').load('MenuController')	
+				});				
+				event.preventDefault();
+			});
 			$(document).on("click",".timeline-menu",function(event) {
 				$('#mcolumn').load($(this).attr('id'));
+				let menu_items = document.getElementsByClassName("lcolumn-menu-item");
+				// reset previous bold element
+				for(let element of menu_items){
+					element.style.fontWeight = "";
+				}
+				if(event.currentTarget.classList.contains("user-profile-wrapper")){
+					menu_items[3].style.fontWeight = "900";
+				}
+				event.currentTarget.style.fontWeight = "900";
 				event.preventDefault();
 			});
 			$(document).on("submit","form", function(event) {
@@ -15,41 +30,517 @@ window.addEventListener('DOMContentLoaded', () => {
 			});
 			/* Add tweet */
 			$(document).on("click","#post-button",function(event){
-				$.post( "AddTweet", { content: $("#typing-input").val()}, function(event) {
-					$('#tweet-list').load("GetCustomTweets");
+				let that = event;
+				$.post( "AddTweet", { content: $("#typing-input").val()}, (e) => {
+					$('#tweet-list').load(that.target.getAttribute("data-controller"));
+					document.getElementById("typing-input").value = "";
 				});
 				event.preventDefault();
 			});
 			/* Delete tweet */
-			$(document).on("click",".delTweet",function(event){
-				var tweet = $(this).parent();
-				$.post( "DelTweet", { id: $(this).parent().attr("id") } , function(event) {
-					$("#content").load("GetCustomTimeline");				
-				});
+			$(document).on("click",".tweet-delete-button",function(event){
+				let tweet = event.target.closest(".tweet")
+				$.post( "DelTweet", 
+					{ 
+						id: tweet.getAttribute("data-tweetid"),
+						userId: tweet.getAttribute("data-posterid")
+					},
+					() => {
+						tweet.parentElement.removeChild(tweet);
+					});
 				event.preventDefault();
 			});
-			/* Follow user */
-			$(document).on("click",".followUser",function(event){
-				var user = $(this).parent();
-				$.post( "FollowUser", { id: $(this).parent().attr("id") }, function(event) { 
-					$("#content").load("GetFollowedUsers");
-					$("#lcolumn").load("GetNotFollowedUsers");
-				});
+			// Edit tweet
+			$(document).on("click",".tweet-edit-button", function(event){
+				let tweet_content_wrapper = event.target.closest(".tweet-content-wrapper");				
+				// replace <p> with <textarea> and make it resizable with content
+				let p_element = tweet_content_wrapper.querySelector(".tweet-content");
+				p_element.style.display = "none";
+				let text_area = document.createElement('textarea');
+				text_area.value = p_element.innerText;
+				p_element.parentElement.querySelector(".tweet-options").before(text_area);
+				p_element.parentElement.removeChild(p_element)
+				text_area.classList.add("tweet-edit-textarea");
+				text_area.setAttribute("rows", "1");
+				text_area.setAttribute("style", "height:" + (text_area.scrollHeight) + "px;overflow-y:hidden;");
+					text_area.addEventListener("input", function(){
+						this.style.height = "0px";
+  						this.style.height = (this.scrollHeight) + "px";
+					}, false);	
+				text_area.setAttribute("data-previouscontent", text_area.value)
+				// replace edit button with confirm button
+				let tweet_buttons = tweet_content_wrapper.
+					querySelector(".tweet-content-header-wrapper").
+					querySelector(".tweet-buttons");
+				let edit_button = tweet_buttons.querySelector(".fa-edit");
+				edit_button.parentElement.removeChild(edit_button);
+				let confirm_button = document.createElement('i');
+				confirm_button.classList.add("tweet-confirm-edit-button", "tweet-icon", "fa", "fa-check");	
+				tweet_buttons.querySelector(".fa-trash").before(confirm_button);
 				event.preventDefault();
 			});
-			/* UnFollow user */
-			$(document).on("click",".unfollowUser",function(event) {
-				var user = $(this).parent();
-				$.post( "UnFollowUser", { id: $(this).parent().attr("id") }, function(event) {
-					$("#content").load("GetFollowedUsers");
-					$("#lcolumn").load("GetNotFollowedUsers");
-				});
+			// Confirm edit tweet
+			$(document).on("click",".tweet-confirm-edit-button", function(event){
+				let tweet = event.target.closest(".tweet");
+				let tweet_content_wrapper = event.target.closest(".tweet-content-wrapper");
+				let text_area = tweet_content_wrapper.querySelector("textarea");
+				let content = text_area.value;
+				if(content.trim() === "") return;
+				let previous_content = text_area.getAttribute("data-previouscontent")
+				$.post("EditTweet", 
+					{ 
+						id: tweet.getAttribute("data-tweetid"),
+						userId: tweet.getAttribute("data-posterid"),
+						content: content
+					},
+					(e) => {
+						// replace textarea by p
+						tweet_content_wrapper.removeChild(text_area);
+						let p_element = document.createElement('p');
+						p_element.classList.add("tweet-content");
+						p_element.innerText = content;
+						tweet_content_wrapper.querySelector(".tweet-options").before(p_element)
+						// replace confirm button with edit button
+						let tweet_buttons = tweet_content_wrapper.
+							querySelector(".tweet-content-header-wrapper").
+							querySelector(".tweet-buttons");
+						let confirm_button = tweet_buttons.querySelector(".fa-check");
+						confirm_button.parentElement.removeChild(confirm_button);
+						let edit_button = document.createElement('i');
+						edit_button.classList.add("tweet-edit-button", "tweet-icon", "fa", "fa-edit");	
+						tweet_buttons.querySelector(".fa-trash").before(edit_button);
+						// fake 'edited now'
+						let tweet_content_header = tweet_content_wrapper.
+							querySelector(".tweet-content-header-wrapper").
+							querySelector(".tweet-content-header");
+						if (tweet_content_header.querySelector(".tweet-edit-datetime") != null){	
+							tweet_content_header.removeChild(tweet_content_header.querySelector(".tweet-edit-datetime"));
+						}
+						else{
+							let separator = document.createElement('p');
+							separator.classList.add("tweet-edit-datetime-separator");
+							separator.innerText = "·";
+							tweet_content_header.appendChild(separator);
+						}
+						let time_since = document.createElement('p');
+						time_since.classList.add("tweet-edit-datetime");
+						time_since.innerText = "Edited now";	
+						tweet_content_header.appendChild(time_since);
+					}
+				);
 				event.preventDefault();
 			});
 			/* Load profile */
 			$(document).on("click",".who-to-follow-user", function(event){
-				$("#mcolumn").load("GetProfileInfo/"+$(this).attr("id"));
+				$("#mcolumn").load("GetProfileInfo/"+$(this).attr("data-userid"));
 				event.preventDefault();
 			});
-
+			/* Load profile on following page */
+			$(document).on("click",".followed-user", function(event){
+				$("#mcolumn").load("GetProfileInfo/"+$(this).attr("data-userid"));
+				event.preventDefault();
+			});
+			/* Load profile on tweet avatar click */
+			$(document).on("click",".tweet-avatar", (event) => {
+				$("#mcolumn").load("GetProfileInfo/"+event.target.closest(".tweet").getAttribute("data-posterid"));
+				event.preventDefault();
+			});
+			// Load profile on retweet info click
+			$(document).on("click",".retweet-info", (event) => {
+				$("#mcolumn").load("GetProfileInfo/"+event.target.closest(".retweet-info-wrapper").getAttribute("data-retweetuserid"));
+				event.preventDefault();
+			});
+			/* Load profile on tweet content header click */
+			$(document).on("click",".tweet-content-header", (event) => {
+				$("#mcolumn").load("GetProfileInfo/"+event.target.closest(".tweet").getAttribute("data-posterid"));
+				event.preventDefault();
+			});
+			// Follow user from who-to-follow
+			$(document).on("click",".follow-button", (event) => {
+				$.post( "FollowUser/" + event.target.parentElement.getAttribute("data-userid"), {}, () => {
+					let who_to_follow_tab = document.getElementById("who-to-follow");
+					let children = who_to_follow_tab.getElementsByClassName("who-to-follow-user");
+					if(children.length > 1){
+						who_to_follow_tab.removeChild(event.target.parentElement);
+						setBottomWhoToFollowUserToRoundBorders();
+					}
+					else{
+						$("#who-to-follow").load("GetWhoToFollow");
+					}
+				});
+				event.stopPropagation();
+				event.preventDefault();
+			});
+			// Unfollow user from followers
+			$(document).on("click",".unfollow-button", (event) => {
+				let followed_user = event.target.closest(".followed-user")
+				$.post( "UnfollowUser/" + followed_user.getAttribute("data-userid"), {}, () => {
+					followed_user.parentElement.removeChild(followed_user);
+				});
+				event.stopPropagation();
+				event.preventDefault();
+			});
+			// Follow user from profile
+			$(document).on("click",".profile-follow-button", (event) => {
+				$.post( "FollowUser/" + event.target.closest(".profile-wrapper").getAttribute("data-profileid"), {}, () => {
+					// delete follow button and make unfollow button
+					let new_button = document.createElement('button');
+					new_button.classList.add("profile-unfollow-button");
+					new_button.innerText = "Unfollow";
+					$(event.target).fadeOut();
+					event.target.parentElement.appendChild(new_button);
+					event.target.parentElement.removeChild(event.target);
+					$(new_button).fadeIn();
+					event.preventDefault();
+					
+					//fake increase in follower count
+					let profile_stats = document.getElementsByClassName("profile-stats")[0];
+					let follower_count = profile_stats.querySelector(".follower-count span").innerText;
+					profile_stats.querySelector(".follower-count span").innerText = ++follower_count
+					
+				});
+				event.preventDefault();
+			});
+			// Unfollow user from profile
+			$(document).on("click",".profile-unfollow-button", (event) => {
+				$.post( "UnfollowUser/" + event.target.closest(".profile-wrapper").getAttribute("data-profileid"), {}, () => {
+					// delete unfollow button and make follow button
+					let new_button = document.createElement('button');
+					new_button.classList.add("profile-follow-button");
+					new_button.innerText = "Follow";
+					$(event.target).fadeOut();
+					event.target.parentElement.appendChild(new_button);
+					event.target.parentElement.removeChild(event.target);
+					$(new_button).fadeIn();
+					event.preventDefault();
+					
+					//fake decrease in follower count
+					let profile_stats = document.getElementsByClassName("profile-stats")[0];
+					let follower_count = profile_stats.querySelector(".follower-count span").innerText;
+					profile_stats.querySelector(".follower-count span").innerText = --follower_count
+				});
+				event.preventDefault();
+			});
+			// Edit profile
+			$(document).on("click","#profile-edit",function(){
+				replaceProfileContentByTextArea();	
+				let edit_button = document.getElementById("profile-edit");
+				let parent = edit_button.parentElement;
+				parent.removeChild(edit_button);
+				let confirm_button = document.createElement('i');
+				confirm_button.id = "profile-edit-confirm"
+				confirm_button.classList.add("profile-button", "fa", "fa-check");
+				confirm_button.style.color = "#888";	
+				parent.insertBefore(confirm_button, parent.firstChild);
+				event.preventDefault();	
+			});
+			// Confirm edit profile
+			$(document).on("click","#profile-edit-confirm",function(event){
+				let profile_info = document.getElementsByClassName("profile-info")[0];
+				let text_areas = profile_info.querySelectorAll("textarea");
+				let selects = profile_info.querySelectorAll("select");
+  				// front validation
+  				let validation = validateProfileEdit(text_areas, selects);
+				let profile_id = parseInt(event.target.closest(".profile-wrapper").getAttribute('data-profileid'));
+				$.post("EditProfile", 
+					{ 
+						id: profile_id,
+						name: validation.name,
+						username: validation.username,
+						country: validation.country,
+						university: validation.university,
+						position: validation.position,
+						degree: validation.degree
+					},
+					() => {
+						$("#mcolumn").load("GetProfileInfo/" + profile_id);
+						document.getElementById("user-profile-name").innerText = validation.name;
+						document.getElementById("user-profile-username").innerText = validation.username;
+					}
+				).fail( (error) => {
+					let message;
+					switch(error.status){
+						case 400:
+							message = "Invalid request";
+							break;
+						case 409:
+							message = "Username already in use";
+							break;
+						case 500:
+							message = "There was an unexpected error with your request";
+							break;
+					}
+					showProfileEditError(message);
+				});
+				event.preventDefault();
+			});
+			// Delete user
+			$(document).on("click","#profile-ban", function(event){
+				let profile_id = parseInt(event.target.closest(".profile-wrapper").getAttribute('data-profileid'));
+				$.post("DelProfile", 
+					{ 
+						id: profile_id,
+					},
+					() => {
+						$('#mcolumn').load('GetCustomTimeline');
+					}
+				);
+				event.preventDefault();
+			});
+			// Add like tweet
+			$(document).on("click",".tweet-like", function(event){
+				let tweet_option_wrapper = event.currentTarget;
+				let tweet = tweet_option_wrapper.closest(".tweet");
+				$.post("AddLike", 
+					{ 
+						id: tweet.getAttribute("data-tweetid"),
+					},
+					() => {
+						let p = tweet_option_wrapper.querySelector("p");
+						let like_number = parseInt(p.innerText);
+						p.innerText = ++like_number;
+						tweet_option_wrapper.classList.remove("tweet-like");
+						tweet_option_wrapper.classList.add("tweet-dislike");
+					} 
+				);
+			});
+			// Remove like tweet
+			$(document).on("click",".tweet-dislike", function(event){
+				let tweet_option_wrapper = event.currentTarget;
+				let tweet = tweet_option_wrapper.closest(".tweet");
+				$.post("RemoveLike", 
+					{ 
+						id: tweet.getAttribute("data-tweetid"),
+					},
+					() => {
+						let p = tweet_option_wrapper.querySelector("p");
+						let like_number = parseInt(p.innerText);
+						p.innerText = --like_number;
+						tweet_option_wrapper.classList.remove("tweet-dislike");
+						tweet_option_wrapper.classList.add("tweet-like");
+					} 
+				);
+			});
+			// Add retweet
+			$(document).on("click",".tweet-retweet", function(event){
+				let tweet_option_wrapper = event.currentTarget;
+				let tweet = tweet_option_wrapper.closest(".tweet");
+				$.post("AddRetweet", 
+					{ 
+						id: tweet.getAttribute("data-tweetid"),
+					},
+					() => {
+						let p = tweet_option_wrapper.querySelector("p");
+						let retweet_number = parseInt(p.innerText);
+						p.innerText = ++retweet_number;
+						tweet_option_wrapper.classList.remove("tweet-retweet");
+						tweet_option_wrapper.classList.add("tweet-remove-retweet");
+					} 
+				);
+			});
+			// Remove retweet
+			$(document).on("click",".tweet-remove-retweet", function(event){
+				let tweet_option_wrapper = event.currentTarget;
+				let tweet = tweet_option_wrapper.closest(".tweet");
+				$.post("RemoveRetweet", 
+					{ 
+						id: tweet.getAttribute("data-tweetid"),
+					},
+					() => {
+						let p = tweet_option_wrapper.querySelector("p");
+						let retweet_number = parseInt(p.innerText);
+						p.innerText = --retweet_number;
+						tweet_option_wrapper.classList.remove("tweet-remove-retweet");
+						tweet_option_wrapper.classList.add("tweet-retweet");
+					} 
+				);
+			});
+			
 });
+
+function replaceProfileContentByTextArea(){
+	let profile_info = document.getElementsByClassName("profile-info")[0];
+	
+	let p_element = profile_info.querySelector(".profile-name")
+	let font_size = window.getComputedStyle(p_element).fontSize;
+	p_element.style.display = "none";
+	let text_area = document.createElement('textarea');
+	text_area.value = p_element.innerText.trim();
+	p_element.before(text_area);
+	text_area.style.fontSize = font_size;
+	p_element.parentElement.removeChild(p_element)
+	text_area.id = "profile-edit-name"
+	text_area.classList.add("profile-edit-textarea");
+	text_area.setAttribute("maxlength", "60");
+	text_area.setAttribute("rows", "1");
+	text_area.setAttribute("style", "border-top-left-radius: 6px; border-top-right-radius: 6px;" + 
+	"font-size: " + font_size + "; height:" + (text_area.scrollHeight) + "px;overflow-y:hidden;");
+	text_area.addEventListener("input", function(){
+		this.style.height = "0px";
+  		this.style.height = (this.scrollHeight) + "px";
+	}, false);	
+	
+	p_element = profile_info.querySelector(".profile-username")
+	font_size = window.getComputedStyle(p_element).fontSize;
+	p_element.style.display = "none";
+	text_area = document.createElement('textarea');
+	text_area.value = p_element.innerText.trim().substring(1);
+	p_element.before(text_area);
+	text_area.style.fontSize = font_size;
+	p_element.parentElement.removeChild(p_element)
+	text_area.id = "profile-edit-username"
+	text_area.classList.add("profile-edit-textarea");
+	text_area.setAttribute("maxlength", "15");
+	text_area.setAttribute("rows", "1");
+	text_area.setAttribute("style", "font-weight: bold; line-height: 1;font-size: " + font_size + "; height:" + (text_area.scrollHeight) + "px;overflow-y:hidden;");
+	
+	let profile_text = document.getElementsByClassName("profile-text");
+	
+	p_element = profile_text[3];
+	font_size = window.getComputedStyle(p_element).fontSize;
+	p_element.style.display = "none";
+	text_area = document.createElement('textarea');
+	text_area.value = p_element.innerText.trim();
+	p_element.before(text_area);
+	text_area.style.fontSize = font_size;
+	p_element.parentElement.removeChild(p_element);
+	text_area.id = "profile-edit-degree";
+	text_area.setAttribute('placeholder', "Enter your degree here...")
+	text_area.classList.add("profile-edit-textarea");
+	text_area.setAttribute("maxlength", "255");
+	text_area.setAttribute("rows", "1");
+	text_area.setAttribute("style", "font-size: " + font_size + "; height:" + (text_area.scrollHeight) + "px;overflow-y:hidden;");
+	text_area.addEventListener("input", function(){
+		this.style.height = "0px";
+  		this.style.height = (this.scrollHeight) + "px";
+	}, false);	
+	
+	let profile_text_wrapper = profile_info.querySelector(".profile-text-wrapper");
+	p_element = profile_text[2];
+	let content = p_element.innerText;
+	p_element.parentElement.removeChild(p_element);
+	let select_element = document.createElement("select");
+	select_element.setAttribute('name', 'profile-position');
+	select_element.setAttribute('id', 'profile-position');
+	select_element.classList.add('profile-edit-select')
+	let student_option = document.createElement("option");
+	student_option.setAttribute('value', 'S');
+	student_option.innerText = "Student";
+	let teacher_option = document.createElement("option");
+	teacher_option.setAttribute('value', 'T');
+	teacher_option.innerText = "Teacher";
+	if(content == "Student"){
+		student_option.setAttribute('selected','selected')
+	} else {
+		teacher_option.setAttribute('selected','selected')
+	}
+	select_element.appendChild(student_option);
+	select_element.appendChild(teacher_option);
+	profile_text_wrapper.appendChild(select_element)
+	
+	p_element_university = profile_text[1];
+	university = p_element_university.innerText;
+	p_element_university.parentElement.removeChild(p_element_university);
+	select_element_university = document.createElement("select");
+	select_element_university.setAttribute('name', 'profile-university');
+	select_element_university.setAttribute('id', 'profile-university');
+	select_element_university.classList.add('profile-edit-select')
+	profile_text_wrapper.insertBefore(select_element_university, profile_text_wrapper.firstElementChild);
+	$(select_element_university).load('GetUniversities', () => {
+		for(var i, j = 0; i = select_element_university.options[j]; j++) {
+		    if(i.value == university) {
+		        select_element_university.selectedIndex = j;
+		        break;
+		    }
+		}
+	});
+
+	p_element = profile_text[0];
+	content = p_element.innerText;
+	p_element.parentElement.removeChild(p_element);
+	select_element = document.createElement("select");
+	select_element.setAttribute('name', 'profile-country');
+	select_element.setAttribute('id', 'profile-country');
+	select_element.classList.add('profile-edit-select')
+	profile_info.insertBefore(select_element, profile_info.querySelector(".profile-text-wrapper"));
+	$(select_element).load('GetCountries', () => {
+		for(var i, j = 0; i = select_element.options[j]; j++) {
+		    if(i.value == content) {
+		        select_element.selectedIndex = j;
+		        break;
+		    }
+		}
+	});
+		
+	profile_info.style.backgroundColor = "#131c2a";
+
+}
+
+function validateProfileEdit(text_areas, selects){
+	output = {}
+	for(let text_area of text_areas){
+		let value = text_area.value;
+		switch(text_area.id){
+			case "profile-edit-name":
+				if(value === ""){
+					showProfileEditError("Please input a name.");
+					throw "Error";
+				};
+				output.name = value;
+				break;
+			case "profile-edit-username":
+				if(value === "" || value.length < 4){
+					showProfileEditError("Username too short.");
+					throw "Error";
+				}
+				if(value.length > 15){
+					showProfileEditError("Username too long.");
+					throw "Error";
+				}
+				/*if(!validateUsername(value)){
+					showProfileEditError("Username format invalid.");
+					throw "Error";	
+				}*/
+				output.username = value
+				break;
+			case "profile-edit-degree":
+				if(value === ""){
+					value = null;
+				}
+				else if(!validateDegree(value)){
+					showProfileEditError("Degree format invalid.");
+					throw "Error";	
+				}
+				output.degree = value;
+				break;
+		}
+	}
+	for(let select of selects){
+		let value = select.value;
+		switch(select.id){
+			case "profile-country":
+				output.country = value;
+				break;
+			case "profile-university":
+				output.university = value;
+				break;
+			case "profile-position":
+				output.position = value;		
+		}
+	}
+	return output;
+}
+
+function showProfileEditError(message){
+	let profile_info = document.getElementsByClassName("profile-info")[0];
+	let error = profile_info.querySelector('.profile-edit-error');
+	if (error != null){
+		error.innerText = message;
+		return;
+	};
+	error = document.createElement("p");
+	error.innerText = message;
+	error.classList.add("profile-edit-error");
+	profile_info.appendChild(error);
+}
+

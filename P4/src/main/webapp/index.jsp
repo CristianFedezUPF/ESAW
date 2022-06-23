@@ -13,12 +13,13 @@
 	
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="css/anek.css">
 		<link rel="stylesheet" href="css/mainStructure.css">
 		<link rel="stylesheet" href="css/timeline.css">
 		<link rel="stylesheet" href="css/profile.css">
+		<link rel="stylesheet" href="css/followedUsers.css">
 		<link rel="stylesheet" href="css/form.css">
 		<link rel="stylesheet" href="css/moreStyles.css">
-		<link rel="stylesheet" href="css/noto.css">
 		
 				
 		<link rel="preconnect" href="https://fonts.googleapis.com"> 

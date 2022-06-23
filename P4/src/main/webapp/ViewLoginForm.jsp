@@ -19,4 +19,7 @@
 <c:if test = "${user.error['10'] || user.error['11']}">
 	<script> showError("Username or password not correct.") </script>
 </c:if>
+<c:if test = "${user.error['12']}">
+	<script>showError("There was a problem reaching the database.")</script>
+</c:if>
 

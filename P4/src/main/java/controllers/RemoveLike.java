@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Timestamp;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,20 +13,21 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.beanutils.BeanUtils;
 
+import models.Tweet;
 import models.User;
-import services.UserService;
+import services.TweetService;
 
 /**
- * Servlet implementation class UnFollowUser
+ * Servlet implementation class AddTweetFromUser
  */
-@WebServlet("/UnFollowUser")
-public class UnFollowUser extends HttpServlet {
+@WebServlet("/RemoveLike")
+public class RemoveLike extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UnFollowUser() {
+    public RemoveLike() {
         super();
     }
 
@@ -34,17 +36,17 @@ public class UnFollowUser extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		User fuser = new User();
-		UserService userManager = new UserService();
+		Tweet tweet = new Tweet();
+		TweetService tweetManager = new TweetService();
 		HttpSession session = request.getSession(false);
 		User user = (User) session.getAttribute("user");
 		
 		try {
 			
 			if (session != null || user != null)
-				BeanUtils.populate(fuser, request.getParameterMap());
-				userManager.unfollowUser(user.getId(),fuser.getId());
-				userManager.finalize();
+				BeanUtils.populate(tweet, request.getParameterMap());
+				tweetManager.removeLike(tweet.getId(), user.getId());
+				tweetManager.finalize();
 
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			e.printStackTrace();

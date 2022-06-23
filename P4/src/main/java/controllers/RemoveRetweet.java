@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Timestamp;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,16 +18,16 @@ import models.User;
 import services.TweetService;
 
 /**
- * Servlet implementation class DelTweet
+ * Servlet implementation class AddTweetFromUser
  */
-@WebServlet("/DelTweet")
-public class DelTweet extends HttpServlet {
+@WebServlet("/RemoveRetweet")
+public class RemoveRetweet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DelTweet() {
+    public RemoveRetweet() {
         super();
     }
 
@@ -34,23 +35,22 @@ public class DelTweet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
+		
 		Tweet tweet = new Tweet();
 		TweetService tweetManager = new TweetService();
 		HttpSession session = request.getSession(false);
 		User user = (User) session.getAttribute("user");
-
+		
 		try {
-			if (session != null || user != null) {
+			
+			if (session != null || user != null)
 				BeanUtils.populate(tweet, request.getParameterMap());
-				if((user.getId().equals(tweet.getUserId())) || user.getIsAdmin()) {
-					tweetManager.deleteTweet(tweet.getId());
-				}
-			}
-			tweetManager.finalize();
+				tweetManager.removeRetweet(tweet.getId(), user.getId());
+
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
+		tweetManager.finalize();
 	}
 
 	/**

@@ -39,21 +39,25 @@ input:invalid {
 	background: #131c2a;
 	border-radius: 8px;
     width: max(250px, 35%);
+    max-width: 600px;
     /* offset-x | offset-y | blur-radius | spread-radius | color */
 	box-shadow: 0px 4px 2px 1px rgba(0, 0, 0, 0.2);
-	overflow: scroll;
+	overflow: auto;
 }
 
 .registration-form{
-	height: max(94%, 200px);
+	height: max(96%, 200px);
+	max-height: 840px;
+	
 }
 
 .login-form{
-	height: max(35%, 200px);
+	height: max(35%, 290px);
+	max-height: 290px;
 }
 
 .form-wrapper > form {
-	overflow: scroll;
+	overflow: auto;
 	display: flex;
 	flex-direction: column;
 }

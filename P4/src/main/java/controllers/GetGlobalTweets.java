@@ -10,7 +10,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import models.Tweet;
+import models.User;
 import services.TweetService;
 
 /**
@@ -31,10 +34,18 @@ public class GetGlobalTweets extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		User user = (User) session.getAttribute("user");
 		
 		List<Tweet> tweets = Collections.emptyList();
 		TweetService tweetService = new TweetService();
 		tweets = tweetService.getGlobalTweets(0, 20);
+		if (session != null && user != null) {
+			for(Tweet tweet : tweets) {
+				tweet.setIsLiked(tweetService.checkIfLikeExists(tweet.getId(), user.getId()));
+				tweet.setIsRetweeted(tweetService.checkIfRetweetExists(tweet.getId(), user.getId()));
+			}
+		}
 		tweetService.finalize();
 
 		request.setAttribute("tweets", tweets);

@@ -40,6 +40,10 @@ public class GetCustomTweets extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		User user = (User) session.getAttribute("user");
 		tweets = tweetService.getCustomTweets(user.getId(), 0, 20);
+		for(Tweet tweet : tweets) {
+			tweet.setIsLiked(tweetService.checkIfLikeExists(tweet.getId(), user.getId()));
+			tweet.setIsRetweeted(tweetService.checkIfRetweetExists(tweet.getId(), user.getId()));
+		}
 		tweetService.finalize();
 
 		request.setAttribute("tweets", tweets);

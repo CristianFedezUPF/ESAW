@@ -9,7 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,6 +106,53 @@ public class UserService {
 		}
 	}
 	
+	// Add new user
+	public void editUser(User user) {
+		String query = "UPDATE user\r\n"
+				+ "SET\r\n"
+				+ "name = ?,\r\n"
+				+ "username = ?,\r\n"
+				+ "country = ?,\r\n"
+				+ "university = ?,\r\n"
+				+ "position = ?,\r\n"
+				+ "degree = ?\r\n"
+				+ "WHERE id = ?;";
+		PreparedStatement statement = null;
+		try {
+			statement = db.prepareStatement(query);
+			statement.setString(1, user.getName());
+			statement.setString(2, user.getUsername());
+			statement.setString(3, user.getCountry());
+			statement.setString(4, user.getUniversity());
+			statement.setString(5, user.getPosition());
+			statement.setString(6, user.getDegree());
+			statement.setLong(7, user.getId());
+			statement.executeUpdate();
+			statement.close();
+		} catch (SQLIntegrityConstraintViolationException e) {
+			System.out.println(e.getMessage());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void deleteUser(Long userId) {
+		String query = "DELETE FROM user WHERE id = ?";
+		PreparedStatement statement = null;
+		try {
+			statement = db.prepareStatement(query);
+			statement.setLong(1, userId);
+			statement.executeUpdate();
+			statement.close();
+		} catch (SQLIntegrityConstraintViolationException e) {
+			System.out.println(e.getMessage());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
 	public boolean isUserRegistered(User user) throws SQLException {
 		ResultSet rs;
 		PreparedStatement statement;
@@ -115,7 +161,12 @@ public class UserService {
 		// username
 		String username = user.getUsername();
 		query = "SELECT * FROM user WHERE username LIKE ?";
-		statement = db.prepareStatement(query);
+		try {
+			statement = db.prepareStatement(query);
+		} catch(NullPointerException e) {
+			user.setError("12", true);
+			return true;
+		}
 		statement.setString(1, username);
 		rs = statement.executeQuery();
 		if(rs.next()) {  // if there's some value in the result set, it's registered
@@ -136,6 +187,26 @@ public class UserService {
 		return false;
 	}
 	
+	public boolean isNewUsernameUsed(User user, String username) throws SQLException {
+		ResultSet rs;
+		PreparedStatement statement;
+		String query;
+	
+		// username
+		query = "SELECT * FROM user WHERE username LIKE ?";
+		statement = db.prepareStatement(query);
+		statement.setString(1, username);
+		rs = statement.executeQuery();
+		if(rs.next()) {  // if there's some value in the result set, it's registered
+			if (user.getId().equals(rs.getLong("id"))) {
+				return false;
+			}
+			return true;
+		}
+		return false;
+	
+	}
+	
 	public boolean isPasswordCorrect(User user) throws SQLException, NoSuchAlgorithmException, IOException {
 		ResultSet rs;
 		PreparedStatement statement;
@@ -146,7 +217,12 @@ public class UserService {
 		user.destroyLoginPassword();
 
 		query = "SELECT * FROM user WHERE username LIKE ?";
-		statement = db.prepareStatement(query);
+		try {
+			statement = db.prepareStatement(query);
+		} catch (NullPointerException e){
+			user.setError("12", true);
+			return false;
+		}
 		statement.setString(1, username);
 		rs = statement.executeQuery();
 		
@@ -155,15 +231,10 @@ public class UserService {
 		String dbPassword = rs.getString("password");		
 		String dbSalt = rs.getString("salt");
 				
-		byte[] secret = "ESAW".getBytes();
 		byte[] salt = dbSalt.getBytes(StandardCharsets.ISO_8859_1); 
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		outputStream.write(secret);
-		outputStream.write(salt); 
-		byte[] final_salt = outputStream.toByteArray();
 		
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
-		md.update(final_salt);
+		md.update(salt);
 		String hashedPassword = new String(md.digest(password.getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.ISO_8859_1);
 				
 		if(dbPassword.equals(hashedPassword)) {
@@ -174,13 +245,13 @@ public class UserService {
 	}
 	
 	// Follow a user
-	public void followUser(Long long1, Long long2) {
-		String query = "INSERT INTO follows (uid,fid) VALUES (?,?)";
+	public void followUser(Long followerId, Long followedId) {
+		String query = "INSERT INTO follows (follower_id, followed_id) VALUES (?,?)";
 		PreparedStatement statement = null;
 		try {
 			statement = db.prepareStatement(query);
-			statement.setLong(1,long1);
-			statement.setLong(2,long2);
+			statement.setLong(1, followerId);
+			statement.setLong(2, followedId);
 			statement.executeUpdate();
 			statement.close();
 		} catch (SQLIntegrityConstraintViolationException e) {
@@ -191,13 +262,13 @@ public class UserService {
 	}
 	
 	// Unfollow a user
-	public void unfollowUser(Long long1, Long long2) {
-		String query = "DELETE FROM follows WHERE uid = ? AND fid = ?";
+	public void unfollowUser(Long followerId, Long followedId) {
+		String query = "DELETE FROM follows WHERE follower_id = ? AND followed_id = ?";
 		PreparedStatement statement = null;
 		try {
 			statement = db.prepareStatement(query);
-			statement.setLong(1,long1);
-			statement.setLong(2,long2);
+			statement.setLong(1, followerId);
+			statement.setLong(2, followedId);
 			statement.executeUpdate();
 			statement.close();
 		} catch (SQLIntegrityConstraintViolationException e) {
@@ -211,7 +282,6 @@ public class UserService {
 	
 	// Get all the users
 	public List<User> getUsers(Integer start, Integer end) {
-		 // TODO UPDATE QUERY
 		 String query = "SELECT id,name FROM users ORDER BY name ASC LIMIT ?,?;";
 		 PreparedStatement statement = null;
 		 List<User> l = new ArrayList<User>();
@@ -219,33 +289,6 @@ public class UserService {
 			 statement = db.prepareStatement(query);
 			 statement.setInt(1,start);
 			 statement.setInt(2,end);
-			 ResultSet rs = statement.executeQuery();
-			 while (rs.next()) {
-				 User user = new User();
-				 user.setId(rs.getLong("id"));
-				 user.setName(rs.getString("name"));
-				 l.add(user);
-			 }
-			 rs.close();
-			 statement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} 
-		return  l;
-	}
-	
-	// TODO LO DE START Y END ES MEGA CUTRE
-	public List<User> getNotFollowedUsers(Long long1, Integer start, Integer end) {
-		 // TODO UPDATE QUERY 
-		 String query = "SELECT id,name FROM users WHERE id NOT IN (SELECT id FROM users,follows WHERE id = fid AND uid = ?) AND id <> ? ORDER BY name LIMIT ?,?;";
-		 PreparedStatement statement = null;
-		 List<User> l = new ArrayList<User>();
-		 try {
-			 statement = db.prepareStatement(query);
-			 statement.setLong(1,long1);
-			 statement.setLong(2, long1);
-			 statement.setInt(3,start);
-			 statement.setInt(4,end);
 			 ResultSet rs = statement.executeQuery();
 			 while (rs.next()) {
 				 User user = new User();
@@ -296,35 +339,54 @@ public class UserService {
 		return  users;
 	}
 	
-	// TODO LO DE START & END ES MEGA CUTRE
-	public List<User> getFollowedUsers(Long long1, Integer start, Integer end) {
-		 // TODO UPDATE QUERY
-		 String query = "SELECT id,name FROM users,follows WHERE id = fid AND uid = ? ORDER BY name LIMIT ?,?;";
+	public List<User> getFollowedUsers(Long userId, Integer count) {
+		 String query = "SELECT user.id, user.username, user.name, user.university, user.degree\r\n"
+		 		+ "FROM user WHERE user.id IN (\r\n"
+		 		+ "SELECT followed_id FROM follows WHERE follower_id = ?)\r\n"
+		 		+ "ORDER BY user.username\r\n"
+		 		+ "LIMIT ?;";
 		 PreparedStatement statement = null;
-		 List<User> l = new ArrayList<User>();
+		 List<User> users = new ArrayList<User>();
 		 try {
 			 statement = db.prepareStatement(query);
-			 statement.setLong(1,long1);
-			 statement.setInt(2,start);
-			 statement.setInt(3,end);
+			 statement.setLong(1, userId);
+			 statement.setInt(2, count);
 			 ResultSet rs = statement.executeQuery();
 			 while (rs.next()) {
 				 User user = new User();
 				 user.setId(rs.getLong("id"));
+				 user.setUsername(rs.getString("username"));
 				 user.setName(rs.getString("name"));
-				 l.add(user);
+				 user.setUniversity(rs.getString("university"));
+				 user.setDegree(rs.getString("degree"));
+				 users.add(user);
 			 }
 			 rs.close();
 			 statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} 
-		return  l;
+		return users;
+	}
+	
+	public boolean isUserFollowingUser(Long followerId, Long followedId) {
+		String query = "SELECT * from follows WHERE follower_id = ? AND followed_id = ?;";
+		PreparedStatement statement = null;
+		boolean output = false;
+		try {
+			statement = db.prepareStatement(query);
+			statement.setLong(1, followerId);
+			statement.setLong(2, followedId);
+			ResultSet rs = statement.executeQuery();
+			output = rs.next();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		return output;
 	}
 	
 	public Pair<Boolean,User> getUserByUsername(User user) {
-		// TODO update this
-		String query = "SELECT id, email, name, degree, country, birthday, position from user where username=?";
+		String query = "SELECT id, email, name, degree, country, birthday, position, is_admin FROM user WHERE username = ?";
 		PreparedStatement statement = null;
 		boolean output = false;
 		try {
@@ -339,6 +401,7 @@ public class UserService {
 				user.setCountry(rs.getString("country"));
 				user.setBirthday(rs.getDate("birthday"));
 				user.setPosition(rs.getString("position"));
+				user.setIsAdmin(rs.getBoolean("is_admin"));
 				output = true;
 			} 
 			rs.close();

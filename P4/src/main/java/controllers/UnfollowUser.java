@@ -12,21 +12,20 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.beanutils.BeanUtils;
 
-import models.Tweet;
 import models.User;
-import services.TweetService;
+import services.UserService;
 
 /**
- * Servlet implementation class DelTweet
+ * Servlet implementation class FollowUser
  */
-@WebServlet("/DelTweet")
-public class DelTweet extends HttpServlet {
+@WebServlet("/UnfollowUser/*")
+public class UnfollowUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DelTweet() {
+    public UnfollowUser() {
         super();
     }
 
@@ -34,23 +33,19 @@ public class DelTweet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
-		Tweet tweet = new Tweet();
-		TweetService tweetManager = new TweetService();
+		
+		String pathInfo = request.getPathInfo();
+		Long unfollowUserId = Long.valueOf(pathInfo.substring(1));
+		
 		HttpSession session = request.getSession(false);
 		User user = (User) session.getAttribute("user");
+		Long userId = user.getId();
+		
+		UserService userService = new UserService();
+		userService.unfollowUser(userId, unfollowUserId);
+		userService.finalize();
 
-		try {
-			if (session != null || user != null) {
-				BeanUtils.populate(tweet, request.getParameterMap());
-				if((user.getId().equals(tweet.getUserId())) || user.getIsAdmin()) {
-					tweetManager.deleteTweet(tweet.getId());
-				}
-			}
-			tweetManager.finalize();
-		} catch (IllegalAccessException | InvocationTargetException e) {
-			e.printStackTrace();
-		}
+		
 	}
 
 	/**

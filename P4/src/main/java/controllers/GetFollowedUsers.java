@@ -1,7 +1,7 @@
 package controllers;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -12,11 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.beanutils.BeanUtils;
+
 import models.User;
 import services.UserService;
 
 /**
- * Servlet implementation class GetFollowedUsers
+ * Servlet implementation class FollowUser
  */
 @WebServlet("/GetFollowedUsers")
 public class GetFollowedUsers extends HttpServlet {
@@ -27,38 +29,29 @@ public class GetFollowedUsers extends HttpServlet {
      */
     public GetFollowedUsers() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		List<User> users = Collections.emptyList();
-		
 		HttpSession session = request.getSession(false);
 		User user = (User) session.getAttribute("user");
-
-		if (session != null || user != null) {
+		Long userId = user.getId();
 		
-			UserService userManager = new UserService();
-			users = userManager.getFollowedUsers(user.getId(),0,4);
-			userManager.finalize();
+		UserService userService = new UserService();
+		List<User> users = userService.getFollowedUsers(userId, 10);
+		userService.finalize();
 		
-		}
-
-		request.setAttribute("users",users);
+		request.setAttribute("users", users);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/ViewFollowedUsers.jsp"); 
 		dispatcher.forward(request,response);
-		
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

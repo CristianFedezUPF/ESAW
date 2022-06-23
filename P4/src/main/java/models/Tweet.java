@@ -1,6 +1,4 @@
 package models;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 public class Tweet implements java.io.Serializable {
 
@@ -11,7 +9,15 @@ public class Tweet implements java.io.Serializable {
 	 private String username;
 	 private String name;
 	 private String timeSince;
+	 private String timeSinceEdit;
 	 private String content;
+	 private Integer likeCount;
+	 private Integer retweetCount;
+	 private Boolean isLiked;
+	 private Boolean isRetweeted;
+	 private Long retweetUserId;
+	 private String retweetUserName;
+	 private String timeSinceRetweet;
 
 	 public Tweet() {
 	 }
@@ -50,16 +56,82 @@ public class Tweet implements java.io.Serializable {
 
 	public String getTimeSince() {
 		 return this.timeSince;
-	 }
-	 public void setTimeSince(String timeSince) {
+	}
+	
+	public void setTimeSince(String timeSince) {
 		 this.timeSince = timeSince;
-	 }
+	}
 	 
-	 public String getContent() {
+	public String getTimeSinceEdit() {
+		return timeSinceEdit;
+	}
+
+	public void setTimeSinceEdit(String timeSinceEdit) {
+		this.timeSinceEdit = timeSinceEdit;
+	}
+
+	public String getContent() {
 		 return this.content;
 	 }
 	 public void setContent(String content) {
 		 this.content = content;
 	 }
+	 
+	 public Integer getLikeCount() {
+		return this.likeCount;
+	}
+		
+	public void setLikeCount(Integer count) {
+		this.likeCount = count;
+	}
+	
+	public Integer getRetweetCount() {
+		return this.retweetCount;
+	}
+	
+	public void setRetweetCount(Integer count) {
+		this.retweetCount = count;
+	}
+	
+
+	public Boolean getIsLiked() {
+		return isLiked;
+	}
+
+	public void setIsLiked(Boolean isLiked) {
+		this.isLiked = isLiked;
+	}
+
+	public Boolean getIsRetweeted() {
+		return isRetweeted;
+	}
+
+	public void setIsRetweeted(Boolean isRetweeted) {
+		this.isRetweeted = isRetweeted;
+	}
+
+	public Long getRetweetUserId() {
+		return retweetUserId;
+	}
+
+	public void setRetweetUserId(Long retweetUserId) {
+		this.retweetUserId = retweetUserId;
+	}
+
+	public String getRetweetUserName() {
+		return retweetUserName;
+	}
+
+	public void setRetweetUserName(String retweetUserName) {
+		this.retweetUserName = retweetUserName;
+	}
+
+	public String getTimeSinceRetweet() {
+		return timeSinceRetweet;
+	}
+
+	public void setTimeSinceRetweet(String timeSinceRetweet) {
+		this.timeSinceRetweet = timeSinceRetweet;
+	}
 
 }

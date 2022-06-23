@@ -9,10 +9,10 @@
 
  
 <div id="input-wrapper">
-	<textarea id="typing-input" placeholder="What's happening?"></textarea>
+	<textarea id="typing-input" placeholder="What's happening?" maxlength = "200"></textarea>
 	<div id="input-bottom">
 		<p id="input-info">These are posts from everyone.</p>
-		<button id="post-button">Post</button>
+		<button id="post-button" data-controller="GetGlobalTweets">Post</button>
 	</div>			
 </div>
 <div id="tweet-list">

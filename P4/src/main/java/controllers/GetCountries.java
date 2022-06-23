@@ -1,7 +1,9 @@
 package controllers;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,23 +13,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang3.tuple.Pair;
-
+import models.Country;
+import models.Tweet;
 import models.User;
-import services.UserService;
+import services.CountryService;
+import services.TweetService;
 
 /**
- * Servlet implementation class LoginController
+ * Servlet implementation class dTcontroller
  */
-@WebServlet("/AnonymousController")
-public class AnonymousController extends HttpServlet {
+@WebServlet("/GetCountries")
+public class GetCountries extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AnonymousController() {
+    public GetCountries() {
         super();
     }
 
@@ -35,13 +37,16 @@ public class AnonymousController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-	    RequestDispatcher dispatcher = request.getRequestDispatcher("ViewAnonymousTimeline.jsp");
-		dispatcher.forward(request, response);
-		    
-	    
-	}
+		CountryService countryService = new CountryService();
+		Map<String, List<Country>> countries = countryService.getCountriesByContinent();
+		countryService.finalize();
 		
+		request.setAttribute("countries",countries);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/ViewCountries.jsp"); 
+		dispatcher.forward(request,response);
+		
+	}
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
