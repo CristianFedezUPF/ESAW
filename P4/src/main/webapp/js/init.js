@@ -20,6 +20,7 @@ window.addEventListener('DOMContentLoaded', () => {
 				}
 				if(event.currentTarget.classList.contains("user-profile-wrapper")){
 					menu_items[3].style.fontWeight = "900";
+					return;
 				}
 				event.currentTarget.style.fontWeight = "900";
 				event.preventDefault();
