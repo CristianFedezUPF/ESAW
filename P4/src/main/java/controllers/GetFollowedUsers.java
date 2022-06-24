@@ -37,7 +37,7 @@ public class GetFollowedUsers extends HttpServlet {
 		Long userId = user.getId();
 		
 		UserService userService = new UserService();
-		List<User> users = userService.getFollowedUsers(userId, 10);
+		List<User> users = userService.getFollowedUsers(userId, 20);
 		userService.finalize();
 		
 		request.setAttribute("users", users);
