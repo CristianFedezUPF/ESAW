@@ -123,6 +123,7 @@ CREATE TRIGGER on_add_retweet AFTER INSERT ON retweet
 	FOR EACH ROW
     BEGIN 
     UPDATE tweet SET tweet.retweet_count = (tweet.retweet_count + 1) WHERE tweet.id = NEW.tweet_id;
+    UPDATE `user` SET `user`.post_count = (`user`.post_count + 1) WHERE `user`.id = NEW.user_id;
     END //
     DELIMITER ;
     
@@ -131,5 +132,6 @@ CREATE TRIGGER on_remove_retweet AFTER DELETE ON retweet
 	FOR EACH ROW
     BEGIN 
     UPDATE tweet SET tweet.retweet_count = (tweet.retweet_count - 1) WHERE tweet.id = OLD.tweet_id;
+	UPDATE `user` SET `user`.post_count = (`user`.post_count - 1) WHERE `user`.id = OLD.user_id;
     END //
     DELIMITER ;
