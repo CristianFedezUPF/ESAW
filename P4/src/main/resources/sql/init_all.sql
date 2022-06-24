@@ -617,7 +617,6 @@ INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('2', '1');
 INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('2', '3');
 INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('4', '1');
 INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('6', '1');
-INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('6', '1');
 INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('17', '1');
 INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('14', '1');
 INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('19', '1');
@@ -626,7 +625,6 @@ INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('16', '1');
 INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('19', '2');
 INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('13', '2');
 INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('20', '2');
-INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('2', '3');
 INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('15', '3');
 INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('12', '3');
 INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('17', '3');
@@ -639,7 +637,6 @@ INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('1', '5');
 INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('1', '6');
 INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('1', '7');
 INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('14', '7');
-INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('1', '7');
 INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('17', '16');
 
 
