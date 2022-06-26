@@ -17,7 +17,6 @@ CREATE TABLE `user` (
     post_count INT DEFAULT 0,
     following_count INT DEFAULT 0,
     follower_count INT DEFAULT 0,
-    like_count INT DEFAULT 0,
     `position` ENUM('S', 'T'),
     is_admin BOOLEAN DEFAULT false,
     image_path VARCHAR(255), 
@@ -102,8 +101,6 @@ DELIMITER //
 CREATE TRIGGER on_add_like AFTER INSERT ON `like`
 	FOR EACH ROW
     BEGIN 
-    UPDATE `user` SET `user`.like_count = (`user`.like_count + 1) WHERE `user`.id =
-		(SELECT user_id FROM tweet WHERE id = NEW.tweet_id);
     UPDATE tweet SET tweet.like_count = (tweet.like_count + 1) WHERE tweet.id = NEW.tweet_id;
     END //
     DELIMITER ;
@@ -112,8 +109,6 @@ DELIMITER //
 CREATE TRIGGER on_remove_like AFTER DELETE ON `like`
 	FOR EACH ROW
     BEGIN 
-    UPDATE `user` SET `user`.like_count = (`user`.like_count - 1) WHERE `user`.id = 
-		(SELECT user_id FROM tweet WHERE id = OLD.tweet_id);
     UPDATE tweet SET tweet.like_count = (tweet.like_count - 1) WHERE tweet.id = OLD.tweet_id;
     END //
     DELIMITER ;
@@ -397,9 +392,6 @@ INSERT INTO country(continent, code, name) VALUES ('Oceania',            "UM" , 
 INSERT INTO country(continent, code, name) VALUES ('Oceania',            "VU" , 'Vanuatu');
 INSERT INTO country(continent, code, name) VALUES ('Oceania',            "WF" , 'Wallis and Futuna');
 
-SELECT * FROM country;
-
-DROP TABLE IF EXISTS university;
 
 CREATE TABLE university(
 	code VARCHAR(10) PRIMARY KEY,
