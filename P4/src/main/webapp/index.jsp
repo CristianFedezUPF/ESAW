@@ -18,9 +18,7 @@
 		<link rel="stylesheet" href="css/timeline.css">
 		<link rel="stylesheet" href="css/profile.css">
 		<link rel="stylesheet" href="css/followedUsers.css">
-		<link rel="stylesheet" href="css/form.css">
-		<link rel="stylesheet" href="css/moreStyles.css">
-		
+		<link rel="stylesheet" href="css/form.css">		
 				
 		<link rel="preconnect" href="https://fonts.googleapis.com"> 
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
