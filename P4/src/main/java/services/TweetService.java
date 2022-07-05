@@ -51,7 +51,6 @@ public class TweetService {
 	
 	// Edit tweet
 	public void editTweet(Tweet tweet) {
-		// TODO update query
 		if(!tweet.getContent().isBlank()) {
 
 			String query = "UPDATE tweet SET \r\n"
