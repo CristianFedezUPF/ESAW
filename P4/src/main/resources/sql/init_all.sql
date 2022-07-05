@@ -421,7 +421,7 @@ INSERT INTO `user`(`name`, username, email,`password`, gender, university, degre
     'F', 'Universitat Pompeu Fabra', 'Computer Science', 'Spain','2001-03-23', 'S', NULL, '@ÝÎ-iÿ©öüÅÇVÆw', true); 
 INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
 	image_path, salt, is_admin) VALUES ('Cristian Fernández Moreno','CristianFedez','cristianfedez03@estudiant.upf.edu', '_£»I%ÒiueÍ×@ØÝ8Úz[ÎÊÜ^±lÌianú', 
-    'M', 'Universitat Pompeu Fabra', 'Enginyeria de Sistemes Audiovisuals', 'Spain', '2001-07-30', 'S', NULL, '@ÝÎ-iÿ©öüÅÇVÆw', true);
+    'M', 'Universitat Pompeu Fabra', 'Enginyeria de Sistemes Audiovisuals', 'Spain', '2001-07-30', 'S', NULL, '@ÝÎ-iÿ©öüÅÇVÆw', false);
 INSERT INTO `user`(`name`, username, email,`password`, gender, university, degree, country, birthday, `position`, 
 	image_path, salt, is_admin) VALUES ('Lucas Damián Chindemi Santa Cruz','PatoLucas','lucasdamian.chindemi01@estudiant.upf.edu', '_£»I%ÒiueÍ×@ØÝ8Úz[ÎÊÜ^±lÌianú', 
     'M', 'Universitat Pompeu Fabra', 'Computer', 'Argentina', '1999-3-1', 'S', NULL, '@ÝÎ-iÿ©öüÅÇVÆw', true);
@@ -480,11 +480,11 @@ INSERT INTO `follows`(follower_id, followed_id) VALUES(1, 15);
 INSERT INTO `follows`(follower_id, followed_id) VALUES(1, 16);
 
 INSERT INTO `follows`(follower_id, followed_id) VALUES(2, 1);
-INSERT INTO `follows`(follower_id, followed_id) VALUES(2, 3);
+#INSERT INTO `follows`(follower_id, followed_id) VALUES(2, 3);
 INSERT INTO `follows`(follower_id, followed_id) VALUES(2, 4);
 INSERT INTO `follows`(follower_id, followed_id) VALUES(2, 9);
 INSERT INTO `follows`(follower_id, followed_id) VALUES(2, 10);
-INSERT INTO `follows`(follower_id, followed_id) VALUES(2, 11);
+#INSERT INTO `follows`(follower_id, followed_id) VALUES(2, 11);
 INSERT INTO `follows`(follower_id, followed_id) VALUES(2, 14);
 INSERT INTO `follows`(follower_id, followed_id) VALUES(2, 15);
 INSERT INTO `follows`(follower_id, followed_id) VALUES(2, 16);
@@ -582,26 +582,26 @@ INSERT INTO `follows`(follower_id, followed_id) VALUES(16, 16);
 
 
 
-INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-01 15:01:53", 1, 'Hello im Helena!!');
-INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2021-06-01 09:01:53", 4, 'Hello im Moni!!');
-INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-01 15:01:43", 10, 'Hello im Carlota!!');
-INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2021-12-15 20:01:23", 15, 'Hello im Oriol!!');
-INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-01 15:01:33", 11, 'Hello im Klaus!!');
-INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-03 15:03:53", 2, 'Hello im Cristian!!');
-INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-09 21:00:53", 13, "Avui han sortit les entrades per les representacions de nine per part del grup d'adults d'aules CORREU A COMPRAR-LES!!");
-INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-17 15:37:46", 13, "Les entrades per les sessions d'avui de NINE estan esgotades!! però encara teniu oportunitat d'aconseguir-ne per demà :) ");
-INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-19 21:00:53", 13, "L'obra ha sortit genial noies!! molt bon treball!!");
-INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-15 15:12:53", 2, "Today I saw Jurassic World: Dominion in IMAX 3D at Diagonal Mar, it was great!");
-INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-15 15:14:53", 2, "My next stop at the cinema will be Lightyear after the exams, I'm excited for it!");
-INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-22 20:04:30", 11, "TICs exam of today was so unfairly hard :( they need to make the exams in line with the theory/exercises given by the teachers. ");
-INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-23 14:32:53", 1, "IN THIS UNIVERSITY WE LOVE KITTENS.");
-INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-18 14:02:53", 6, "IVE ACED MY EXAMS!!!");
-INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-20 20:29:53", 5, "this project is killing me :((");
-INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-21 20:02:53", 3, 'Computer science is superior');
-INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-16 19:12:53", 15, 'Els meus alumnes estan creant uns Twitters increibles!!');
-INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-04 09:42:53", 4, 'La millor assignatura es algebra');
-INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-20 18:54:53", 11, 'Telecos es lo mejor que he hecho en el mundo');
-INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-20 18:55:53", 11, 'Quiero trabajar ya con antenas /s');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-11 15:01:53", 1, 'Hello im Helena!!');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2021-06-11 09:01:53", 4, 'Hello im Moni!!');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-11 15:01:43", 10, 'Hello im Carlota!!');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2021-12-25 20:01:23", 15, 'Hello im Oriol!!');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-11 15:01:33", 11, 'Hello im Klaus!!');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-13 15:03:53", 2, 'Hello im Cristian!!');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-19 21:00:53", 13, "Avui han sortit les entrades per les representacions de nine per part del grup d'adults d'aules CORREU A COMPRAR-LES!!");
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-27 15:37:46", 13, "Les entrades per les sessions d'avui de NINE estan esgotades!! però encara teniu oportunitat d'aconseguir-ne per demà :) ");
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-29 21:00:53", 13, "L'obra ha sortit genial noies!! molt bon treball!!");
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-25 15:12:53", 2, "Today I saw Jurassic World: Dominion in IMAX 3D at Diagonal Mar, it was great!");
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-25 15:14:53", 2, "My next stop at the cinema will be Lightyear after the exams, I'm excited for it!");
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-07-02 20:04:30", 11, "TICs exam of today was so unfairly hard :( they need to make the exams in line with the theory/exercises given by the teachers. ");
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-07-03 14:32:53", 1, "IN THIS UNIVERSITY WE LOVE KITTENS.");
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-28 14:02:53", 6, "IVE ACED MY EXAMS!!!");
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-30 20:29:53", 5, "this project is killing me :((");
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-07-01 20:02:53", 3, 'Computer science is superior');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-26 19:12:53", 15, 'Els meus alumnes estan creant uns Twitters increibles!!');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-14 09:42:53", 4, 'La millor assignatura es algebra');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-30 18:54:53", 11, 'Telecos es lo mejor que he hecho en el mundo');
+INSERT INTO tweet(creation_timestamp, user_id, content) VALUES("2022-06-30 18:55:53", 11, 'Quiero trabajar ya con antenas /s');
 
 
 
@@ -632,10 +632,10 @@ INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('14', '7');
 INSERT INTO `like` (`tweet_id`, `user_id`) VALUES ('17', '16');
 
 
-INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-06-04 15:22:53", '6', '1');
-INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-06-10 15:15:03", '18', '1');
-INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-06-10 00:49:53", '7', '8');
-INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-06-17 16:13:53", '8', '8');
-INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-06-19 21:13:53", '9', '8');
-INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-06-21 00:49:53", '15', '3');
-INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-06-23 23:24:33", '13', '2');
+INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-06-14 15:22:53", '6', '1');
+INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-06-20 15:15:03", '18', '1');
+INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-06-20 00:49:53", '7', '8');
+INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-06-27 16:13:53", '8', '8');
+INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-06-29 21:13:53", '9', '8');
+INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-07-01 00:49:53", '15', '3');
+INSERT INTO retweet (creation_timestamp, tweet_id, user_id) VALUES ("2022-07-04 23:24:33", '13', '2');

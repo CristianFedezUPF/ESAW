@@ -57,8 +57,11 @@ window.addEventListener('DOMContentLoaded', () => {
 					},
 					() => {
 						$("#mcolumn").load("GetProfileInfo/" + profile_id);
-						document.getElementById("user-profile-name").innerText = validation.name;
-						document.getElementById("user-profile-username").innerText = validation.username;
+						let user_id = document.getElementsByClassName("user-profile-wrapper")[0].getAttribute('data-userid');
+						if (user_id == profile_id){
+							document.getElementById("user-profile-name").innerText = validation.name;
+							document.getElementById("user-profile-username").innerText = "@" + validation.username;
+						}
 					}
 				).fail( (error) => {
 					let message;
